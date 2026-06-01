@@ -1094,6 +1094,173 @@ function gen_convert_time(difficulty) {
 }
 
 // ======================================================
+// UNIT 7: COORDINATE GRID, SHAPES, RULES, EXPRESSIONS
+// ======================================================
+
+// Plot a given point by clicking the grid (format: 'grid')
+function gen_coord_plot(difficulty) {
+  const size = 10;
+  const x = difficulty === 'easy' ? _R(1, 6) : _R(1, 9);
+  const y = difficulty === 'easy' ? _R(1, 6) : _R(1, 9);
+  return {
+    question: 'Plot the point (' + x + ', ' + y + ') — click where it belongs on the grid.',
+    answer: '(' + x + ', ' + y + ')',
+    target: { x: x, y: y },
+    gridSize: size,
+    hint: 'Start at 0. Go RIGHT to ' + x + ' along the x-axis, then UP to ' + y + '.',
+    topic: 'coord_plot',
+    difficulty: difficulty,
+    format: 'grid'
+  };
+}
+
+// Word problem: start, then move; plot the destination (format: 'grid')
+function gen_coord_word(difficulty) {
+  const size = 10;
+  const sx = _R(0, 4), sy = _R(0, 4);
+  const dx = difficulty === 'easy' ? _R(1, 4) : _R(1, 5);
+  const dy = difficulty === 'easy' ? _R(1, 4) : _R(1, 5);
+  const tx = sx + dx, ty = sy + dy;
+  return {
+    question: 'Start at (' + sx + ', ' + sy + '). Move ' + dx + ' right and ' + dy + ' up. Click where you land.',
+    answer: '(' + tx + ', ' + ty + ')',
+    target: { x: tx, y: ty },
+    gridSize: size,
+    figureMarkers: [{ x: sx, y: sy, label: 'Start', color: '#5a8aaa' }],
+    hint: '(' + sx + '+' + dx + ', ' + sy + '+' + dy + ') = (' + tx + ', ' + ty + ').',
+    topic: 'coord_word',
+    difficulty: difficulty,
+    format: 'grid'
+  };
+}
+
+// Distance between two points on a shared row/column (format: input + figure)
+function gen_coord_distance(difficulty) {
+  const size = 10;
+  const horizontal = Math.random() < 0.5;
+  let ax, ay, bx, by, dist;
+  if (horizontal) {
+    ay = by = _R(1, 8);
+    ax = _R(0, 4); bx = ax + (difficulty === 'easy' ? _R(2, 4) : _R(3, 7));
+    if (bx > 10) bx = 10;
+    dist = bx - ax;
+  } else {
+    ax = bx = _R(1, 8);
+    ay = _R(0, 4); by = ay + (difficulty === 'easy' ? _R(2, 4) : _R(3, 7));
+    if (by > 10) by = 10;
+    dist = by - ay;
+  }
+  const figure = (typeof Art !== 'undefined') ? Art.coordGrid(size, {
+    markers: [{ x: ax, y: ay, label: 'A', color: '#5a8aaa' }, { x: bx, y: by, label: 'B', color: '#9a2828' }],
+    path: [{ from: [ax, ay], to: [bx, by] }]
+  }) : '';
+  return {
+    question: 'How many units apart are A(' + ax + ', ' + ay + ') and B(' + bx + ', ' + by + ')?',
+    answer: String(dist),
+    figure: figure,
+    hint: horizontal ? 'Same y — subtract the x-values: ' + bx + ' − ' + ax + '.' : 'Same x — subtract the y-values: ' + by + ' − ' + ay + '.',
+    topic: 'coord_distance',
+    difficulty: difficulty,
+    format: 'input'
+  };
+}
+
+function gen_classify_quad(difficulty) {
+  const all = [
+    { kind: 'square', name: 'Square' },
+    { kind: 'rectangle', name: 'Rectangle' },
+    { kind: 'rhombus', name: 'Rhombus' },
+    { kind: 'parallelogram', name: 'Parallelogram' },
+    { kind: 'trapezoid', name: 'Trapezoid' }
+  ];
+  const pick = _pick(all);
+  const figure = (typeof Art !== 'undefined') ? Art.shapeFigure(pick.kind) : '';
+  const names = _shuffle(all.map(a => a.name)).slice(0, 4);
+  if (names.indexOf(pick.name) < 0) names[0] = pick.name;
+  return {
+    question: 'What kind of quadrilateral is this?',
+    answer: pick.name,
+    figure: figure,
+    options: _shuffle(names),
+    hint: pick.kind === 'square' ? '4 equal sides AND 4 right angles.' :
+          pick.kind === 'rectangle' ? '4 right angles; opposite sides equal.' :
+          pick.kind === 'rhombus' ? '4 equal sides, but tilted (not all right angles).' :
+          pick.kind === 'parallelogram' ? 'Opposite sides parallel and equal; slanted.' :
+          'Exactly one pair of parallel sides.',
+    topic: 'classify_quad',
+    difficulty: difficulty,
+    format: 'mc'
+  };
+}
+
+function gen_classify_triangle(difficulty) {
+  const all = [
+    { kind: 'tri_right', name: 'Right triangle' },
+    { kind: 'tri_acute', name: 'Acute triangle' },
+    { kind: 'tri_obtuse', name: 'Obtuse triangle' }
+  ];
+  const pick = _pick(all);
+  const figure = (typeof Art !== 'undefined') ? Art.shapeFigure(pick.kind) : '';
+  return {
+    question: 'Classify this triangle by its angles.',
+    answer: pick.name,
+    figure: figure,
+    options: _shuffle(all.map(a => a.name)),
+    hint: pick.kind === 'tri_right' ? 'One angle is exactly 90° (a square corner).' :
+          pick.kind === 'tri_acute' ? 'All three angles are less than 90°.' :
+          'One angle is greater than 90° (wide and open).',
+    topic: 'classify_triangle',
+    difficulty: difficulty,
+    format: 'mc'
+  };
+}
+
+function gen_rule_two_variables(difficulty) {
+  // y = a*x + b ; given x find y
+  let a, b, x;
+  if (difficulty === 'easy') { a = _R(2, 4); b = _R(0, 3); x = _R(1, 6); }
+  else if (difficulty === 'medium') { a = _R(2, 6); b = _R(1, 6); x = _R(2, 9); }
+  else { a = _R(3, 8); b = _R(2, 10); x = _R(3, 12); }
+  const y = a * x + b;
+  const ruleText = b === 0 ? ('y = ' + a + ' × x') : ('y = ' + a + ' × x + ' + b);
+  return {
+    question: 'The rule is ' + ruleText + '. When x = ' + x + ', what is y?',
+    answer: String(y),
+    hint: a + ' × ' + x + (b ? ' + ' + b : '') + ' = ?',
+    topic: 'rule_two_variables',
+    difficulty: difficulty,
+    format: 'input'
+  };
+}
+
+function gen_expr_parentheses(difficulty) {
+  let expr, val;
+  if (difficulty === 'easy') {
+    const a = _R(2, 8), b = _R(2, 8), c = _R(2, 5);
+    expr = '(' + a + ' + ' + b + ') × ' + c;
+    val = (a + b) * c;
+  } else if (difficulty === 'medium') {
+    let a = _R(4, 9), b = _R(2, 8); const c = _R(2, 6);
+    if (a < b) { const t = a; a = b; b = t; }
+    if (Math.random() < 0.5) { expr = c + ' × (' + a + ' − ' + b + ')'; val = c * (a - b); }
+    else { expr = '(' + a + ' + ' + b + ') × ' + c; val = (a + b) * c; }
+  } else {
+    let a = _R(5, 12), b = _R(2, 9); const c = _R(2, 6), d = _R(2, 6);
+    if (a < b) { const t = a; a = b; b = t; }
+    expr = '(' + a + ' − ' + b + ') × ' + c + ' + ' + d;
+    val = (a - b) * c + d;
+  }
+  return {
+    question: 'Evaluate: ' + expr,
+    answer: String(val),
+    hint: 'Do the part in parentheses first, then the rest.',
+    topic: 'expr_parentheses',
+    difficulty: difficulty,
+    format: 'input'
+  };
+}
+
+// ======================================================
 // DISPATCH
 // ======================================================
 const GENERATORS = {
@@ -1138,7 +1305,15 @@ const GENERATORS = {
   mixed_number_add_sub: gen_mixed_number_add_sub,
   powers_of_10: gen_powers_of_10,
   metric_convert: gen_metric_convert,
-  convert_time: gen_convert_time
+  convert_time: gen_convert_time,
+  // Act VI (Unit 7)
+  coord_plot: gen_coord_plot,
+  coord_word: gen_coord_word,
+  coord_distance: gen_coord_distance,
+  classify_quad: gen_classify_quad,
+  classify_triangle: gen_classify_triangle,
+  rule_two_variables: gen_rule_two_variables,
+  expr_parentheses: gen_expr_parentheses
 };
 
 function generateProblem(topic, difficulty) {

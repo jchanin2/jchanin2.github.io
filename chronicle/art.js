@@ -637,10 +637,12 @@ const Art = {
       const act3 = act2 ? null : this._enemyAct3(spriteId);
       const act4 = (act2 || act3) ? null : this._enemyAct4(spriteId);
       const act5 = (act2 || act3 || act4) ? null : this._enemyAct5(spriteId);
+      const act6 = (act2 || act3 || act4 || act5) ? null : this._enemyAct6(spriteId);
       if (act2) inner = act2;
       else if (act3) inner = act3;
       else if (act4) inner = act4;
       else if (act5) inner = act5;
+      else if (act6) inner = act6;
       else inner = '<rect x="60" y="60" width="80" height="100" fill="#5a4838"/>';
     }
     return '<svg width="' + size + '" height="' + size * (250/200) + '" viewBox="' + vb + '" xmlns="http://www.w3.org/2000/svg">' + inner + '</svg>';
@@ -3837,6 +3839,411 @@ const Art = {
   },
 
   // --------------------------------------------------------
+  // ACT VI — NPC + antagonist
+  // --------------------------------------------------------
+  astronomer_vega(size) {
+    const w = size || 80;
+    return '<svg width="' + w + '" height="' + w + '" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">' +
+      '<defs><radialGradient id="vega-bg"><stop offset="0" stop-color="#3a3a68"/><stop offset="1" stop-color="#0e0e22"/></radialGradient></defs>' +
+      '<circle cx="50" cy="50" r="48" fill="url(#vega-bg)"/>' +
+      // stars behind
+      '<circle cx="24" cy="26" r="1.2" fill="#fff"/><circle cx="74" cy="22" r="1" fill="#fff"/><circle cx="80" cy="60" r="1.2" fill="#fff"/><circle cx="20" cy="64" r="1" fill="#fff"/>' +
+      // hood/robe deep blue
+      '<path d="M 28 46 Q 50 18 72 46 L 70 80 Q 50 70 30 80 Z" fill="#2a2a58"/>' +
+      // star-circlet
+      '<path d="M 34 40 Q 50 30 66 40" fill="none" stroke="#d4a624" stroke-width="1.5"/>' +
+      '<polygon points="50,28 52,34 58,34 53,38 55,44 50,40 45,44 47,38 42,34 48,34" fill="#f0d27a"/>' +
+      // face (older, serene, deep brown skin)
+      '<ellipse cx="50" cy="54" rx="15" ry="17" fill="#8a6248" stroke="#2a1810" stroke-width="0.8"/>' +
+      '<ellipse cx="35" cy="54" rx="3" ry="4" fill="#8a6248"/>' +
+      '<ellipse cx="65" cy="54" rx="3" ry="4" fill="#8a6248"/>' +
+      // calm starlit eyes
+      '<ellipse cx="44" cy="54" rx="2" ry="2.4" fill="#1a1028"/>' +
+      '<ellipse cx="56" cy="54" rx="2" ry="2.4" fill="#1a1028"/>' +
+      '<circle cx="44.5" cy="53.3" r="0.7" fill="#a8c4f0"/><circle cx="56.5" cy="53.3" r="0.7" fill="#a8c4f0"/>' +
+      '<path d="M 44 64 Q 50 67 56 64" stroke="#2a1810" stroke-width="1" fill="none"/>' +
+      // collar with a small astrolabe
+      '<path d="M 30 80 Q 50 90 70 80 L 74 96 L 26 96 Z" fill="#1a1a3a" stroke="#0a0a1a" stroke-width="1"/>' +
+      '<circle cx="50" cy="86" r="4" fill="none" stroke="#d4a624" stroke-width="1"/>' +
+      '<line x1="46" y1="86" x2="54" y2="86" stroke="#d4a624" stroke-width="0.6"/>' +
+      '<line x1="50" y1="82" x2="50" y2="90" stroke="#d4a624" stroke-width="0.6"/>' +
+    '</svg>';
+  },
+
+  _enemyAct6(spriteId) {
+    if (spriteId === 'grid_wisp') {
+      return (
+        '<ellipse cx="100" cy="238" rx="30" ry="5" fill="rgba(0,0,0,0.4)"/>' +
+        // a floating lattice-spirit
+        '<g stroke="#88c4f0" stroke-width="1.5" opacity="0.85" fill="none">' +
+        '<rect x="66" y="100" width="68" height="68"/>' +
+        '<line x1="66" y1="123" x2="134" y2="123"/><line x1="66" y1="146" x2="134" y2="146"/>' +
+        '<line x1="89" y1="100" x2="89" y2="168"/><line x1="111" y1="100" x2="111" y2="168"/>' +
+        '</g>' +
+        // glowing node "face" at a lattice point
+        '<circle cx="111" cy="123" r="9" fill="#1a2a48"/>' +
+        '<circle cx="111" cy="123" r="5" fill="#a8d4ff"/>' +
+        '<ellipse cx="100" cy="134" rx="3" ry="4" fill="#a8d4ff"/>' +
+        '<ellipse cx="116" cy="134" rx="3" ry="4" fill="#a8d4ff"/>' +
+        // trailing coordinate sparks
+        '<circle cx="70" cy="186" r="3" fill="#88c4f0"/><circle cx="120" cy="190" r="2.5" fill="#88c4f0"/>' +
+        '<text x="138" y="110" fill="#88c4f0" font-family="Cinzel" font-size="9" opacity="0.8">(x,y)</text>'
+      );
+    }
+    if (spriteId === 'glyph_moth') {
+      return (
+        '<ellipse cx="100" cy="236" rx="40" ry="6" fill="rgba(0,0,0,0.4)"/>' +
+        // wings shaped like quadrilaterals
+        '<polygon points="100,150 46,110 30,168 92,182" fill="#5a6aa8" stroke="#2a2a58" stroke-width="2" opacity="0.9"/>' +
+        '<polygon points="100,150 154,110 170,168 108,182" fill="#5a6aa8" stroke="#2a2a58" stroke-width="2" opacity="0.9"/>' +
+        '<polygon points="100,150 60,182 92,210" fill="#48588a" stroke="#2a2a58" stroke-width="1.5"/>' +
+        '<polygon points="100,150 140,182 108,210" fill="#48588a" stroke="#2a2a58" stroke-width="1.5"/>' +
+        // wing geometry marks
+        '<polygon points="56,130 78,124 74,152 52,156" fill="none" stroke="#a8c4f0" stroke-width="1"/>' +
+        '<polygon points="144,130 122,124 126,152 148,156" fill="none" stroke="#a8c4f0" stroke-width="1"/>' +
+        // body
+        '<ellipse cx="100" cy="158" rx="8" ry="26" fill="#2a2a48" stroke="#14142a" stroke-width="1.5"/>' +
+        '<circle cx="100" cy="138" r="9" fill="#3a3a5a" stroke="#14142a" stroke-width="1.5"/>' +
+        '<circle cx="95" cy="136" r="2.5" fill="#f0d27a"/><circle cx="105" cy="136" r="2.5" fill="#f0d27a"/>' +
+        // antennae
+        '<path d="M 96 130 Q 88 116 80 116" fill="none" stroke="#14142a" stroke-width="1.5"/>' +
+        '<path d="M 104 130 Q 112 116 120 116" fill="none" stroke="#14142a" stroke-width="1.5"/>'
+      );
+    }
+    if (spriteId === 'star_sentinel') {
+      return (
+        '<ellipse cx="100" cy="242" rx="50" ry="7" fill="rgba(0,0,0,0.45)"/>' +
+        // a guardian of star-iron, body a big star
+        '<polygon points="100,40 116,92 172,92 126,124 144,178 100,146 56,178 74,124 28,92 84,92" fill="#3a4a78" stroke="#1a2240" stroke-width="2.5"/>' +
+        '<polygon points="100,60 110,96 148,96 117,118 129,156 100,134 71,156 83,118 52,96 90,96" fill="#4a5a92"/>' +
+        // core face
+        '<circle cx="100" cy="108" r="20" fill="#1a2240" stroke="#88c4f0" stroke-width="2"/>' +
+        '<ellipse cx="92" cy="106" rx="3" ry="4.5" fill="#a8d4ff"/>' +
+        '<ellipse cx="108" cy="106" rx="3" ry="4.5" fill="#a8d4ff"/>' +
+        '<path d="M 92 118 Q 100 124 108 118" stroke="#88c4f0" stroke-width="2" fill="none"/>' +
+        // legs
+        '<line x1="84" y1="176" x2="78" y2="220" stroke="#3a4a78" stroke-width="6" stroke-linecap="round"/>' +
+        '<line x1="116" y1="176" x2="122" y2="220" stroke="#3a4a78" stroke-width="6" stroke-linecap="round"/>' +
+        // sparkle points
+        '<circle cx="100" cy="40" r="2" fill="#fff"/><circle cx="172" cy="92" r="1.5" fill="#fff"/><circle cx="28" cy="92" r="1.5" fill="#fff"/>'
+      );
+    }
+    if (spriteId === 'axis_warden') {
+      return (
+        '<ellipse cx="100" cy="244" rx="72" ry="9" fill="rgba(0,0,0,0.55)"/>' +
+        // a colossus made of two crossed axes (x and y), grid for a torso
+        '<rect x="36" y="150" width="128" height="6" fill="#5a3a1a"/>' + // x-axis arm
+        '<rect x="97" y="60" width="6" height="160" fill="#5a3a1a"/>' +  // y-axis spine
+        // grid torso
+        '<rect x="70" y="120" width="60" height="76" fill="#1a2a40" stroke="#0a1830" stroke-width="2"/>' +
+        '<g stroke="#3a6a9a" stroke-width="1">' +
+        '<line x1="70" y1="139" x2="130" y2="139"/><line x1="70" y1="158" x2="130" y2="158"/><line x1="70" y1="177" x2="130" y2="177"/>' +
+        '<line x1="90" y1="120" x2="90" y2="196"/><line x1="110" y1="120" x2="110" y2="196"/>' +
+        '</g>' +
+        // plotted-point "heart"
+        '<circle cx="110" cy="158" r="6" fill="#9a2828"/>' +
+        // axis number ticks
+        '<g fill="#caa86a" font-family="Cinzel" font-size="8" text-anchor="middle">' +
+        '<text x="150" y="148">x</text><text x="108" y="74">y</text>' +
+        '</g>' +
+        // head
+        '<rect x="84" y="74" width="32" height="34" rx="3" fill="#2a3a58" stroke="#0a1830" stroke-width="2"/>' +
+        '<rect x="90" y="86" width="20" height="6" fill="#0a1426"/>' +
+        '<rect x="93" y="87" width="5" height="4" fill="#a8d4ff"/><rect x="103" y="87" width="5" height="4" fill="#a8d4ff"/>' +
+        // arms ending in compass-points
+        '<polygon points="36,150 26,144 26,162" fill="#888" stroke="#1a1830" stroke-width="1"/>' +
+        '<polygon points="164,150 174,144 174,162" fill="#888" stroke="#1a1830" stroke-width="1"/>' +
+        // legs
+        '<rect x="80" y="196" width="14" height="26" fill="#2a3a58"/>' +
+        '<rect x="106" y="196" width="14" height="26" fill="#2a3a58"/>'
+      );
+    }
+    if (spriteId === 'the_nullity') {
+      return (
+        '<defs>' +
+          '<radialGradient id="null-void" cx="0.5" cy="0.42" r="0.6">' +
+            '<stop offset="0" stop-color="#0a0a14"/>' +
+            '<stop offset="0.7" stop-color="#1a1430"/>' +
+            '<stop offset="1" stop-color="#3a2a58"/>' +
+          '</radialGradient>' +
+        '</defs>' +
+        '<ellipse cx="100" cy="246" rx="98" ry="13" fill="rgba(0,0,0,0.7)"/>' +
+        // a great robed scholar of erasure, a hole in reality where the chest should be
+        '<path d="M 40 244 Q 24 130 70 92 Q 100 56 130 92 Q 176 130 160 244 Z" fill="#1a1430" stroke="#0a0818" stroke-width="3"/>' +
+        // robe folds glowing with un-written math (faded symbols)
+        '<g fill="#3a2a58" font-family="Cinzel" font-size="12" opacity="0.6">' +
+        '<text x="60" y="160">∑</text><text x="128" y="150">π</text><text x="66" y="200">√</text><text x="124" y="206">∞</text><text x="92" y="230">×</text>' +
+        '</g>' +
+        // the void wound at center, swallowing symbols
+        '<circle cx="100" cy="150" r="34" fill="url(#null-void)" stroke="#3a2a58" stroke-width="2"/>' +
+        '<circle cx="100" cy="150" r="22" fill="#08060e"/>' +
+        // a single eye of cold light deep in the void
+        '<ellipse cx="100" cy="150" rx="6" ry="9" fill="#a8c4f0"/>' +
+        '<ellipse cx="100" cy="150" rx="2.5" ry="6" fill="#08060e"/>' +
+        '<circle cx="99" cy="146" r="1" fill="#fff"/>' +
+        // hood — empty but for two distant star-eyes
+        '<path d="M 70 92 Q 100 50 130 92 L 124 120 Q 100 104 76 120 Z" fill="#0a0818" stroke="#05040c" stroke-width="2"/>' +
+        '<circle cx="88" cy="100" r="2.5" fill="#a8c4f0"/>' +
+        '<circle cx="112" cy="100" r="2.5" fill="#a8c4f0"/>' +
+        // crown of broken numerals
+        '<g fill="#5a4a78">' +
+        '<polygon points="70,92 64,66 78,84"/>' +
+        '<polygon points="100,80 100,52 110,76"/>' +
+        '<polygon points="130,92 136,66 122,84"/>' +
+        '</g>' +
+        // the un-writing quill in one shadow-hand
+        '<path d="M 150 150 Q 176 120 188 84" fill="none" stroke="#3a2a58" stroke-width="3"/>' +
+        '<path d="M 188 84 Q 192 78 196 80 L 190 90 Z" fill="#a8c4f0"/>' +
+        // erasing shadow-hand
+        '<path d="M 50 160 Q 24 168 18 206" fill="none" stroke="#1a1430" stroke-width="10" stroke-linecap="round"/>' +
+        // a smear of "erased" reality at the quill tip
+        '<rect x="150" y="120" width="40" height="10" fill="#08060e" opacity="0.5" transform="rotate(-40 170 125)"/>' +
+        // surrounding voided stars
+        '<circle cx="30" cy="80" r="1.5" fill="#a8c4f0"/><circle cx="176" cy="200" r="1.5" fill="#a8c4f0"/><circle cx="40" cy="200" r="1" fill="#a8c4f0"/>'
+      );
+    }
+    return null;
+  },
+
+  // --------------------------------------------------------
+  // ACT VI — SCENE ILLUSTRATIONS
+  // --------------------------------------------------------
+  skyOutpost() {
+    return '<svg viewBox="0 0 800 360" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">' +
+      '<defs><linearGradient id="so-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1a1a3a"/><stop offset="0.6" stop-color="#3a3a68"/><stop offset="1" stop-color="#8a6a78"/></linearGradient></defs>' +
+      '<rect width="800" height="240" fill="url(#so-sky)"/>' +
+      // stars
+      (() => { let s=''; const pts=[[60,40],[140,28],[220,60],[300,34],[420,50],[520,30],[620,56],[700,36],[760,70],[100,90],[360,86],[660,92]]; pts.forEach((p,i)=>{ s+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r="'+(i%3?1:1.6)+'" fill="#fff"/>'; }); return s; })() +
+      // a big ringed planet low on the horizon
+      '<circle cx="660" cy="150" r="44" fill="#c89878" opacity="0.85"/>' +
+      '<ellipse cx="660" cy="150" rx="70" ry="14" fill="none" stroke="#e0c0a0" stroke-width="3" opacity="0.7"/>' +
+      // clouds far below
+      '<ellipse cx="120" cy="250" rx="120" ry="22" fill="#c0b0c0" opacity="0.5"/>' +
+      '<ellipse cx="520" cy="270" rx="160" ry="26" fill="#b0a0b8" opacity="0.45"/>' +
+      // the outpost — a small observatory on a floating star-iron platform
+      '<rect y="280" width="800" height="80" fill="#2a2a48"/>' +
+      '<polygon points="0,280 800,280 760,300 40,300" fill="#3a3a5a"/>' +
+      '<g transform="translate(330,180)">' +
+        '<rect x="0" y="40" width="140" height="60" fill="#3a3a5a" stroke="#14142a" stroke-width="2"/>' +
+        '<path d="M -6 40 Q 70 -6 146 40 Z" fill="#4a4a72" stroke="#14142a" stroke-width="2"/>' +
+        // dome slit + telescope
+        '<line x1="70" y1="0" x2="70" y2="40" stroke="#14142a" stroke-width="3"/>' +
+        '<line x1="70" y1="20" x2="110" y2="-12" stroke="#888" stroke-width="6" stroke-linecap="round"/>' +
+        '<circle cx="112" cy="-14" r="5" fill="#1a2a40" stroke="#888" stroke-width="2"/>' +
+        // glowing windows
+        '<rect x="20" y="58" width="20" height="26" fill="#a8c4f0"/>' +
+        '<rect x="100" y="58" width="20" height="26" fill="#a8c4f0"/>' +
+        '<rect x="60" y="64" width="20" height="36" fill="#2a2a48"/>' +
+      '</g>' +
+      // the Sky-Bridge stretching up into the dark on the right (a glowing grid)
+      '<g opacity="0.7" stroke="#88c4f0" stroke-width="1.2" fill="none">' +
+        '<path d="M 560 300 L 700 60"/>' +
+        '<path d="M 620 300 L 740 60"/>' +
+        '<path d="M 560 300 L 620 300 M 575 240 L 632 240 M 590 180 L 660 180 M 605 120 L 690 120 M 700 60 L 740 60"/>' +
+      '</g>' +
+      '<text x="690" y="50" fill="#88c4f0" font-family="Cinzel" font-size="10" opacity="0.8">to the Summit ↑</text>' +
+      // lantern by the door
+      '<g transform="translate(300,300)"><line x1="0" y1="-30" x2="0" y2="0" stroke="#14142a" stroke-width="2"/><rect x="-6" y="-44" width="12" height="14" fill="#3a3a5a" stroke="#14142a"/><rect x="-4" y="-42" width="8" height="9" fill="#ffcc55"/><circle cy="-37" r="26" fill="#ffaa33" opacity="0.14"/></g>' +
+    '</svg>';
+  },
+
+  skyBridge() {
+    return '<svg viewBox="0 0 800 360" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">' +
+      '<defs><linearGradient id="sb-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0a0a20"/><stop offset="1" stop-color="#2a2a50"/></linearGradient></defs>' +
+      '<rect width="800" height="360" fill="url(#sb-sky)"/>' +
+      // dense starfield
+      (() => { let s=''; const pts=[[40,30],[120,60],[200,24],[280,80],[360,40],[440,70],[520,30],[600,64],[680,34],[760,60],[80,140],[300,160],[520,150],[700,140],[160,220],[620,210]]; pts.forEach((p,i)=>{ s+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r="'+(i%4?1:1.8)+'" fill="#fff" opacity="'+(0.5+0.5*((i%3)/2))+'"/>'; }); return s; })() +
+      // nebula wash
+      '<ellipse cx="240" cy="120" rx="180" ry="80" fill="#5a3a78" opacity="0.18"/>' +
+      '<ellipse cx="600" cy="220" rx="200" ry="90" fill="#3a5a78" opacity="0.16"/>' +
+      // the great Sky-Bridge: a vast coordinate lattice receding to a vanishing point
+      '<g stroke="#88c4f0" stroke-width="1.5" opacity="0.9" fill="none">' +
+        // horizontal rungs (perspective — closer = lower & wider)
+        (() => { let s=''; const rows=[[40,330,760,330],[110,288,690,288],[170,250,630,250],[222,216,578,216],[266,186,534,186],[304,160,496,160],[336,138,464,138],[362,120,438,120]]; rows.forEach(r=>{ s+='<line x1="'+r[0]+'" y1="'+r[1]+'" x2="'+r[2]+'" y2="'+r[3]+'"/>'; }); return s; })() +
+        // converging rails
+        '<line x1="40" y1="330" x2="362" y2="120"/>' +
+        '<line x1="760" y1="330" x2="438" y2="120"/>' +
+        '<line x1="180" y1="330" x2="378" y2="120"/>' +
+        '<line x1="620" y1="330" x2="422" y2="120"/>' +
+        '<line x1="320" y1="330" x2="392" y2="120"/>' +
+        '<line x1="480" y1="330" x2="408" y2="120"/>' +
+      '</g>' +
+      // glowing nodes at lattice intersections
+      '<circle cx="40" cy="330" r="4" fill="#a8d4ff"/><circle cx="760" cy="330" r="4" fill="#a8d4ff"/>' +
+      '<circle cx="222" cy="216" r="3" fill="#a8d4ff"/><circle cx="578" cy="216" r="3" fill="#a8d4ff"/>' +
+      '<circle cx="400" cy="120" r="5" fill="#f0e3bd"/>' +
+      // a distant gate of light at the vanishing point (the summit)
+      '<rect x="384" y="92" width="32" height="30" rx="3" fill="#f0e3bd" opacity="0.5"/>' +
+      '<circle cx="400" cy="108" r="40" fill="#a8c4f0" opacity="0.12"/>' +
+      // floating shards of broken bridge
+      '<polygon points="120,180 150,170 162,196 132,206" fill="#2a3a58" stroke="#1a2a40" stroke-width="1"/>' +
+      '<polygon points="650,170 680,160 692,186 662,196" fill="#2a3a58" stroke="#1a2a40" stroke-width="1"/>' +
+      '<text x="400" y="84" text-anchor="middle" fill="#a8c4f0" font-family="Cinzel" font-size="9" opacity="0.7">(?, ?)</text>' +
+    '</svg>';
+  },
+
+  nullityVoid() {
+    return '<svg viewBox="0 0 800 360" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">' +
+      '<defs><radialGradient id="nv-void" cx="0.5" cy="0.46" r="0.62"><stop offset="0" stop-color="#1a1430"/><stop offset="0.55" stop-color="#0a0818"/><stop offset="1" stop-color="#05040c"/></radialGradient></defs>' +
+      '<rect width="800" height="360" fill="#05040c"/>' +
+      '<rect width="800" height="360" fill="url(#nv-void)"/>' +
+      // the summit platform — a single glowing coordinate grid floating in the void
+      '<g transform="translate(400,250)">' +
+        '<g stroke="#3a4a78" stroke-width="1.5" opacity="0.85" fill="none">' +
+          (() => { let s=''; for(let i=-4;i<=4;i++){ const x=i*40; s+='<line x1="'+x+'" y1="-70" x2="'+(x*0.5)+'" y2="40"/>'; } for(let j=0;j<=4;j++){ const y=-70+j*28; const wd=160-j*20; s+='<line x1="'+(-wd)+'" y1="'+y+'" x2="'+wd+'" y2="'+y+'"/>'; } return s; })() +
+        '</g>' +
+        // origin glow
+        '<circle cx="0" cy="40" r="6" fill="#a8c4f0"/>' +
+      '</g>' +
+      // the Codex pages orbiting overhead, reuniting
+      (() => { let s=''; const pts=[[300,90],[360,70],[420,66],[480,78],[400,50],[340,110]]; pts.forEach((p,i)=>{ s+='<g transform="translate('+p[0]+','+p[1]+') rotate('+(i*12-30)+')"><rect x="-10" y="-13" width="20" height="26" fill="#f0e3bd" stroke="#7a5818" stroke-width="1"/><line x1="-6" y1="-7" x2="6" y2="-7" stroke="#5a3818" stroke-width="0.6"/><line x1="-6" y1="-2" x2="6" y2="-2" stroke="#5a3818" stroke-width="0.6"/></g>'; }); return s; })() +
+      // beams connecting the pages
+      '<g stroke="#d4a624" stroke-width="1" opacity="0.5">' +
+        '<line x1="300" y1="90" x2="360" y2="70"/><line x1="360" y1="70" x2="420" y2="66"/><line x1="420" y1="66" x2="480" y2="78"/><line x1="400" y1="50" x2="360" y2="70"/><line x1="340" y1="110" x2="300" y2="90"/>' +
+      '</g>' +
+      // erased "holes" in space — patches of pure nothing
+      '<circle cx="120" cy="120" r="26" fill="#000"/>' +
+      '<circle cx="680" cy="160" r="34" fill="#000"/>' +
+      '<circle cx="200" cy="280" r="18" fill="#000"/>' +
+      // faded floating symbols being un-written near the holes
+      '<text x="150" y="100" fill="#2a2448" font-family="Cinzel" font-size="14" opacity="0.6">∑</text>' +
+      '<text x="640" y="130" fill="#2a2448" font-family="Cinzel" font-size="14" opacity="0.6">π</text>' +
+      // distant cold stars
+      '<circle cx="60" cy="50" r="1.2" fill="#a8c4f0"/><circle cx="740" cy="60" r="1.4" fill="#a8c4f0"/><circle cx="520" cy="40" r="1" fill="#a8c4f0"/>' +
+    '</svg>';
+  },
+
+  finaleVista() {
+    return '<svg viewBox="0 0 800 360" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">' +
+      '<defs><linearGradient id="fv-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a3a78"/><stop offset="0.45" stop-color="#e0a060"/><stop offset="0.75" stop-color="#f0d27a"/><stop offset="1" stop-color="#a8c0d8"/></linearGradient></defs>' +
+      '<rect width="800" height="240" fill="url(#fv-sky)"/>' +
+      // great rising sun
+      '<circle cx="400" cy="210" r="90" fill="#f0e3bd"/><circle cx="400" cy="210" r="140" fill="#f0e3bd" opacity="0.22"/>' +
+      // last stars fading at the top
+      '<circle cx="80" cy="30" r="1.4" fill="#fff" opacity="0.7"/><circle cx="200" cy="20" r="1" fill="#fff" opacity="0.6"/><circle cx="640" cy="26" r="1.4" fill="#fff" opacity="0.7"/>' +
+      // the restored Sky-Bridge, whole and gleaming, arcing across the sky
+      '<g stroke="#d4a624" stroke-width="2" opacity="0.8" fill="none">' +
+        '<path d="M 0 200 Q 400 60 800 200"/>' +
+        '<path d="M 0 214 Q 400 74 800 214"/>' +
+        (() => { let s=''; for(let i=1;i<16;i++){ const t=i/16; const x=t*800; const y=200-Math.sin(t*Math.PI)*140 + 7; s+='<line x1="'+x+'" y1="'+(y-7)+'" x2="'+x+'" y2="'+(y+7)+'"/>'; } return s; })() +
+      '</g>' +
+      // the lands below, all six restored, as a peaceful montage of silhouettes
+      '<rect y="240" width="800" height="120" fill="#3a4838"/>' +
+      // Numeria tower (l), quarry, sea, foundry, vault well, concord, all tiny
+      '<g fill="#1a2418" opacity="0.9">' +
+        '<rect x="60" y="210" width="14" height="40"/><polygon points="56,210 78,210 67,194"/>' + // tower
+        '<polygon points="140,250 170,224 200,250"/>' + // quarry hill
+        '<path d="M 240 250 q 20 -10 40 0 q 20 -10 40 0 l 0 6 -80 0 z"/>' + // sea waves
+        '<rect x="360" y="220" width="12" height="30"/><rect x="376" y="214" width="12" height="36"/>' + // foundry stacks
+        '<rect x="460" y="232" width="30" height="18"/>' + // vault
+        '<rect x="560" y="216" width="12" height="34"/><rect x="576" y="222" width="12" height="28"/><rect x="592" y="210" width="12" height="40"/>' + // concord towers
+        '<rect x="700" y="224" width="12" height="26"/><polygon points="696,224 716,224 706,210"/>' +
+      '</g>' +
+      // two heroes + companions on a near ridge, watching
+      '<g transform="translate(360,300)" opacity="0.95"><rect x="-3" y="0" width="6" height="26" fill="#1a1208"/><ellipse cx="0" cy="-5" rx="5" ry="6" fill="#1a1208"/><line x1="6" y1="-10" x2="6" y2="16" stroke="#1a1208" stroke-width="1.5"/></g>' +
+      '<g transform="translate(392,306)" opacity="0.95"><rect x="-3" y="0" width="6" height="22" fill="#1a1208"/><ellipse cx="0" cy="-4" rx="4" ry="5" fill="#1a1208"/></g>' +
+      '<g transform="translate(420,302)" opacity="0.95"><rect x="-3" y="0" width="6" height="24" fill="#1a1208"/><ellipse cx="0" cy="-4" rx="4" ry="5" fill="#1a1208"/></g>' +
+      // doves rising
+      '<path d="M 240 90 Q 248 84 256 90 Q 248 86 240 90" fill="#fff"/>' +
+      '<path d="M 540 80 Q 548 74 556 80 Q 548 76 540 80" fill="#fff"/>' +
+      '<path d="M 300 60 Q 308 54 316 60 Q 308 56 300 60" fill="#fff"/>' +
+    '</svg>';
+  },
+
+  // --------------------------------------------------------
+  // COORDINATE GRID (Act VI) — shared by combat grid-click + figures
+  // viewBox 0 0 340 340; origin (44,296); axis length 272 over `size` units
+  // px(gx) = 44 + gx*step ; py(gy) = 296 - gy*step ; step = 272/size
+  // --------------------------------------------------------
+  GRID_VB: 340,
+  GRID_OX: 44,
+  GRID_OY: 296,
+  GRID_LEN: 272,
+  coordGrid(size, opts) {
+    size = size || 10;
+    opts = opts || {};
+    const step = this.GRID_LEN / size;
+    const px = (gx) => this.GRID_OX + gx * step;
+    const py = (gy) => this.GRID_OY - gy * step;
+    let s = '<svg class="coord-grid-svg" width="100%" viewBox="0 0 340 340" xmlns="http://www.w3.org/2000/svg" style="max-width:340px;touch-action:manipulation;">';
+    s += '<rect x="0" y="0" width="340" height="340" fill="#f4ecd0" rx="6"/>';
+    // gridlines
+    s += '<g stroke="#caa86a" stroke-width="1">';
+    for (let i = 0; i <= size; i++) {
+      s += '<line x1="' + px(i) + '" y1="' + py(0) + '" x2="' + px(i) + '" y2="' + py(size) + '"/>';
+      s += '<line x1="' + px(0) + '" y1="' + py(i) + '" x2="' + px(size) + '" y2="' + py(i) + '"/>';
+    }
+    s += '</g>';
+    // axes
+    s += '<line x1="' + px(0) + '" y1="' + py(0) + '" x2="' + px(size) + '" y2="' + py(0) + '" stroke="#5a3a1a" stroke-width="2.5"/>';
+    s += '<line x1="' + px(0) + '" y1="' + py(0) + '" x2="' + px(0) + '" y2="' + py(size) + '" stroke="#5a3a1a" stroke-width="2.5"/>';
+    // axis numbers
+    s += '<g fill="#5a3a1a" font-family="Cinzel,serif" font-size="9" text-anchor="middle">';
+    for (let i = 0; i <= size; i++) {
+      if (i % (size > 10 ? 2 : 1) === 0) {
+        s += '<text x="' + px(i) + '" y="' + (this.GRID_OY + 16) + '">' + i + '</text>';
+        if (i > 0) s += '<text x="' + (this.GRID_OX - 12) + '" y="' + (py(i) + 3) + '">' + i + '</text>';
+      }
+    }
+    s += '</g>';
+    // axis labels
+    s += '<text x="' + px(size) + '" y="' + (this.GRID_OY + 28) + '" fill="#7a1818" font-family="Cinzel,serif" font-size="10" text-anchor="end">x</text>';
+    s += '<text x="' + (this.GRID_OX - 22) + '" y="' + py(size) + '" fill="#7a1818" font-family="Cinzel,serif" font-size="10">y</text>';
+    // paths
+    (opts.path || []).forEach(p => {
+      s += '<line x1="' + px(p.from[0]) + '" y1="' + py(p.from[1]) + '" x2="' + px(p.to[0]) + '" y2="' + py(p.to[1]) + '" stroke="#9a2828" stroke-width="2.5" stroke-dasharray="5 3"/>';
+    });
+    // markers
+    (opts.markers || []).forEach(m => {
+      const cx = px(m.x), cy = py(m.y), col = m.color || '#9a2828';
+      s += '<circle cx="' + cx + '" cy="' + cy + '" r="6" fill="' + col + '" stroke="#3a1010" stroke-width="1.5"/>';
+      if (m.label) s += '<text x="' + (cx + 9) + '" y="' + (cy - 7) + '" fill="#3a2010" font-family="Cinzel,serif" font-size="10" font-weight="bold">' + m.label + '</text>';
+    });
+    // interactive hint dot layer placeholder (engine adds the user marker)
+    s += '<g class="grid-user-layer"></g>';
+    s += '</svg>';
+    return s;
+  },
+  // convert an SVG-space point (in 0..340 units) to nearest grid coords
+  gridFromSvg(svgX, svgY, size) {
+    const step = this.GRID_LEN / size;
+    let gx = Math.round((svgX - this.GRID_OX) / step);
+    let gy = Math.round((this.GRID_OY - svgY) / step);
+    gx = Math.max(0, Math.min(size, gx));
+    gy = Math.max(0, Math.min(size, gy));
+    return { x: gx, y: gy };
+  },
+  gridMarkerSvg(gx, gy, size, color) {
+    const step = this.GRID_LEN / size;
+    const cx = this.GRID_OX + gx * step, cy = this.GRID_OY - gy * step;
+    return '<circle cx="' + cx + '" cy="' + cy + '" r="7" fill="' + (color || '#3a7a48') + '" stroke="#0a2010" stroke-width="2"/>';
+  },
+
+  // --------------------------------------------------------
+  // SHAPE FIGURES (Act VI) — for classify problems. 160x130 svg.
+  // --------------------------------------------------------
+  shapeFigure(kind) {
+    const wrap = (inner) => '<svg width="160" height="130" viewBox="0 0 160 130" xmlns="http://www.w3.org/2000/svg"><rect width="160" height="130" fill="#f4ecd0" rx="6"/>' +
+      '<g fill="#5a8aaa" stroke="#1a3a4a" stroke-width="2.5" stroke-linejoin="round">' + inner + '</g></svg>';
+    const quads = {
+      square:        '<rect x="50" y="32" width="64" height="64"/>',
+      rectangle:     '<rect x="34" y="42" width="92" height="46"/>',
+      rhombus:       '<polygon points="80,28 120,65 80,102 40,65"/>',
+      parallelogram: '<polygon points="48,40 130,40 112,90 30,90"/>',
+      trapezoid:     '<polygon points="56,40 104,40 130,92 30,92"/>'
+    };
+    const tris = {
+      tri_right:   '<polygon points="40,98 40,34 116,98"/>',
+      tri_acute:   '<polygon points="80,30 122,98 38,98"/>',
+      tri_obtuse:  '<polygon points="30,96 150,96 96,60"/>',
+      tri_equilateral: '<polygon points="80,30 120,98 40,98"/>',
+      tri_isosceles:   '<polygon points="80,30 106,98 54,98"/>',
+      tri_scalene:     '<polygon points="34,96 150,96 70,42"/>'
+    };
+    return wrap(quads[kind] || tris[kind] || '<rect x="50" y="40" width="60" height="50"/>');
+  },
+
+  // --------------------------------------------------------
   // ITEM ICONS — small 40x40 svgs
   // --------------------------------------------------------
   itemIcon(itemId) {
@@ -3918,7 +4325,20 @@ const Art = {
       concord_medal:    '<polygon points="20,6 24,15 20,13 16,15" fill="#aab87c"/><circle cx="20" cy="23" r="9" fill="#d4a624" stroke="#5a4818" stroke-width="1.5"/><text x="20" y="27" text-anchor="middle" fill="#5a4818" font-family="Cinzel" font-size="9">⚖</text>',
       unity_charm:      '<circle cx="20" cy="20" r="11" fill="#3a3850" stroke="#1a1828" stroke-width="1.5"/><path d="M 20 20 L 20 9 A 11 11 0 0 1 29.5 25.5 Z" fill="#cc4878"/><path d="M 20 20 L 29.5 25.5 A 11 11 0 0 1 10.5 25.5 Z" fill="#48a0c0"/><path d="M 20 20 L 10.5 25.5 A 11 11 0 0 1 20 9 Z" fill="#aab87c"/>',
       spiced_wine:      '<path d="M 13 8 L 27 8 L 24 18 Q 24 24 20 24 Q 16 24 16 18 Z" fill="#7a2838" stroke="#3a1018" stroke-width="1.5"/><rect x="18" y="24" width="4" height="8" fill="#5a3818"/><rect x="14" y="32" width="12" height="3" fill="#5a3818"/>',
-      guild_tonic:      '<rect x="16" y="6" width="8" height="6" fill="#5a3818"/><path d="M 14 12 L 14 30 Q 14 34 20 34 Q 26 34 26 30 L 26 12 Z" fill="#48a0a0" stroke="#1a3838" stroke-width="1.5"/><ellipse cx="18" cy="18" rx="2" ry="3" fill="#a0e0e0"/>'
+      guild_tonic:      '<rect x="16" y="6" width="8" height="6" fill="#5a3818"/><path d="M 14 12 L 14 30 Q 14 34 20 34 Q 26 34 26 30 L 26 12 Z" fill="#48a0a0" stroke="#1a3838" stroke-width="1.5"/><ellipse cx="18" cy="18" rx="2" ry="3" fill="#a0e0e0"/>',
+      // Act VI
+      starforged_blade: '<line x1="20" y1="6" x2="20" y2="30" stroke="#7a9ad8" stroke-width="4" stroke-linecap="round"/><line x1="20" y1="6" x2="20" y2="30" stroke="#dce8ff" stroke-width="1.5"/><rect x="14" y="29" width="12" height="3" fill="#3a3a5a"/><polygon points="20,4 21,8 25,8 22,11 23,15 20,12 17,15 18,11 15,8 19,8" fill="#f0e3bd"/>',
+      astrolabe_staff:  '<line x1="14" y1="34" x2="28" y2="8" stroke="#5a5a78" stroke-width="2.5" stroke-linecap="round"/><circle cx="29" cy="8" r="6" fill="none" stroke="#a8c4f0" stroke-width="2"/><line x1="24" y1="8" x2="34" y2="8" stroke="#a8c4f0" stroke-width="1"/><line x1="29" y1="3" x2="29" y2="13" stroke="#a8c4f0" stroke-width="1"/>',
+      skyweave_mail:    '<polygon points="10,8 30,8 32,32 8,32" fill="#3a4a78" stroke="#1a2240" stroke-width="1.5"/><g stroke="#7a9ad8" stroke-width="0.6"><line x1="10" y1="16" x2="30" y2="16"/><line x1="10" y1="24" x2="30" y2="24"/><line x1="20" y1="8" x2="20" y2="32"/></g>',
+      constellation_cloak:'<polygon points="8,8 32,8 34,34 6,34" fill="#1a1a3a" stroke="#0a0a1a" stroke-width="1.5"/><circle cx="14" cy="14" r="1" fill="#fff"/><circle cx="26" cy="18" r="1" fill="#fff"/><circle cx="18" cy="24" r="1" fill="#fff"/><circle cx="28" cy="28" r="1" fill="#fff"/><circle cx="12" cy="28" r="1" fill="#fff"/>',
+      plotters_compass: '<circle cx="20" cy="20" r="11" fill="#1a2a40" stroke="#a8c4f0" stroke-width="2"/><line x1="9" y1="20" x2="31" y2="20" stroke="#a8c4f0" stroke-width="0.8"/><line x1="20" y1="9" x2="20" y2="31" stroke="#a8c4f0" stroke-width="0.8"/><circle cx="24" cy="16" r="2.5" fill="#9a2828"/>',
+      geometers_lens:   '<circle cx="18" cy="18" r="9" fill="#1a2a40" opacity="0.6" stroke="#bfa050" stroke-width="2"/><polygon points="18,12 24,22 12,22" fill="none" stroke="#a8c4f0" stroke-width="1.2"/><line x1="25" y1="25" x2="33" y2="33" stroke="#5a4830" stroke-width="2.5"/>',
+      sky_charm:        '<polygon points="20,6 24,16 34,16 26,23 29,33 20,27 11,33 14,23 6,16 16,16" fill="#3a4a78" stroke="#1a2240" stroke-width="1"/><polygon points="20,12 22,17 27,17 23,21 24,26 20,23 16,26 17,21 13,17 18,17" fill="#a8d4ff"/>',
+      codex_complete:   '<rect x="8" y="8" width="24" height="26" fill="#5a1818" stroke="#2a0808" stroke-width="1.5"/><rect x="11" y="10" width="18" height="22" fill="#f0e3bd"/><polygon points="20,13 22,18 27,18 23,21 24,26 20,23 16,26 17,21 13,18 18,18" fill="#d4a624"/>',
+      starlance:        '<line x1="10" y1="32" x2="30" y2="8" stroke="#7a9ad8" stroke-width="3" stroke-linecap="round"/><polygon points="30,8 24,10 28,14" fill="#dce8ff"/><polygon points="31,7 29,3 35,5" fill="#f0e3bd"/><circle cx="14" cy="28" r="2" fill="#a8d4ff"/>',
+      champion_medal:   '<polygon points="20,5 24,14 20,12 16,14" fill="#9a2828"/><circle cx="20" cy="23" r="10" fill="#d4a624" stroke="#5a3010" stroke-width="1.5"/><polygon points="20,17 22,22 27,22 23,25 24,30 20,27 16,30 17,25 13,22 18,22" fill="#5a3010"/>',
+      ambrosia:         '<path d="M 13 8 L 27 8 L 25 16 Q 25 24 20 24 Q 15 24 15 16 Z" fill="#f0d8a0" stroke="#bfa050" stroke-width="1.5"/><rect x="18" y="24" width="4" height="8" fill="#bfa050"/><rect x="14" y="32" width="12" height="3" fill="#8a7838"/><circle cx="20" cy="14" r="2" fill="#fff" opacity="0.7"/>',
+      star_tonic:       '<rect x="16" y="6" width="8" height="6" fill="#3a3a5a"/><path d="M 14 12 L 14 30 Q 14 34 20 34 Q 26 34 26 30 L 26 12 Z" fill="#3a4a88" stroke="#1a2240" stroke-width="1.5"/><polygon points="20,16 21,20 25,20 22,22 23,26 20,24 17,26 18,22 15,20 19,20" fill="#a8d4ff"/>'
     };
     const inner = map[itemId] || '<rect x="8" y="8" width="24" height="24" fill="#5a3818" stroke="#3a2010" stroke-width="1.5"/>';
     return '<svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">' +

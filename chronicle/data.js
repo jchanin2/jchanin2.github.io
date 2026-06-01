@@ -311,6 +311,20 @@ const ITEMS = {
   concord_medal:    { id: 'concord_medal',    name: 'Medal of Concord',  slot: 'accessory', desc: 'For the one who made the cities agree. +2 Precision, +12 HP.', effect: { precision: 2, bonusHp: 12 } },
   unity_charm:      { id: 'unity_charm',      name: 'Charm of Unity',    slot: 'accessory', desc: 'Three guild-tokens fused into one. +1 to several stats.', effect: { precision: 1, wisdom: 1, luck: 1, stamina: 1 } },
 
+  // ---------- act VI shop (sky outpost) ----------
+  starforged_blade: { id: 'starforged_blade', name: 'Star-Forged Blade', slot: 'weapon', desc: 'Quenched in the cold between stars. Hums on the grid-lines.', effect: { precision: 4, luck: 1 } },
+  astrolabe_staff:  { id: 'astrolabe_staff',  name: 'Astrolabe Staff',  slot: 'weapon', desc: 'Plots the heavens and your foes alike.', effect: { wisdom: 3, insight: 1 } },
+  skyweave_mail:    { id: 'skyweave_mail',    name: 'Skyweave Mail',    slot: 'armor', desc: 'Light as cloud, strong as star-iron.', effect: { stamina: 4, speed: 1 } },
+  constellation_cloak:{ id: 'constellation_cloak', name: 'Constellation Cloak', slot: 'armor', desc: 'Sewn with real stars. +1 Insight, +1 Wisdom, +8 HP.', effect: { insight: 1, wisdom: 1, bonusHp: 8 } },
+  plotters_compass: { id: 'plotters_compass', name: 'Plotter\'s Compass', slot: 'accessory', desc: 'Finds any point in an instant. Sharpens the coordinate grid.', effect: { precision: 1, insight: 1, bonusVsTopic: { coord_plot: 4, coord_word: 4, coord_distance: 3 } } },
+  geometers_lens:   { id: 'geometers_lens',   name: 'Geometer\'s Lens',  slot: 'accessory', desc: 'Names every shape at a glance. Sharpens classification & rules.', effect: { insight: 1, bonusVsTopic: { classify_quad: 4, classify_triangle: 4, rule_two_variables: 3 } } },
+  sky_charm:        { id: 'sky_charm',        name: 'Sky-Charm',        slot: 'accessory', desc: 'A shard of the Sky-Bridge itself. +14 HP, +1 Luck.', effect: { bonusHp: 14, luck: 1 } },
+
+  // ---------- act VI loot drops ----------
+  codex_complete:   { id: 'codex_complete',   name: 'The Numerian Codex (Whole)', slot: 'accessory', desc: 'All six pages, reunited. Every kind of math bends to your hand. +2 to every stat.', effect: { precision: 2, insight: 2, speed: 2, stamina: 2, wisdom: 2, luck: 2 } },
+  starlance:        { id: 'starlance',        name: 'The Starlance',     slot: 'weapon', desc: 'A spear of pure coordinate light, won from the Nullity. Strikes true on any grid.', effect: { precision: 5, wisdom: 1, luck: 1, bonusVsTopic: { coord_plot: 4, coord_distance: 4 } } },
+  champion_medal:   { id: 'champion_medal',   name: 'Champion of the Realms', slot: 'accessory', desc: 'For the hero who made the Codex whole. +3 Precision, +20 HP.', effect: { precision: 3, bonusHp: 20 } },
+
   // ---------- consumables ----------
   minor_potion:     { id: 'minor_potion',     name: 'Minor Healing Draught', slot: 'consumable', desc: 'Restores 15 HP.',              effect: { heal: 15 } },
   greater_potion:   { id: 'greater_potion',   name: 'Greater Healing Draught', slot: 'consumable', desc: 'Restores 35 HP.',            effect: { heal: 35 } },
@@ -324,7 +338,9 @@ const ITEMS = {
   candied_fig:      { id: 'candied_fig',      name: 'Candied Fig', slot: 'consumable', desc: 'A sweet from the Undermarket. Restores 22 HP.', effect: { heal: 22 } },
   lamp_oil_draught: { id: 'lamp_oil_draught', name: 'Lamp-Oil Draught', slot: 'consumable', desc: 'Bitter, bright. Restores 3 spell slots.', effect: { restoreMp: 3 } },
   spiced_wine:      { id: 'spiced_wine',      name: 'Cup of Spiced Wine', slot: 'consumable', desc: 'Warm and restorative (watered, for a hero). Restores 26 HP.', effect: { heal: 26 } },
-  guild_tonic:      { id: 'guild_tonic',      name: 'Guild Tonic', slot: 'consumable', desc: 'A clarifying draught. Restores 4 spell slots.', effect: { restoreMp: 4 } }
+  guild_tonic:      { id: 'guild_tonic',      name: 'Guild Tonic', slot: 'consumable', desc: 'A clarifying draught. Restores 4 spell slots.', effect: { restoreMp: 4 } },
+  ambrosia:         { id: 'ambrosia',         name: 'Sky-Ambrosia', slot: 'consumable', desc: 'Sweet cloud-nectar. Restores 50 HP.', effect: { heal: 50 } },
+  star_tonic:       { id: 'star_tonic',       name: 'Star-Tonic', slot: 'consumable', desc: 'Liquid starlight. Restores 5 spell slots.', effect: { restoreMp: 5 } }
 };
 
 // ------------------------------------------------------
@@ -382,7 +398,14 @@ const TOPICS = {
   metric_convert:       { unit: 6, name: 'Metric conversions' },
   convert_time:         { unit: 6, name: 'Time conversions' },
   // ---------- Unit 7 ----------
-  coords_q1:            { unit: 7, name: 'Coordinates (Q1)' }
+  coords_q1:            { unit: 7, name: 'Coordinates (Q1)' },
+  coord_plot:           { unit: 7, name: 'Plotting points' },
+  coord_word:           { unit: 7, name: 'Coordinate moves' },
+  coord_distance:       { unit: 7, name: 'Distance on the grid' },
+  classify_quad:        { unit: 7, name: 'Classifying quadrilaterals' },
+  classify_triangle:    { unit: 7, name: 'Classifying triangles' },
+  rule_two_variables:   { unit: 7, name: 'Rules relating two variables' },
+  expr_parentheses:     { unit: 7, name: 'Expressions with parentheses' }
 };
 
 // ------------------------------------------------------
@@ -504,6 +527,21 @@ const SHOPS = {
       { itemId: 'common_denom_ring', price: 150 },
       { itemId: 'power_loop',        price: 150 },
       { itemId: 'traders_chain',     price: 95 }
+    ]
+  },
+  sky_outpost: {
+    keeperId: 'astronomer_vega',
+    keeperName: 'Astronomer Vega',
+    keeperLine: '"Few climb this high. Fewer still mean to climb higher. The Sky-Bridge is a grid of star-iron, child — and at its summit waits the thing that unwrote the Codex. Take what you need. You will need all of it."',
+    stock: [
+      { itemId: 'ambrosia',            price: 48 },
+      { itemId: 'star_tonic',          price: 50 },
+      { itemId: 'starforged_blade',    price: 160 },
+      { itemId: 'skyweave_mail',       price: 150 },
+      { itemId: 'plotters_compass',    price: 165 },
+      { itemId: 'geometers_lens',      price: 165 },
+      { itemId: 'constellation_cloak', price: 155 },
+      { itemId: 'sky_charm',           price: 110 }
     ]
   }
 };
@@ -822,6 +860,53 @@ const ENEMIES = {
     ],
     goldDrop: [150, 200], xpDrop: 520,
     guaranteedLoot: ['concord_medal', 'babel_key']
+  },
+  // ---------- Act VI — The Sky-Bridge ----------
+  grid_wisp: {
+    id: 'grid_wisp', name: 'Grid-Wisp',
+    hp: 56, attack: 12, spriteId: 'grid_wisp',
+    topic: 'coord_plot', difficulty: 'easy',
+    goldDrop: [9, 14], xpDrop: 50
+  },
+  glyph_moth: {
+    id: 'glyph_moth', name: 'Glyph-Moth',
+    hp: 64, attack: 13, spriteId: 'glyph_moth',
+    topic: 'classify_quad', difficulty: 'medium',
+    goldDrop: [10, 16], xpDrop: 58
+  },
+  star_sentinel: {
+    id: 'star_sentinel', name: 'Star-Sentinel',
+    hp: 78, attack: 14, spriteId: 'star_sentinel',
+    topic: 'coord_distance', difficulty: 'medium',
+    goldDrop: [12, 19], xpDrop: 70
+  },
+  axis_warden: {
+    id: 'axis_warden', name: 'The Axis-Warden',
+    hp: 215, attack: 15, spriteId: 'axis_warden',
+    isBoss: true,
+    phases: [
+      { topic: 'coord_plot',         difficulty: 'medium', say: '"You will not pass the x-axis. Plot, and prove you can even FIND it."' },
+      { topic: 'coord_word',         difficulty: 'medium', say: '"Step where I say. Right. Up. There is nowhere else to go."' },
+      { topic: 'rule_two_variables', difficulty: 'hard',   say: '"Every step you take obeys MY rule."' }
+    ],
+    goldDrop: [70, 95], xpDrop: 175,
+    guaranteedLoot: ['plotters_compass']
+  },
+  // The true final boss — draws on ALL SIX units, one phase per unit
+  the_nullity: {
+    id: 'the_nullity', name: 'The Nullity',
+    hp: 540, attack: 19, spriteId: 'the_nullity',
+    isBoss: true,
+    phases: [
+      { topic: 'volume_rect_prism',  difficulty: 'medium', say: '"I am the First Scholar. I wrote the Codex — and I have come to UN-write it. Unit One: volume. The space a thing takes... I will take it back."' },
+      { topic: 'fraction_times_fraction', difficulty: 'medium', say: '"Unit Two and Three: the pieces. I will break you into pieces of pieces until nothing remains."' },
+      { topic: 'multidigit_multiply', difficulty: 'medium', say: '"Unit Four: the great numbers. I multiply my unmaking a thousandfold."' },
+      { topic: 'divide_by_decimal',  difficulty: 'hard',   say: '"Unit Five: the small places. A tenth of you. A hundredth. A thousandth. Gone."' },
+      { topic: 'frac_add_unlike',    difficulty: 'hard',   say: '"Unit Six: I will set your very measures against one another. Agree with me, and end."' },
+      { topic: 'coord_plot',         difficulty: 'hard',   say: '"Unit Seven. The last. There is one point left to plot, hero — the point where you were, before I erase it. Find it. FIND IT."' }
+    ],
+    goldDrop: [250, 300], xpDrop: 1000,
+    guaranteedLoot: ['starlance', 'champion_medal']
   },
   // Act I final boss
   hollowed_one: {

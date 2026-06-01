@@ -63,7 +63,7 @@ const Slots = {
       act: act,
       questNode: h.questNode,
       lastPlayed: slot.lastPlayed,
-      complete: h.questNode === 'act1_complete' && act === 6
+      complete: h.questNode === 'game_complete' || !!(h.flags && h.flags.gameComplete)
     };
   }
 };
@@ -272,11 +272,14 @@ const Game = {
     if (!h) return;
     const node = h.questNode;
     if (!node || node === 'opening_cutscene') return Act1.beginOpening();
-    // Act II–V hubs
+    // After completion, the hero lives in Numeria again
+    if (h.questNode === 'game_complete') { h.currentAct = 1; return Act1.openTownHub(); }
+    // Act II–VI hubs
     if (h.currentAct === 2) return Act2.openPortHub();
     if (h.currentAct === 3) return Act3.openFoundryTown();
     if (h.currentAct === 4) return Act4.openUndermarket();
     if (h.currentAct === 5) return Act5.openConcord();
+    if (h.currentAct === 6) return Act6.openSkyOutpost();
     // Default: Act I town hub
     return Act1.openTownHub();
   },
@@ -338,7 +341,7 @@ function renderSlotPicker() {
         Creation.start();
       });
     } else {
-      const questBlurb = (summary.questNode === 'act1_complete') ? 'Act I complete'
+      const questBlurb = summary.complete ? '★ Codex complete'
                          : (summary.questNode === 'town_hub_first' ? 'Just arrived in Numeria'
                          : 'In Act ' + (summary.act || 1));
       card.innerHTML =
@@ -413,6 +416,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // act complete
   document.getElementById('btn-act-continue').addEventListener('click', () => Game._routeForHero());
+
+  // epilogue (game complete)
+  const epiBtn = document.getElementById('btn-epilogue-back');
+  if (epiBtn) epiBtn.addEventListener('click', () => { Game.save(); showScreen('title'); });
 
   // close modal backdrop
   const layer = document.getElementById('modal-layer');

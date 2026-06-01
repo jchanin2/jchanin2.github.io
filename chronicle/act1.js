@@ -119,6 +119,7 @@ const Act1 = {
     if (node === 'act3_complete') return 'Act III complete. Visit Lysara\'s Tower to begin Act IV — the Deep Vaults.';
     if (node === 'act4_complete') return 'Act IV complete. Visit Lysara\'s Tower to begin Act V — Concord.';
     if (node === 'act5_complete') return 'Act V complete. Visit Lysara\'s Tower to begin the final act.';
+    if (node === 'game_complete') return 'The Codex is whole. Numeria is at peace — wander, shop, and revisit as you like.';
     return 'Find the missing page of the Numerian Codex.';
   },
 
@@ -313,14 +314,24 @@ const Act1 = {
         ]
       });
     } else if (node === 'act5_complete') {
-      // post-Act V conversation — Act VI preview
+      // post-Act V conversation — leads into the final act
       Story.show({
         illustration: 'lysaraStudy',
         speaker: 'Lysara',
-        text: '<p>Five pages now, and the chord they hum is almost a voice. "One left," Lysara whispers. "And the last reading points <em>up</em> — into the sky itself, to the old <em>Sky-Bridge</em> above Numeria, a lattice of star-iron laid out like a vast coordinate grid. The sixth page is at its summit. And ' + Game.hero.name + '... I think whatever has been corrupting these pages will be waiting there, in person, when the Codex is whole."</p>' +
-              '<p style="color:#a890c0;font-style:italic;">(The final act — the Coordinate Grid, with interactive plotting, and the true final boss — is next. For now, rest, spend everything, and prepare for the end.)</p>',
+        text: '<p>Five pages now, and the chord they hum is almost a voice. "One left," Lysara whispers. "And the last reading points <em>up</em> — into the sky itself, to the old <em>Sky-Bridge</em> above Numeria, a lattice of star-iron laid out like a vast coordinate grid. The sixth page is at its summit. And ' + Game.hero.name + '... I think whatever has been corrupting these pages will be waiting there, in person, when the Codex is nearly whole."</p>' +
+              '<p>"Plot the points. Find the distances. Name the shapes. Everything you learned on Captain Cartwright\'s old charts, and everything since. This is the end of the road, hero. Climb when you are ready."</p>',
         choices: [
-          { text: 'Return to the village.', go: () => Act1.openTownHub() }
+          { text: 'I\'m ready. Climb to the Sky-Bridge.', tag: 'FINAL ACT', go: () => Act6.beginOpening() },
+          { text: 'Not yet. I need to prepare.', go: () => Act1.openTownHub() }
+        ]
+      });
+    } else if (node === 'game_complete') {
+      Story.show({
+        illustration: 'lysaraStudy',
+        speaker: 'Lysara',
+        text: '<p>The whole Codex rests on the desk between you, humming its quiet, complete chord. "You did it," Lysara says simply. "Every page. Every land. Every kind of number in the world, set right by your hand." She smiles. "Go on — the realm is yours to wander now. The kettle is always on."</p>',
+        choices: [
+          { text: 'Rest in Numeria.', go: () => Act1.openTownHub() }
         ]
       });
     } else {

@@ -234,7 +234,38 @@ const Engine = {
     document.getElementById('combat-problem-prompt').textContent = problem.question;
     const area = document.getElementById('combat-problem-area');
     area.innerHTML = '';
-    if (problem.format === 'mc') {
+    Game.combat._gridAnswer = null;
+    // optional static figure (coordinate grid, shape, etc.) above the answer area
+    if (problem.figure) {
+      const fig = document.createElement('div');
+      fig.className = 'combat-figure';
+      fig.innerHTML = problem.figure;
+      area.appendChild(fig);
+    }
+    if (problem.format === 'grid') {
+      // interactive coordinate grid — click to plot
+      const size = problem.gridSize || 10;
+      const holder = document.createElement('div');
+      holder.className = 'combat-grid-holder';
+      holder.innerHTML = Art.coordGrid(size, { markers: problem.figureMarkers || [] });
+      area.appendChild(holder);
+      const svg = holder.querySelector('svg');
+      const userLayer = svg.querySelector('.grid-user-layer');
+      svg.style.cursor = 'crosshair';
+      svg.addEventListener('click', (e) => {
+        const rect = svg.getBoundingClientRect();
+        const sx = (e.clientX - rect.left) / rect.width * Art.GRID_VB;
+        const sy = (e.clientY - rect.top) / rect.height * Art.GRID_VB;
+        const g = Art.gridFromSvg(sx, sy, size);
+        Game.combat._gridAnswer = g;
+        userLayer.innerHTML = Art.gridMarkerSvg(g.x, g.y, size) +
+          '<text x="' + (Art.GRID_OX + g.x * (Art.GRID_LEN / size) + 10) + '" y="' + (Art.GRID_OY - g.y * (Art.GRID_LEN / size) - 8) + '" fill="#0a2010" font-family="Cinzel,serif" font-size="11" font-weight="bold">(' + g.x + ', ' + g.y + ')</text>';
+      });
+      const tip = document.createElement('div');
+      tip.className = 'combat-grid-tip';
+      tip.textContent = 'Tap the grid to plot, then press Strike.';
+      area.appendChild(tip);
+    } else if (problem.format === 'mc') {
       const grid = document.createElement('div');
       grid.className = 'combat-mc-grid';
       problem.options.forEach(opt => {
@@ -503,12 +534,18 @@ const Engine = {
     if (!C || !C.currentProblem) return;
     this._stopTimer();
     let userAnswer = null;
-    if (C.currentProblem.format === 'mc') {
+    let correct = false;
+    if (C.currentProblem.format === 'grid') {
+      const g = C._gridAnswer;
+      const t = C.currentProblem.target;
+      correct = !timeout && !!g && !!t && g.x === t.x && g.y === t.y;
+    } else if (C.currentProblem.format === 'mc') {
       userAnswer = C._selectedAnswer;
+      correct = !timeout && userAnswer !== null && userAnswer !== '' && checkAnswer(userAnswer, C.currentProblem.answer);
     } else {
       userAnswer = C._inputEl ? C._inputEl.value : '';
+      correct = !timeout && userAnswer !== null && userAnswer !== '' && checkAnswer(userAnswer, C.currentProblem.answer);
     }
-    const correct = !timeout && userAnswer !== null && userAnswer !== '' && checkAnswer(userAnswer, C.currentProblem.answer);
     Engine.recordAttempt(C.hero, C.currentProblem.topic, correct);
 
     if (correct) {
