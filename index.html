@@ -3,156 +3,239 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Math Adventures</title>
-  <link rel="stylesheet" href="hub-style.css">
+  <title>Math Games</title>
+  <link rel="stylesheet" href="hub-style.css?v=2">
 </head>
 <body>
   <div class="hub">
-    <h1 class="hub-title">Math Adventures</h1>
-    <p class="hub-subtitle">Choose your quest, adventurer...</p>
-    <div class="game-cards">
-      <a href="muffin/" class="game-card muffin-card">
-        <div class="card-icon">
-          <svg width="80" height="80" viewBox="0 0 150 150" xmlns="http://www.w3.org/2000/svg">
-            <ellipse cx="75" cy="100" rx="45" ry="32" fill="#A0794C"/>
-            <ellipse cx="75" cy="105" rx="30" ry="18" fill="#C4A265"/>
-            <ellipse cx="75" cy="68" rx="30" ry="25" fill="#A0794C"/>
-            <ellipse cx="75" cy="78" rx="18" ry="12" fill="#B8935A"/>
-            <ellipse cx="75" cy="73" rx="8" ry="5" fill="#5C3D1E"/>
-            <circle cx="63" cy="60" r="4" fill="#2C1810"/>
-            <circle cx="87" cy="60" r="4" fill="#2C1810"/>
-            <circle cx="64" cy="59" r="1.5" fill="white"/>
-            <circle cx="88" cy="59" r="1.5" fill="white"/>
-            <path d="M 68 82 Q 75 88 82 82" fill="none" stroke="#5C3D1E" stroke-width="1.5"/>
-            <path d="M 45 52 Q 50 30 75 28 Q 100 30 105 52 L 100 48 Q 75 38 50 48 Z" fill="#7A5C30"/>
-            <rect x="50" y="46" width="50" height="4" rx="2" fill="#3E2712"/>
-          </svg>
-        </div>
-        <h2 class="card-title">Muffin's Mystery Agency</h2>
-        <p class="card-desc">Help Detective Muffin the capybara solve mysteries using decimal division!</p>
-        <span class="card-tag detective">Detective</span>
-      </a>
-      <a href="quest/" class="game-card quest-card">
-        <div class="card-icon">
-          <svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
-            <!-- Shield -->
-            <path d="M 40 8 L 65 18 L 65 45 Q 65 65 40 75 Q 15 65 15 45 L 15 18 Z" fill="#4a3728" stroke="#e8a030" stroke-width="2"/>
-            <path d="M 40 14 L 59 22 L 59 43 Q 59 60 40 69 Q 21 60 21 43 L 21 22 Z" fill="#5c4033"/>
-            <!-- Dragon emblem -->
-            <path d="M 40 25 L 48 35 L 55 30 L 50 40 L 55 50 L 45 45 L 40 55 L 35 45 L 25 50 L 30 40 L 25 30 L 32 35 Z" fill="#e8a030"/>
-            <!-- Crossed swords behind -->
-            <line x1="10" y1="65" x2="35" y2="15" stroke="#888" stroke-width="3" stroke-linecap="round"/>
-            <line x1="70" y1="65" x2="45" y2="15" stroke="#888" stroke-width="3" stroke-linecap="round"/>
-            <circle cx="10" cy="65" r="4" fill="#e8a030"/>
-            <circle cx="70" cy="65" r="4" fill="#e8a030"/>
-          </svg>
-        </div>
-        <h2 class="card-title">Realms of Mathematica</h2>
-        <p class="card-desc">Create a hero and embark on a D&D-inspired quest powered by math!</p>
-        <span class="card-tag rpg">RPG Adventure</span>
-      </a>
-      <a href="naturalist/" class="game-card naturalist-card">
-        <div class="card-icon">
-          <svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
-            <!-- Notebook -->
-            <rect x="14" y="14" width="50" height="52" fill="#3a2010" stroke="#1a1008" stroke-width="1.5" rx="2"/>
-            <rect x="16" y="16" width="46" height="48" fill="#f0e3bd"/>
-            <line x1="22" y1="16" x2="22" y2="64" stroke="#aa3838" stroke-width="0.5"/>
-            <!-- Leaf sketched on page -->
-            <ellipse cx="38" cy="40" rx="14" ry="8" fill="#7a8a48" transform="rotate(-20 38 40)"/>
-            <line x1="50" y1="32" x2="26" y2="48" stroke="#3a2010" stroke-width="0.5"/>
-            <!-- Magnifying glass -->
-            <circle cx="58" cy="58" r="10" fill="rgba(170, 220, 200, 0.3)" stroke="#aa8838" stroke-width="2"/>
-            <line x1="50" y1="66" x2="44" y2="72" stroke="#aa8838" stroke-width="2.5" stroke-linecap="round"/>
-            <!-- Quill -->
-            <path d="M 56 16 Q 70 28 66 50" stroke="#c47828" stroke-width="2" fill="none"/>
-          </svg>
-        </div>
-        <h2 class="card-title">Foxglove Hollow</h2>
-        <p class="card-desc">An apprentice naturalist's field notebook: line plots, fractions, and the first quadrant.</p>
-        <span class="card-tag naturalist">Naturalist</span>
-      </a>
-      <a href="atlas/" class="game-card atlas-card">
-        <div class="card-icon">
-          <svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
-            <!-- Compass rose -->
-            <circle cx="40" cy="40" r="34" fill="#eadba0" stroke="#5a3818" stroke-width="2"/>
-            <circle cx="40" cy="40" r="28" fill="none" stroke="#7a5828" stroke-width="0.8"/>
-            <text x="40" y="14" text-anchor="middle" fill="#5a3818" font-size="8" font-weight="bold">N</text>
-            <text x="68" y="43" text-anchor="middle" fill="#5a3818" font-size="8" font-weight="bold">E</text>
-            <text x="40" y="72" text-anchor="middle" fill="#5a3818" font-size="8" font-weight="bold">S</text>
-            <text x="12" y="43" text-anchor="middle" fill="#5a3818" font-size="8" font-weight="bold">W</text>
-            <polygon points="40,18 46,40 40,62 34,40" fill="#aa2222" stroke="#5a1010" stroke-width="0.6"/>
-            <polygon points="18,40 40,34 62,40 40,46" fill="#5a3818" stroke="#3a2010" stroke-width="0.6"/>
-            <circle cx="40" cy="40" r="3" fill="#aa8838" stroke="#3a2010" stroke-width="1"/>
-          </svg>
-        </div>
-        <h2 class="card-title">Captain Cartwright's Atlas</h2>
-        <p class="card-desc">Plot the coordinates, sort the shapes, decode the captain's ciphers — find the treasure!</p>
-        <span class="card-tag atlas">Cartographer</span>
-      </a>
-      <a href="clockwork/" class="game-card clockwork-card">
-        <div class="card-icon">
-          <svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
-            <!-- Large brass gear -->
-            <circle cx="34" cy="44" r="22" fill="#7a5018" stroke="#3a2010" stroke-width="1.5"/>
-            <circle cx="34" cy="44" r="18" fill="#b8902a" stroke="#3a2010" stroke-width="1"/>
-            <!-- Teeth -->
-            <g fill="#7a5018">
-              <rect x="32" y="18" width="4" height="6"/>
-              <rect x="32" y="64" width="4" height="6"/>
-              <rect x="8" y="42" width="6" height="4"/>
-              <rect x="54" y="42" width="6" height="4"/>
-              <rect x="14" y="22" width="6" height="4" transform="rotate(-45 17 24)"/>
-              <rect x="48" y="22" width="6" height="4" transform="rotate(45 51 24)"/>
-              <rect x="14" y="62" width="6" height="4" transform="rotate(45 17 64)"/>
-              <rect x="48" y="62" width="6" height="4" transform="rotate(-45 51 64)"/>
-            </g>
-            <circle cx="34" cy="44" r="5" fill="#3a2010"/>
-            <!-- Small copper gear -->
-            <circle cx="60" cy="22" r="10" fill="#8a4818" stroke="#3a1810" stroke-width="1"/>
-            <g fill="#8a4818">
-              <rect x="58" y="8" width="4" height="4"/>
-              <rect x="58" y="32" width="4" height="4"/>
-              <rect x="46" y="20" width="4" height="4"/>
-              <rect x="70" y="20" width="4" height="4"/>
-            </g>
-            <circle cx="60" cy="22" r="3" fill="#3a1810"/>
-            <!-- Clock hands on big gear -->
-            <line x1="34" y1="44" x2="34" y2="30" stroke="#1a1008" stroke-width="1.8" stroke-linecap="round"/>
-            <line x1="34" y1="44" x2="44" y2="44" stroke="#1a1008" stroke-width="1.3" stroke-linecap="round"/>
-          </svg>
-        </div>
-        <h2 class="card-title">The Clockmaker's Workshop</h2>
-        <p class="card-desc">Read the gears, sort the shapes, plot the floor, untangle the rules. Build the tower clock.</p>
-        <span class="card-tag clockmaker">Clockmaker</span>
-      </a>
-      <a href="chronicle/" class="game-card chronicle-card">
-        <div class="card-icon">
-          <svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
-            <!-- Open codex with star -->
-            <path d="M 12 50 Q 26 42 40 44 Q 54 42 68 50 L 68 68 Q 54 60 40 62 Q 26 60 12 68 Z" fill="#3a1810" stroke="#1a0808" stroke-width="1.5"/>
-            <path d="M 14 51 Q 26 44 40 46 L 40 64 Q 26 60 14 66 Z" fill="#f0e3bd" stroke="#3a2010" stroke-width="0.6"/>
-            <path d="M 66 51 Q 54 44 40 46 L 40 64 Q 54 60 66 66 Z" fill="#f0e3bd" stroke="#3a2010" stroke-width="0.6"/>
-            <rect x="38" y="45" width="4" height="20" fill="#5a1818"/>
-            <!-- page squiggles -->
-            <line x1="20" y1="52" x2="36" y2="50" stroke="#5a3818" stroke-width="0.6"/>
-            <line x1="20" y1="56" x2="36" y2="54" stroke="#5a3818" stroke-width="0.6"/>
-            <line x1="44" y1="50" x2="60" y2="52" stroke="#5a3818" stroke-width="0.6"/>
-            <line x1="44" y1="54" x2="60" y2="56" stroke="#5a3818" stroke-width="0.6"/>
-            <!-- star above -->
-            <polygon points="40,8 44,22 58,22 47,30 51,44 40,36 29,44 33,30 22,22 36,22" fill="#d4a624" stroke="#3a2010" stroke-width="1"/>
-            <polygon points="40,14 42,22 50,22 44,28 46,36 40,32 34,36 36,28 30,22 38,22" fill="#f0d27a"/>
-            <!-- crossed sword + quill -->
-            <line x1="4" y1="20" x2="22" y2="42" stroke="#888" stroke-width="2.5" stroke-linecap="round"/>
-            <path d="M 76 20 Q 70 38 56 50" fill="none" stroke="#c47828" stroke-width="2"/>
-          </svg>
-        </div>
-        <h2 class="card-title">Realms of Mathematica II</h2>
-        <p class="card-desc">An RPG sequel: build a hero, brave the Sundered Quarry, recover the Codex. Six acts, all of 5th-grade math.</p>
-        <span class="card-tag chronicle">Epic RPG</span>
-      </a>
-    </div>
+    <h1 class="hub-title">Math Games</h1>
+
+    <!-- ==================== CATEGORY PICKER ==================== -->
+    <section id="view-categories" class="hub-view active">
+      <p class="hub-subtitle">Pick a grade level to begin.</p>
+      <div class="category-cards">
+        <button class="category-card grade5" data-cat="grade5">
+          <div class="category-emoji">🗺️</div>
+          <h2 class="category-title">5th Grade Math</h2>
+          <p class="category-desc">Jacob's adventures — six story games covering the whole 5th-grade year.</p>
+          <span class="category-count">6 games</span>
+        </button>
+        <button class="category-card grade9" data-cat="grade9">
+          <div class="category-emoji">🎾</div>
+          <h2 class="category-title">9th Grade Math</h2>
+          <p class="category-desc">Gus's modules — focused, interactive Algebra &amp; number-sense practice.</p>
+          <span class="category-count">1 module</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ==================== 5TH GRADE ==================== -->
+    <section id="view-grade5" class="hub-view">
+      <div class="view-header">
+        <button class="back-btn" data-back>← Grade levels</button>
+        <h2 class="view-title">5th Grade Math</h2>
+        <p class="view-subtitle">Choose your quest, adventurer…</p>
+      </div>
+      <div class="game-cards">
+        <a href="muffin/" class="game-card muffin-card">
+          <div class="card-icon">
+            <svg width="80" height="80" viewBox="0 0 150 150" xmlns="http://www.w3.org/2000/svg">
+              <ellipse cx="75" cy="100" rx="45" ry="32" fill="#A0794C"/>
+              <ellipse cx="75" cy="105" rx="30" ry="18" fill="#C4A265"/>
+              <ellipse cx="75" cy="68" rx="30" ry="25" fill="#A0794C"/>
+              <ellipse cx="75" cy="78" rx="18" ry="12" fill="#B8935A"/>
+              <ellipse cx="75" cy="73" rx="8" ry="5" fill="#5C3D1E"/>
+              <circle cx="63" cy="60" r="4" fill="#2C1810"/>
+              <circle cx="87" cy="60" r="4" fill="#2C1810"/>
+              <circle cx="64" cy="59" r="1.5" fill="white"/>
+              <circle cx="88" cy="59" r="1.5" fill="white"/>
+              <path d="M 68 82 Q 75 88 82 82" fill="none" stroke="#5C3D1E" stroke-width="1.5"/>
+              <path d="M 45 52 Q 50 30 75 28 Q 100 30 105 52 L 100 48 Q 75 38 50 48 Z" fill="#7A5C30"/>
+              <rect x="50" y="46" width="50" height="4" rx="2" fill="#3E2712"/>
+            </svg>
+          </div>
+          <h2 class="card-title">Muffin's Mystery Agency</h2>
+          <p class="card-desc">Help Detective Muffin the capybara solve mysteries using decimal division!</p>
+          <span class="card-tag detective">Detective</span>
+        </a>
+        <a href="quest/" class="game-card quest-card">
+          <div class="card-icon">
+            <svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+              <!-- Shield -->
+              <path d="M 40 8 L 65 18 L 65 45 Q 65 65 40 75 Q 15 65 15 45 L 15 18 Z" fill="#4a3728" stroke="#e8a030" stroke-width="2"/>
+              <path d="M 40 14 L 59 22 L 59 43 Q 59 60 40 69 Q 21 60 21 43 L 21 22 Z" fill="#5c4033"/>
+              <!-- Dragon emblem -->
+              <path d="M 40 25 L 48 35 L 55 30 L 50 40 L 55 50 L 45 45 L 40 55 L 35 45 L 25 50 L 30 40 L 25 30 L 32 35 Z" fill="#e8a030"/>
+              <!-- Crossed swords behind -->
+              <line x1="10" y1="65" x2="35" y2="15" stroke="#888" stroke-width="3" stroke-linecap="round"/>
+              <line x1="70" y1="65" x2="45" y2="15" stroke="#888" stroke-width="3" stroke-linecap="round"/>
+              <circle cx="10" cy="65" r="4" fill="#e8a030"/>
+              <circle cx="70" cy="65" r="4" fill="#e8a030"/>
+            </svg>
+          </div>
+          <h2 class="card-title">Realms of Mathematica</h2>
+          <p class="card-desc">Create a hero and embark on a D&D-inspired quest powered by math!</p>
+          <span class="card-tag rpg">RPG Adventure</span>
+        </a>
+        <a href="naturalist/" class="game-card naturalist-card">
+          <div class="card-icon">
+            <svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+              <!-- Notebook -->
+              <rect x="14" y="14" width="50" height="52" fill="#3a2010" stroke="#1a1008" stroke-width="1.5" rx="2"/>
+              <rect x="16" y="16" width="46" height="48" fill="#f0e3bd"/>
+              <line x1="22" y1="16" x2="22" y2="64" stroke="#aa3838" stroke-width="0.5"/>
+              <!-- Leaf sketched on page -->
+              <ellipse cx="38" cy="40" rx="14" ry="8" fill="#7a8a48" transform="rotate(-20 38 40)"/>
+              <line x1="50" y1="32" x2="26" y2="48" stroke="#3a2010" stroke-width="0.5"/>
+              <!-- Magnifying glass -->
+              <circle cx="58" cy="58" r="10" fill="rgba(170, 220, 200, 0.3)" stroke="#aa8838" stroke-width="2"/>
+              <line x1="50" y1="66" x2="44" y2="72" stroke="#aa8838" stroke-width="2.5" stroke-linecap="round"/>
+              <!-- Quill -->
+              <path d="M 56 16 Q 70 28 66 50" stroke="#c47828" stroke-width="2" fill="none"/>
+            </svg>
+          </div>
+          <h2 class="card-title">Foxglove Hollow</h2>
+          <p class="card-desc">An apprentice naturalist's field notebook: line plots, fractions, and the first quadrant.</p>
+          <span class="card-tag naturalist">Naturalist</span>
+        </a>
+        <a href="atlas/" class="game-card atlas-card">
+          <div class="card-icon">
+            <svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+              <!-- Compass rose -->
+              <circle cx="40" cy="40" r="34" fill="#eadba0" stroke="#5a3818" stroke-width="2"/>
+              <circle cx="40" cy="40" r="28" fill="none" stroke="#7a5828" stroke-width="0.8"/>
+              <text x="40" y="14" text-anchor="middle" fill="#5a3818" font-size="8" font-weight="bold">N</text>
+              <text x="68" y="43" text-anchor="middle" fill="#5a3818" font-size="8" font-weight="bold">E</text>
+              <text x="40" y="72" text-anchor="middle" fill="#5a3818" font-size="8" font-weight="bold">S</text>
+              <text x="12" y="43" text-anchor="middle" fill="#5a3818" font-size="8" font-weight="bold">W</text>
+              <polygon points="40,18 46,40 40,62 34,40" fill="#aa2222" stroke="#5a1010" stroke-width="0.6"/>
+              <polygon points="18,40 40,34 62,40 40,46" fill="#5a3818" stroke="#3a2010" stroke-width="0.6"/>
+              <circle cx="40" cy="40" r="3" fill="#aa8838" stroke="#3a2010" stroke-width="1"/>
+            </svg>
+          </div>
+          <h2 class="card-title">Captain Cartwright's Atlas</h2>
+          <p class="card-desc">Plot the coordinates, sort the shapes, decode the captain's ciphers — find the treasure!</p>
+          <span class="card-tag atlas">Cartographer</span>
+        </a>
+        <a href="clockwork/" class="game-card clockwork-card">
+          <div class="card-icon">
+            <svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+              <!-- Large brass gear -->
+              <circle cx="34" cy="44" r="22" fill="#7a5018" stroke="#3a2010" stroke-width="1.5"/>
+              <circle cx="34" cy="44" r="18" fill="#b8902a" stroke="#3a2010" stroke-width="1"/>
+              <!-- Teeth -->
+              <g fill="#7a5018">
+                <rect x="32" y="18" width="4" height="6"/>
+                <rect x="32" y="64" width="4" height="6"/>
+                <rect x="8" y="42" width="6" height="4"/>
+                <rect x="54" y="42" width="6" height="4"/>
+                <rect x="14" y="22" width="6" height="4" transform="rotate(-45 17 24)"/>
+                <rect x="48" y="22" width="6" height="4" transform="rotate(45 51 24)"/>
+                <rect x="14" y="62" width="6" height="4" transform="rotate(45 17 64)"/>
+                <rect x="48" y="62" width="6" height="4" transform="rotate(-45 51 64)"/>
+              </g>
+              <circle cx="34" cy="44" r="5" fill="#3a2010"/>
+              <!-- Small copper gear -->
+              <circle cx="60" cy="22" r="10" fill="#8a4818" stroke="#3a1810" stroke-width="1"/>
+              <g fill="#8a4818">
+                <rect x="58" y="8" width="4" height="4"/>
+                <rect x="58" y="32" width="4" height="4"/>
+                <rect x="46" y="20" width="4" height="4"/>
+                <rect x="70" y="20" width="4" height="4"/>
+              </g>
+              <circle cx="60" cy="22" r="3" fill="#3a1810"/>
+              <!-- Clock hands on big gear -->
+              <line x1="34" y1="44" x2="34" y2="30" stroke="#1a1008" stroke-width="1.8" stroke-linecap="round"/>
+              <line x1="34" y1="44" x2="44" y2="44" stroke="#1a1008" stroke-width="1.3" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h2 class="card-title">The Clockmaker's Workshop</h2>
+          <p class="card-desc">Read the gears, sort the shapes, plot the floor, untangle the rules. Build the tower clock.</p>
+          <span class="card-tag clockmaker">Clockmaker</span>
+        </a>
+        <a href="chronicle/" class="game-card chronicle-card">
+          <div class="card-icon">
+            <svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+              <!-- Open codex with star -->
+              <path d="M 12 50 Q 26 42 40 44 Q 54 42 68 50 L 68 68 Q 54 60 40 62 Q 26 60 12 68 Z" fill="#3a1810" stroke="#1a0808" stroke-width="1.5"/>
+              <path d="M 14 51 Q 26 44 40 46 L 40 64 Q 26 60 14 66 Z" fill="#f0e3bd" stroke="#3a2010" stroke-width="0.6"/>
+              <path d="M 66 51 Q 54 44 40 46 L 40 64 Q 54 60 66 66 Z" fill="#f0e3bd" stroke="#3a2010" stroke-width="0.6"/>
+              <rect x="38" y="45" width="4" height="20" fill="#5a1818"/>
+              <!-- page squiggles -->
+              <line x1="20" y1="52" x2="36" y2="50" stroke="#5a3818" stroke-width="0.6"/>
+              <line x1="20" y1="56" x2="36" y2="54" stroke="#5a3818" stroke-width="0.6"/>
+              <line x1="44" y1="50" x2="60" y2="52" stroke="#5a3818" stroke-width="0.6"/>
+              <line x1="44" y1="54" x2="60" y2="56" stroke="#5a3818" stroke-width="0.6"/>
+              <!-- star above -->
+              <polygon points="40,8 44,22 58,22 47,30 51,44 40,36 29,44 33,30 22,22 36,22" fill="#d4a624" stroke="#3a2010" stroke-width="1"/>
+              <polygon points="40,14 42,22 50,22 44,28 46,36 40,32 34,36 36,28 30,22 38,22" fill="#f0d27a"/>
+              <!-- crossed sword + quill -->
+              <line x1="4" y1="20" x2="22" y2="42" stroke="#888" stroke-width="2.5" stroke-linecap="round"/>
+              <path d="M 76 20 Q 70 38 56 50" fill="none" stroke="#c47828" stroke-width="2"/>
+            </svg>
+          </div>
+          <h2 class="card-title">Realms of Mathematica II</h2>
+          <p class="card-desc">An RPG sequel: build a hero, brave the Sundered Quarry, recover the Codex. Six acts, all of 5th-grade math.</p>
+          <span class="card-tag chronicle">Epic RPG</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- ==================== 9TH GRADE ==================== -->
+    <section id="view-grade9" class="hub-view">
+      <div class="view-header">
+        <button class="back-btn" data-back>← Grade levels</button>
+        <h2 class="view-title">9th Grade Math</h2>
+        <p class="view-subtitle">Focused, interactive Algebra modules.</p>
+      </div>
+      <div class="game-cards">
+        <a href="hidden-factors/" class="game-card hidden-factors-card">
+          <div class="card-icon">
+            <svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+              <!-- radical sign -->
+              <path d="M 12 46 L 20 46 L 30 68 L 44 18 L 70 18" fill="none" stroke="#d8f045" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+              <!-- factor-tree under the radicand -->
+              <circle cx="52" cy="34" r="7" fill="#1d6f5c" stroke="#d8f045" stroke-width="1.5"/>
+              <circle cx="44" cy="52" r="6" fill="#28a07f" stroke="#d8f045" stroke-width="1.5"/>
+              <circle cx="62" cy="52" r="6" fill="#28a07f" stroke="#d8f045" stroke-width="1.5"/>
+              <line x1="49" y1="40" x2="45" y2="47" stroke="#d8f045" stroke-width="1.5"/>
+              <line x1="55" y1="40" x2="61" y2="47" stroke="#d8f045" stroke-width="1.5"/>
+              <!-- couple circle -->
+              <ellipse cx="53" cy="52" rx="17" ry="9" fill="none" stroke="#f0e3bd" stroke-width="1.2" stroke-dasharray="3 2"/>
+            </svg>
+          </div>
+          <h2 class="card-title">Hidden Factors</h2>
+          <p class="card-desc">Simplifying square roots with factor trees — couples go out, singles stay in. No calculator needed.</p>
+          <span class="card-tag hidden-factors">Algebra · Roots</span>
+        </a>
+      </div>
+    </section>
   </div>
+
+  <script>
+    (function () {
+      var views = {
+        categories: document.getElementById('view-categories'),
+        grade5: document.getElementById('view-grade5'),
+        grade9: document.getElementById('view-grade9')
+      };
+      function show(name) {
+        Object.keys(views).forEach(function (k) { views[k].classList.remove('active'); });
+        (views[name] || views.categories).classList.add('active');
+        window.scrollTo(0, 0);
+        if (name === 'categories') { history.replaceState(null, '', '#'); }
+        else { history.replaceState(null, '', '#' + name); }
+      }
+      document.querySelectorAll('.category-card').forEach(function (btn) {
+        btn.addEventListener('click', function () { show(btn.getAttribute('data-cat')); });
+      });
+      document.querySelectorAll('[data-back]').forEach(function (btn) {
+        btn.addEventListener('click', function () { show('categories'); });
+      });
+      // deep-link support: #grade5 / #grade9
+      var h = (window.location.hash || '').replace('#', '');
+      if (h === 'grade5' || h === 'grade9') show(h);
+    })();
+  </script>
 </body>
 </html>

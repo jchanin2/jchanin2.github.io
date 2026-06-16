@@ -35,6 +35,76 @@ body {
   margin-bottom: 40px;
 }
 
+/* ==================== VIEW SWITCHER ==================== */
+.hub-view { display: none; }
+.hub-view.active { display: block; }
+
+/* ==================== CATEGORY PICKER ==================== */
+.category-cards {
+  display: flex;
+  gap: 24px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.category-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background: linear-gradient(135deg, #1a1a2e, #16213e);
+  border: 2px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  padding: 36px 28px 28px;
+  width: 320px;
+  cursor: pointer;
+  color: inherit;
+  font-family: inherit;
+  transition: all 0.3s ease;
+}
+.category-card:hover { transform: translateY(-6px); box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5); }
+.category-card.grade5:hover { border-color: #e8a030; box-shadow: 0 12px 40px rgba(232, 160, 48, 0.18); }
+.category-card.grade9:hover { border-color: #3fb6a8; box-shadow: 0 12px 40px rgba(63, 182, 168, 0.20); }
+
+.category-emoji { font-size: 3.4rem; margin-bottom: 14px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.4)); }
+.category-title { font-size: 1.6rem; margin-bottom: 10px; }
+.category-card.grade5 .category-title { color: #e8a030; }
+.category-card.grade9 .category-title { color: #3fb6a8; }
+.category-desc { font-size: 0.95rem; color: #95a5a6; line-height: 1.5; margin-bottom: 16px; }
+.category-count {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-weight: bold;
+  background: rgba(255,255,255,0.08);
+  color: #cdd6dd;
+}
+
+/* ==================== VIEW HEADER (inside a category) ==================== */
+.view-header { margin-bottom: 32px; position: relative; }
+.view-title { font-size: 2rem; color: #ecf0f1; margin-bottom: 6px; }
+.view-subtitle { font-size: 1.05rem; color: #95a5a6; font-style: italic; }
+.back-btn {
+  position: absolute;
+  left: 0;
+  top: 4px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.14);
+  color: #cdd6dd;
+  font-family: inherit;
+  font-size: 0.9rem;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.back-btn:hover { background: rgba(255,255,255,0.12); color: #fff; }
+@media (max-width: 560px) {
+  .back-btn { position: static; display: inline-block; margin-bottom: 16px; }
+}
+
 .game-cards {
   display: flex;
   gap: 24px;
@@ -83,6 +153,11 @@ body {
   box-shadow: 0 12px 40px rgba(168, 144, 192, 0.22);
 }
 
+.hidden-factors-card:hover {
+  border-color: #d8f045;
+  box-shadow: 0 12px 40px rgba(216, 240, 69, 0.18);
+}
+
 .card-icon {
   margin-bottom: 16px;
   filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
@@ -97,6 +172,7 @@ body {
 .quest-card .card-title { color: #e8a030; }
 .clockwork-card .card-title { color: #d4a624; }
 .chronicle-card .card-title { color: #a890c0; }
+.hidden-factors-card .card-title { color: #d8f045; }
 
 .card-desc {
   font-size: 0.9rem;
@@ -142,6 +218,11 @@ body {
 .card-tag.chronicle {
   background: #a890c0;
   color: #1a1a2e;
+}
+
+.card-tag.hidden-factors {
+  background: #d8f045;
+  color: #1a2e1a;
 }
 
 @media (max-width: 700px) {
