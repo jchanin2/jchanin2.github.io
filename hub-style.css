@@ -158,6 +158,11 @@ body {
   box-shadow: 0 12px 40px rgba(216, 240, 69, 0.18);
 }
 
+.simplifying-radicals-card:hover {
+  border-color: #2bb39a;
+  box-shadow: 0 12px 40px rgba(43, 179, 154, 0.20);
+}
+
 .card-icon {
   margin-bottom: 16px;
   filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
@@ -173,6 +178,7 @@ body {
 .clockwork-card .card-title { color: #d4a624; }
 .chronicle-card .card-title { color: #a890c0; }
 .hidden-factors-card .card-title { color: #d8f045; }
+.simplifying-radicals-card .card-title { color: #2bb39a; }
 
 .card-desc {
   font-size: 0.9rem;
@@ -223,6 +229,11 @@ body {
 .card-tag.hidden-factors {
   background: #d8f045;
   color: #1a2e1a;
+}
+
+.card-tag.simplifying-radicals {
+  background: #2bb39a;
+  color: #08231d;
 }
 
 @media (max-width: 700px) {

@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Math Games</title>
-  <link rel="stylesheet" href="hub-style.css?v=2">
+  <link rel="stylesheet" href="hub-style.css?v=3">
 </head>
 <body>
   <div class="hub">
@@ -16,13 +16,13 @@
       <div class="category-cards">
         <button class="category-card grade5" data-cat="grade5">
           <div class="category-emoji">🗺️</div>
-          <h2 class="category-title">5th Grade Math</h2>
+          <h2 class="category-title">5th Grade</h2>
           <p class="category-desc">Jacob's adventures — six story games covering the whole 5th-grade year.</p>
           <span class="category-count">6 games</span>
         </button>
         <button class="category-card grade9" data-cat="grade9">
           <div class="category-emoji">🎾</div>
-          <h2 class="category-title">9th Grade Math</h2>
+          <h2 class="category-title">9th Grade · Algebra 1</h2>
           <p class="category-desc">Gus's modules — focused, interactive Algebra &amp; number-sense practice.</p>
           <span class="category-count">1 module</span>
         </button>
@@ -33,7 +33,7 @@
     <section id="view-grade5" class="hub-view">
       <div class="view-header">
         <button class="back-btn" data-back>← Grade levels</button>
-        <h2 class="view-title">5th Grade Math</h2>
+        <h2 class="view-title">5th Grade</h2>
         <p class="view-subtitle">Choose your quest, adventurer…</p>
       </div>
       <div class="game-cards">
@@ -185,28 +185,28 @@
     <section id="view-grade9" class="hub-view">
       <div class="view-header">
         <button class="back-btn" data-back>← Grade levels</button>
-        <h2 class="view-title">9th Grade Math</h2>
+        <h2 class="view-title">9th Grade · Algebra 1</h2>
         <p class="view-subtitle">Focused, interactive Algebra modules.</p>
       </div>
       <div class="game-cards">
-        <a href="hidden-factors/" class="game-card hidden-factors-card">
+        <a href="simplifying-radicals/" class="game-card simplifying-radicals-card">
           <div class="card-icon">
             <svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
-              <!-- radical sign -->
-              <path d="M 12 46 L 20 46 L 30 68 L 44 18 L 70 18" fill="none" stroke="#d8f045" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-              <!-- factor-tree under the radicand -->
-              <circle cx="52" cy="34" r="7" fill="#1d6f5c" stroke="#d8f045" stroke-width="1.5"/>
-              <circle cx="44" cy="52" r="6" fill="#28a07f" stroke="#d8f045" stroke-width="1.5"/>
-              <circle cx="62" cy="52" r="6" fill="#28a07f" stroke="#d8f045" stroke-width="1.5"/>
-              <line x1="49" y1="40" x2="45" y2="47" stroke="#d8f045" stroke-width="1.5"/>
-              <line x1="55" y1="40" x2="61" y2="47" stroke="#d8f045" stroke-width="1.5"/>
-              <!-- couple circle -->
-              <ellipse cx="53" cy="52" rx="17" ry="9" fill="none" stroke="#f0e3bd" stroke-width="1.2" stroke-dasharray="3 2"/>
+              <!-- radical sign with index 3 -->
+              <text x="8" y="34" fill="#2bb39a" font-family="Trebuchet MS, sans-serif" font-size="12" font-weight="bold">3</text>
+              <path d="M 16 44 L 24 44 L 34 66 L 48 18 L 72 18" fill="none" stroke="#d8f045" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+              <!-- couple + triple chips under the radicand -->
+              <ellipse cx="44" cy="40" rx="13" ry="8" fill="none" stroke="#f0e3bd" stroke-width="1.2" stroke-dasharray="3 2"/>
+              <circle cx="39" cy="40" r="5" fill="#28a07f"/>
+              <circle cx="49" cy="40" r="5" fill="#28a07f"/>
+              <circle cx="58" cy="52" r="5" fill="#2f6f5c"/>
+              <circle cx="44" cy="52" r="5" fill="#2f6f5c"/>
+              <circle cx="51" cy="52" r="5" fill="#2f6f5c"/>
             </svg>
           </div>
-          <h2 class="card-title">Hidden Factors</h2>
-          <p class="card-desc">Simplifying square roots with factor trees — couples go out, singles stay in. No calculator needed.</p>
-          <span class="card-tag hidden-factors">Algebra · Roots</span>
+          <h2 class="card-title">Simplifying Radicals</h2>
+          <p class="card-desc">Square &amp; cube roots with factor trees — couples or triples go out, singles stay in. Learn → Practice → Quiz. No calculator.</p>
+          <span class="card-tag simplifying-radicals">Algebra · Radicals</span>
         </a>
       </div>
     </section>
