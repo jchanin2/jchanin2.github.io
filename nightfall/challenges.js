@@ -38,6 +38,7 @@ const Challenges = {
         } else inp.value += k;
         inp.dispatchEvent(new Event('input'));
         inp.focus();
+        if (typeof SFX !== 'undefined') SFX.play('key');
       });
       pad.appendChild(b);
     });
@@ -141,6 +142,7 @@ const Challenges = {
         list.querySelectorAll('.choice-btn').forEach(x => x.classList.remove('selected'));
         b.classList.add('selected');
         state.selected = i;
+        if (typeof SFX !== 'undefined') SFX.play('select');
       });
       list.appendChild(b);
     });
@@ -289,6 +291,7 @@ const Challenges = {
         doc.querySelectorAll('.doc-line').forEach(x => x.classList.remove('selected'));
         row.classList.add('selected');
         state.selected = i;
+        if (typeof SFX !== 'undefined') SFX.play('select');
       });
       doc.appendChild(row);
     });

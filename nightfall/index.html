@@ -4,9 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>NIGHTFALL — A Math Heist</title>
-  <link rel="stylesheet" href="style.css?v=1">
+  <link rel="stylesheet" href="style.css?v=2">
 </head>
 <body>
+
+  <button id="btn-mute" class="sfx-toggle" title="Sound on/off">🔊</button>
 
   <!-- ==================== TITLE ==================== -->
   <div id="screen-title" class="screen active">
@@ -81,9 +83,12 @@
           <span class="hud-label">TAKE</span>
           <span id="take-amount" class="take-amount">$0</span>
         </div>
+        <span id="streak-chip" class="streak-chip" style="display:none;"></span>
         <div class="progress-indicator">Lock <span id="progress-current">1</span>/<span id="progress-total">9</span></div>
       </div>
     </div>
+
+    <div id="lock-pips" class="lock-pips"></div>
 
     <div id="timer-bar" class="timer-bar" style="display:none;">
       <span class="timer-icon">👮</span>
@@ -134,8 +139,9 @@
   </div>
 
   <!-- Scripts — order matters -->
-  <script src="jobs.js?v=1"></script>
-  <script src="challenges.js?v=1"></script>
-  <script src="game.js?v=1"></script>
+  <script src="jobs.js?v=2"></script>
+  <script src="sfx.js?v=1"></script>
+  <script src="challenges.js?v=2"></script>
+  <script src="game.js?v=2"></script>
 </body>
 </html>

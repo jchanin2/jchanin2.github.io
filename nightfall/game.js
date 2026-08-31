@@ -306,12 +306,12 @@ function showBriefing(job, onContinue) {
   overlay.style.display = 'flex';
   requestAnimationFrame(() => overlay.classList.add('active'));
   const btn = document.getElementById('btn-briefing-go');
-  const handler = () => {
-    btn.removeEventListener('click', handler);
+  btn.onclick = () => {
+    btn.onclick = null;
+    SFX.play('vault');
     overlay.classList.remove('active');
     setTimeout(() => { overlay.style.display = 'none'; onContinue(); }, 250);
   };
-  btn.addEventListener('click', handler);
 }
 
 // ============================================================
@@ -324,6 +324,13 @@ function updateHUD() {
   fill.classList.toggle('hot', run.heat >= 60);
   fill.classList.toggle('critical', run.heat >= 85);
   document.getElementById('take-amount').textContent = fmtCash(run.take);
+  const chip = document.getElementById('streak-chip');
+  if (chip) {
+    if (run.firstTryStreak >= 2) {
+      chip.textContent = '🔥×' + run.firstTryStreak;
+      chip.style.display = 'inline-block';
+    } else chip.style.display = 'none';
+  }
 }
 
 function addHeat(amount) {
@@ -339,13 +346,14 @@ function triggerAlarm() {
   const lost = Math.ceil(run.take * 0.2 / 50) * 50;
   run.take = Math.max(0, run.take - lost);
   stopTimer();
+  SFX.play('alarm');
   const overlay = document.getElementById('alarm-overlay');
   document.getElementById('alarm-lost').textContent = lost > 0 ? 'Circling the block cost the crew ' + fmtCash(lost) + ' of the take.' : 'Lucky — nothing banked yet, nothing lost.';
   overlay.style.display = 'flex';
   requestAnimationFrame(() => overlay.classList.add('active'));
   const btn = document.getElementById('btn-alarm-continue');
-  const handler = () => {
-    btn.removeEventListener('click', handler);
+  btn.onclick = () => {
+    btn.onclick = null;
     overlay.classList.remove('active');
     setTimeout(() => {
       overlay.style.display = 'none';
@@ -354,7 +362,6 @@ function triggerAlarm() {
       startTimerIfNeeded();
     }, 250);
   };
-  btn.addEventListener('click', handler);
 }
 
 // ============================================================
@@ -391,6 +398,7 @@ function startTimerIfNeeded() {
     const t = Game.timer;
     if (!t) return;
     t.remaining--;
+    if (t.remaining > 0 && t.remaining <= 10) SFX.play('tick');
     if (t.remaining <= 0) {
       // guard walks by: heat spike, timer resets
       const fb = document.getElementById('challenge-feedback');
@@ -401,6 +409,85 @@ function startTimerIfNeeded() {
     }
     update();
   }, 1000);
+}
+
+// ============================================================
+// JUICE — floating cash, lock pips, shakes, cash rain, count-ups
+// ============================================================
+function floatCash(amount) {
+  const anchor = document.getElementById('take-amount');
+  if (!anchor) return;
+  const r = anchor.getBoundingClientRect();
+  const el = document.createElement('div');
+  el.className = 'float-cash';
+  el.textContent = '+' + fmtCash(amount);
+  el.style.left = r.left + r.width / 2 + 'px';
+  el.style.top = r.top + 'px';
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 1300);
+}
+
+function shakeMain() {
+  const el = document.querySelector('#screen-challenge .game-main');
+  if (!el) return;
+  el.classList.remove('shake');
+  void el.offsetWidth;
+  el.classList.add('shake');
+}
+
+function renderLockPips() {
+  const strip = document.getElementById('lock-pips');
+  if (!strip || !Game.currentJob) return;
+  strip.innerHTML = '';
+  Game.currentJob.challenges.forEach((ch, i) => {
+    const p = document.createElement('span');
+    p.className = 'lock-pip' +
+      (ch.type === 'boss' ? ' boss' : '') +
+      (i < Game.currentChallengeIndex ? ' done' : i === Game.currentChallengeIndex ? ' current' : '');
+    strip.appendChild(p);
+  });
+}
+
+function markCurrentPipDone() {
+  const strip = document.getElementById('lock-pips');
+  if (!strip) return;
+  const pip = strip.children[Game.currentChallengeIndex];
+  if (pip) { pip.classList.remove('current'); pip.classList.add('done', 'pop'); }
+}
+
+function cashRain() {
+  const wrap = document.createElement('div');
+  wrap.className = 'cash-rain';
+  const glyphs = ['💵', '🪙', '💵', '💰'];
+  for (let i = 0; i < 26; i++) {
+    const s = document.createElement('span');
+    s.textContent = glyphs[i % glyphs.length];
+    s.style.left = Math.random() * 100 + 'vw';
+    s.style.animationDelay = (Math.random() * 1.4) + 's';
+    s.style.animationDuration = (2.2 + Math.random() * 1.8) + 's';
+    s.style.fontSize = (0.9 + Math.random() * 1.1) + 'rem';
+    wrap.appendChild(s);
+  }
+  document.body.appendChild(wrap);
+  setTimeout(() => wrap.remove(), 5000);
+}
+
+// Animate a cash value from -> target inside el, with counter ticks.
+function animateCash(el, target, dur, onDone, from) {
+  const start = from || 0;
+  const span = target - start;
+  const steps = Math.min(24, Math.max(8, Math.floor(Math.abs(span) / 400)));
+  let i = 0;
+  const iv = setInterval(() => {
+    i++;
+    const v = start + Math.round(span * (i / steps) / 50) * 50;
+    el.textContent = fmtCash(i >= steps ? target : v);
+    SFX.play('count');
+    if (i >= steps) {
+      clearInterval(iv);
+      if (onDone) onDone();
+    }
+  }, Math.max(28, dur / steps));
 }
 
 // ============================================================
@@ -445,6 +532,9 @@ function renderChallenge() {
     return;
   }
   Game.activeEvaluator = fn.call(Challenges, challenge, area);
+  renderLockPips();
+  const main = document.querySelector('#screen-challenge .game-main');
+  if (main) { main.classList.remove('enter'); void main.offsetWidth; main.classList.add('enter'); }
   updateHUD();
   startTimerIfNeeded();
 }
@@ -468,6 +558,7 @@ function showHintButton() {
 function revealHint() {
   const h = currentHint();
   if (!h) return;
+  SFX.play('radio');
   const crew = CREW[h.who] || CREW.ace;
   const box = document.getElementById('hint-box');
   box.innerHTML = '<span class="hint-who" style="color:' + crew.color + '">' + crew.name + '</span> <span class="hint-text">' + h.text + '</span>';
@@ -489,12 +580,14 @@ function handleCheck() {
   const challenge = Game.currentJob.challenges[Game.currentChallengeIndex];
 
   if (result.soft) {
+    SFX.play('soft');
     fb.textContent = result.message;
     fb.className = 'challenge-feedback soft';
     return;
   }
 
   if (result.ok && result.done === false) {
+    SFX.play('stage');
     fb.textContent = result.message || 'Phase cleared. Keep going.';
     fb.className = 'challenge-feedback correct';
     // re-show hint availability for next phase after a miss
@@ -514,6 +607,10 @@ function handleCheck() {
       Game.run.firstTryStreak = 0;
     }
     updateHUD();
+    SFX.play(Game.run.firstTryStreak >= 3 ? 'streak' : 'correct');
+    setTimeout(() => SFX.play('cash'), 220);
+    floatCash(pay);
+    markCurrentPipDone();
     const flair = Game.run.attempts === 0
       ? (Game.run.firstTryStreak >= 3 ? '🔥 ' + Game.run.firstTryStreak + ' clean cracks in a row! ' : '✦ First try — clean crack. ')
       : '✦ Cracked. ';
@@ -527,6 +624,8 @@ function handleCheck() {
 
   // wrong
   Game.run.attempts++;
+  SFX.play('wrong');
+  shakeMain();
   fb.textContent = result.message;
   fb.className = 'challenge-feedback wrong';
   addHeat(Game.currentJob.heatPerMiss);
@@ -563,27 +662,44 @@ function finishJob(job) {
   document.getElementById('payout-job-title').textContent = job.title;
   const lines = document.getElementById('payout-lines');
   lines.innerHTML =
-    '<div class="payout-line"><span>Take from the job</span><span class="cash">' + fmtCash(run.take) + '</span></div>' +
-    '<div class="payout-line' + (stealthBonus ? '' : ' zero') + '"><span>Stealth bonus <em>(heat ≤ 30)</em></span><span class="cash">' + (stealthBonus ? '+' + fmtCash(stealthBonus) : '—') + '</span></div>' +
-    '<div class="payout-line' + (cleanBonus ? '' : ' zero') + '"><span>No alarms tripped</span><span class="cash">' + (cleanBonus ? '+' + fmtCash(cleanBonus) : '—') + '</span></div>' +
-    (run.alarms > 0 ? '<div class="payout-line penalty"><span>Alarms tripped</span><span>' + run.alarms + '</span></div>' : '') +
-    '<div class="payout-line total"><span>Banked for the city</span><span class="cash">' + fmtCash(total) + '</span></div>' +
-    '<div class="payout-line grand"><span>Crew total</span><span class="cash">' + fmtCash(after) + '</span></div>';
+    '<div class="payout-line reveal"><span>Take from the job</span><span class="cash">' + fmtCash(run.take) + '</span></div>' +
+    '<div class="payout-line reveal' + (stealthBonus ? '' : ' zero') + '"><span>Stealth bonus <em>(heat ≤ 30)</em></span><span class="cash">' + (stealthBonus ? '+' + fmtCash(stealthBonus) : '—') + '</span></div>' +
+    '<div class="payout-line reveal' + (cleanBonus ? '' : ' zero') + '"><span>No alarms tripped</span><span class="cash">' + (cleanBonus ? '+' + fmtCash(cleanBonus) : '—') + '</span></div>' +
+    (run.alarms > 0 ? '<div class="payout-line reveal penalty"><span>Alarms tripped</span><span>' + run.alarms + '</span></div>' : '') +
+    '<div class="payout-line reveal total"><span>Banked for the city</span><span class="cash" id="payout-banked">$0</span></div>' +
+    '<div class="payout-line reveal grand"><span>Crew total</span><span class="cash" id="payout-grand">' + fmtCash(before) + '</span></div>';
 
   const rankEl = document.getElementById('payout-rank');
-  if (rkAfter.rank.at > rkBefore.rank.at) {
+  const rankedUp = rkAfter.rank.at > rkBefore.rank.at;
+  if (rankedUp) {
     rankEl.innerHTML = '⭐ RANK UP: <b>' + rkAfter.rank.name + '</b>';
-    rankEl.style.display = 'block';
   } else if (rkAfter.next) {
     rankEl.innerHTML = 'Rank: <b>' + rkAfter.rank.name + '</b> · ' + fmtCash(rkAfter.next.at - after) + ' to ' + rkAfter.next.name;
-    rankEl.style.display = 'block';
   } else {
     rankEl.innerHTML = 'Rank: <b>' + rkAfter.rank.name + '</b>';
-    rankEl.style.display = 'block';
   }
+  rankEl.style.display = 'block';
+  rankEl.classList.remove('rank-flash');
 
   document.getElementById('payout-outro').innerHTML = job.outro || '';
   showScreen('payout');
+  cashRain();
+
+  // count up the banked take, then the crew total, then the rank moment
+  const bankedEl = document.getElementById('payout-banked');
+  const grandEl = document.getElementById('payout-grand');
+  setTimeout(() => {
+    animateCash(bankedEl, total, 850, () => {
+      animateCash(grandEl, after, 500, () => {
+        if (rankedUp) {
+          rankEl.classList.add('rank-flash');
+          SFX.play('rankup');
+        } else {
+          SFX.play('cash');
+        }
+      }, before);
+    });
+  }, 700);
 
   const allDone = JOBS.every(j => Slots.isJobComplete(j.id));
   const btn = document.getElementById('btn-payout-continue');
@@ -603,6 +719,11 @@ function finishJob(job) {
 // ============================================================
 document.addEventListener('DOMContentLoaded', () => {
   Slots.load();
+  SFX.init();
+  const muteBtn = document.getElementById('btn-mute');
+  const paintMute = () => { muteBtn.textContent = SFX.muted ? '🔇' : '🔊'; muteBtn.classList.toggle('muted', SFX.muted); };
+  paintMute();
+  muteBtn.addEventListener('click', () => { SFX.toggleMute(); paintMute(); if (!SFX.muted) SFX.play('select'); });
   renderTitleEmblem();
   document.getElementById('btn-start').addEventListener('click', () => { renderSlotPicker(); showScreen('slots'); });
   document.getElementById('btn-slots-back').addEventListener('click', () => showScreen('title'));
