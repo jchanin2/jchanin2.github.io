@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NIGHTFALL — A Math Heist</title>
+  <link rel="stylesheet" href="style.css?v=1">
+</head>
+<body>
+
+  <!-- ==================== TITLE ==================== -->
+  <div id="screen-title" class="screen active">
+    <div class="title-content">
+      <div class="title-emblem" id="title-emblem"></div>
+      <h1 class="game-title">NIGHT<span class="title-emph">FALL</span></h1>
+      <p class="subtitle">The Syndicate robbed the city with bad math.<br>Steal it back with good math.</p>
+      <button id="btn-start" class="btn btn-neon">Join the Crew</button>
+      <a href="../" class="btn-link">← Back to Math Games</a>
+    </div>
+  </div>
+
+  <!-- ==================== SLOT PICKER ==================== -->
+  <div id="screen-slots" class="screen">
+    <div class="screen-header">
+      <h2>Crew Dossiers</h2>
+      <p class="header-subtitle">Pick your file. The crew keeps three.</p>
+    </div>
+    <div id="slots-list" class="slots-list"></div>
+    <button id="btn-slots-back" class="btn btn-secondary">Back</button>
+  </div>
+
+  <!-- ==================== JOB BOARD ==================== -->
+  <div id="screen-jobs" class="screen">
+    <div class="screen-header">
+      <h2>The Safehouse Board</h2>
+      <div class="board-status">
+        <div class="board-stat"><span class="board-label">TAKE RETURNED</span><span id="board-cash" class="board-cash">$0</span></div>
+        <div class="board-stat"><span class="board-label">RANK</span><span id="board-rank" class="board-rank">LOOKOUT</span></div>
+        <span id="board-next-rank" class="board-next"></span>
+        <button id="btn-switch-slot" class="btn btn-ghostly">Switch dossier</button>
+      </div>
+    </div>
+    <div id="job-list" class="job-list"></div>
+    <button id="btn-jobs-back" class="btn btn-secondary">Back to Dossiers</button>
+  </div>
+
+  <!-- ==================== BRIEFING OVERLAY ==================== -->
+  <div id="briefing-overlay" class="overlay" style="display:none;">
+    <div class="overlay-content briefing-content">
+      <div class="briefing-codename" id="briefing-codename"></div>
+      <h2 id="briefing-title" class="briefing-title"></h2>
+      <div id="briefing-text" class="briefing-text"></div>
+      <button id="btn-briefing-go" class="btn btn-neon">We go on your signal →</button>
+    </div>
+  </div>
+
+  <!-- ==================== ALARM OVERLAY ==================== -->
+  <div id="alarm-overlay" class="overlay alarm" style="display:none;">
+    <div class="overlay-content alarm-content">
+      <div class="alarm-siren">🚨</div>
+      <h2 class="alarm-title">ALARM TRIPPED</h2>
+      <p class="alarm-text">Muffin guns the van around the block while the heat dies down. Nobody says anything. Muffin's disappointment is total.</p>
+      <p id="alarm-lost" class="alarm-lost"></p>
+      <button id="btn-alarm-continue" class="btn btn-neon">Back in through the side door</button>
+    </div>
+  </div>
+
+  <!-- ==================== CHALLENGE ==================== -->
+  <div id="screen-challenge" class="screen">
+    <div class="game-top-bar">
+      <div class="job-title-bar">
+        <button id="btn-game-back" class="btn-nav" title="Back to the safehouse">←</button>
+        <span id="game-job-title"></span>
+      </div>
+      <div class="hud">
+        <div class="hud-heat">
+          <span class="hud-label">HEAT</span>
+          <div class="heat-track"><div id="heat-fill" class="heat-fill"></div></div>
+        </div>
+        <div class="hud-take">
+          <span class="hud-label">TAKE</span>
+          <span id="take-amount" class="take-amount">$0</span>
+        </div>
+        <div class="progress-indicator">Lock <span id="progress-current">1</span>/<span id="progress-total">9</span></div>
+      </div>
+    </div>
+
+    <div id="timer-bar" class="timer-bar" style="display:none;">
+      <span class="timer-icon">👮</span>
+      <div class="timer-track"><div id="timer-fill" class="timer-fill"></div></div>
+      <span id="timer-count" class="timer-count"></span>
+    </div>
+
+    <div class="game-main">
+      <div id="challenge-story" class="challenge-story"></div>
+      <div id="challenge-prompt" class="challenge-prompt"></div>
+      <div id="challenge-area" class="challenge-area"></div>
+      <div id="hint-box" class="hint-box" style="display:none;"></div>
+      <div id="challenge-feedback" class="challenge-feedback"></div>
+      <div class="challenge-controls">
+        <button id="btn-hint" class="btn btn-ghostly" style="display:none;">📻 Radio the crew</button>
+        <button id="btn-check" class="btn btn-neon">Crack it</button>
+        <button id="btn-continue" class="btn btn-neon" style="display:none;">Move →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== PAYOUT ==================== -->
+  <div id="screen-payout" class="screen">
+    <div class="payout-content">
+      <div class="payout-stamp">JOB<br>PULLED</div>
+      <h2 class="payout-title" id="payout-job-title"></h2>
+      <div id="payout-lines" class="payout-lines"></div>
+      <div id="payout-rank" class="payout-rank"></div>
+      <div id="payout-outro" class="payout-outro"></div>
+      <button id="btn-payout-continue" class="btn btn-neon">Back to the Safehouse</button>
+    </div>
+  </div>
+
+  <!-- ==================== FINALE ==================== -->
+  <div id="screen-final" class="screen">
+    <div class="final-content">
+      <div class="final-stamp">CITY<br>PAID BACK</div>
+      <h2 class="final-title">Sunrise on Ninth Street</h2>
+      <div class="final-text">
+        <p>The Syndicate's tower is dark. Their books are ash. Their vault is a very large, very empty room with excellent acoustics.</p>
+        <p>Down on Ninth Street, the sun comes up on a city with its money back. Ace folds the last blueprint and slides it across the diner table to you.</p>
+        <p>"Every lock they had," Ace says. "Distribution, negatives, fractions, forgeries — you cracked all of it. The city doesn't know your name, Cipher. But it's spending your work this morning."</p>
+        <p>Outside, the van is waiting. Muffin lowers the sunglasses one inch, looks at you over the top of them, and nods.</p>
+        <p><em>Highest honor there is.</em></p>
+      </div>
+      <button id="btn-final-back" class="btn btn-neon">Back to the Title</button>
+    </div>
+  </div>
+
+  <!-- Scripts — order matters -->
+  <script src="jobs.js?v=1"></script>
+  <script src="challenges.js?v=1"></script>
+  <script src="game.js?v=1"></script>
+</body>
+</html>

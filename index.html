@@ -20,6 +20,12 @@
           <p class="category-desc">Jacob's adventures — six story games covering the whole 5th-grade year.</p>
           <span class="category-count">6 games</span>
         </button>
+        <button class="category-card grade6" data-cat="grade6">
+          <div class="category-emoji">🌃</div>
+          <h2 class="category-title">6th Grade · Pre-Algebra</h2>
+          <p class="category-desc">Jacob's next chapter — equations, fractions &amp; forgeries in the night city.</p>
+          <span class="category-count">1 game</span>
+        </button>
         <button class="category-card grade9" data-cat="grade9">
           <div class="category-emoji">🎾</div>
           <h2 class="category-title">9th Grade · Algebra 1</h2>
@@ -181,6 +187,48 @@
       </div>
     </section>
 
+    <!-- ==================== 6TH GRADE ==================== -->
+    <section id="view-grade6" class="hub-view">
+      <div class="view-header">
+        <button class="back-btn" data-back>← Grade levels</button>
+        <h2 class="view-title">6th Grade · Pre-Algebra</h2>
+        <p class="view-subtitle">The city needs a codebreaker…</p>
+      </div>
+      <div class="game-cards">
+        <a href="nightfall/" class="game-card nightfall-card">
+          <div class="card-icon">
+            <svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+              <!-- night sky + moon -->
+              <circle cx="62" cy="13" r="7" fill="#f0e8c8"/>
+              <circle cx="65" cy="11" r="6" fill="#0a0e1a"/>
+              <!-- skyline -->
+              <g fill="#131a2e">
+                <rect x="4" y="22" width="8" height="26"/><rect x="14" y="14" width="7" height="34"/>
+                <rect x="58" y="20" width="8" height="28"/><rect x="68" y="26" width="8" height="22"/>
+              </g>
+              <g fill="#3de0ff" opacity="0.75">
+                <rect x="16" y="18" width="2" height="2"/><rect x="6" y="26" width="2" height="2"/>
+                <rect x="61" y="24" width="2" height="2"/><rect x="70" y="30" width="2" height="2"/>
+              </g>
+              <!-- vault door -->
+              <circle cx="40" cy="48" r="26" fill="#1a2440" stroke="#3de0ff" stroke-width="2"/>
+              <circle cx="40" cy="48" r="20" fill="#131a2e" stroke="#26507a" stroke-width="1.2"/>
+              <circle cx="40" cy="48" r="12" fill="none" stroke="#ffd23d" stroke-width="2.5"/>
+              <line x1="40" y1="36" x2="40" y2="60" stroke="#ffd23d" stroke-width="2.5" stroke-linecap="round"/>
+              <line x1="28" y1="48" x2="52" y2="48" stroke="#ffd23d" stroke-width="2.5" stroke-linecap="round"/>
+              <circle cx="40" cy="48" r="4" fill="#ffd23d"/>
+              <!-- bolts -->
+              <circle cx="40" cy="25" r="1.6" fill="#3de0ff"/><circle cx="40" cy="71" r="1.6" fill="#3de0ff"/>
+              <circle cx="17" cy="48" r="1.6" fill="#3de0ff"/><circle cx="63" cy="48" r="1.6" fill="#3de0ff"/>
+            </svg>
+          </div>
+          <h2 class="card-title">NIGHTFALL</h2>
+          <p class="card-desc">Join a crew of honest thieves and crack the Syndicate's vaults — equations, like terms, fractions, and forged ledgers. Muffin drives.</p>
+          <span class="card-tag nightfall">Math Heist</span>
+        </a>
+      </div>
+    </section>
+
     <!-- ==================== 9TH GRADE ==================== -->
     <section id="view-grade9" class="hub-view">
       <div class="view-header">
@@ -217,6 +265,7 @@
       var views = {
         categories: document.getElementById('view-categories'),
         grade5: document.getElementById('view-grade5'),
+        grade6: document.getElementById('view-grade6'),
         grade9: document.getElementById('view-grade9')
       };
       function show(name) {
@@ -232,9 +281,9 @@
       document.querySelectorAll('[data-back]').forEach(function (btn) {
         btn.addEventListener('click', function () { show('categories'); });
       });
-      // deep-link support: #grade5 / #grade9
+      // deep-link support: #grade5 / #grade6 / #grade9
       var h = (window.location.hash || '').replace('#', '');
-      if (h === 'grade5' || h === 'grade9') show(h);
+      if (h === 'grade5' || h === 'grade6' || h === 'grade9') show(h);
     })();
   </script>
 </body>

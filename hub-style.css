@@ -64,11 +64,13 @@ body {
 }
 .category-card:hover { transform: translateY(-6px); box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5); }
 .category-card.grade5:hover { border-color: #e8a030; box-shadow: 0 12px 40px rgba(232, 160, 48, 0.18); }
+.category-card.grade6:hover { border-color: #3de0ff; box-shadow: 0 12px 40px rgba(61, 224, 255, 0.20); }
 .category-card.grade9:hover { border-color: #3fb6a8; box-shadow: 0 12px 40px rgba(63, 182, 168, 0.20); }
 
 .category-emoji { font-size: 3.4rem; margin-bottom: 14px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.4)); }
 .category-title { font-size: 1.6rem; margin-bottom: 10px; }
 .category-card.grade5 .category-title { color: #e8a030; }
+.category-card.grade6 .category-title { color: #3de0ff; }
 .category-card.grade9 .category-title { color: #3fb6a8; }
 .category-desc { font-size: 0.95rem; color: #95a5a6; line-height: 1.5; margin-bottom: 16px; }
 .category-count {
@@ -234,6 +236,11 @@ body {
 .card-tag.simplifying-radicals {
   background: #2bb39a;
   color: #08231d;
+}
+
+.card-tag.nightfall {
+  background: #3de0ff;
+  color: #04121c;
 }
 
 @media (max-width: 700px) {
