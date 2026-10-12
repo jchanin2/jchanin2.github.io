@@ -47,6 +47,7 @@
     .shape-label.hl { fill: #0a6e8a; }
     .shape-label.trap { fill: #555; font-size: 13px; }
     .shape-label.area { fill: #8a2626; font-size: 14px; }
+    .shape-hole { fill: #fff; stroke: #1a1a2e; stroke-width: 1.4; stroke-dasharray: 5 4; }
     .key-page { page-break-before: always; }
     .key-grid { columns: 3; font-size: 0.92rem; line-height: 1.9; font-family: "Avenir Next", system-ui, sans-serif; }
     .key-grid div { break-inside: avoid; }
@@ -81,8 +82,13 @@
       { title: 'C · Reverse gear — find the missing height', probs: [
         ['parallelogramInverse'], ['triangleInverse'], ['parallelogramInverse'], ['triangleInverse']] },
       { title: 'D · Strange shapes — the bonus round', probs: [
-        ['trapezoid'], ['trapezoid'], ['house'], ['ramp'], ['lshape'], ['trapezoid']] }
+        ['trapezoid'], ['trapezoid'], ['house'], ['ramp'], ['lshape'], ['trapezoid']] },
+      { title: 'E · Shaded shapes — subtract what’s missing', probs: [
+        ['flag'], ['frame'], ['flag'], ['frame']] },
+      { title: 'F · Prisms — surface area & volume (watch your UNITS!)', probs: [
+        ['rectPrism', 'sa'], ['rectPrism', 'vol'], ['triPrismNet'], ['rectPrism', 'sa']] }
     ];
+    const TOTAL = RECIPE.reduce((n, s) => n + s.probs.length, 0);
 
     function getSeed() {
       const m = window.location.search.match(/seed=(\d+)/);
@@ -95,21 +101,25 @@
       const key = document.getElementById('key');
       let n = 0;
       let html =
-        '<div class="sheet-head"><h1>Area Speed Practice</h1><span class="sheet-meta">Sheet #' + seed + ' · 24 problems</span></div>' +
+        '<div class="sheet-head"><h1>Area Speed Practice</h1><span class="sheet-meta">Sheet #' + seed + ' · ' + TOTAL + ' problems</span></div>' +
         '<div class="name-line">Name: ____________________&nbsp;&nbsp;&nbsp;Date: ____________&nbsp;&nbsp;&nbsp;Time started: ________</div>' +
-        '<div class="instructions">Diagrams are not to scale. Dashed lines are heights. Write the area WITH units — and keep an eye on the clock: the goal is quick <i>and</i> right.</div>';
+        '<div class="instructions">Diagrams are not to scale. Dashed lines are heights. Write every answer WITH units — square units for area and surface area, cubic units for volume — and keep an eye on the clock: the goal is quick <i>and</i> right.</div>';
       let keyHtml = '<div class="sheet-head"><h1>Answer Key</h1><span class="sheet-meta">Sheet #' + seed + '</span></div><div class="key-grid">';
       for (const sec of RECIPE) {
         html += '<h2>' + sec.title + '</h2><div class="grid">';
         for (const spec of sec.probs) {
           n++;
           const p = spec.length === 2 ? Problems[spec[0]](rng, spec[1]) : Problems[spec[0]](rng);
-          const isInverse = p.kind.includes('reverse');
+          const pow = p.unitPow || 2;
+          const suffix = pow === 3 ? '³' : pow === 2 ? '²' : '';
+          const letter = p.ansLetter || (p.kind.includes('reverse') ? 'h' : 'A');
+          // prism problems: leave the unit blank too — Jacob writes the full unit himself
+          const unitPart = p.needsUnit ? '<span class="blank" style="width:0.7in"></span> <i>(units!)</i>' : p.unit + suffix;
           html += '<div class="prob"><div class="prob-head">' + n + '. ' +
-            (isInverse ? p.prompt.replace(/<[^>]+>/g, '') : p.prompt.replace(/<[^>]+>/g, '')) + '</div>' +
+            p.prompt.replace(/<[^>]+>/g, '') + '</div>' +
             p.svg +
-            '<div class="ans-line">' + (isInverse ? 'h' : 'A') + ' = <span class="blank"></span> ' + p.unit + (isInverse ? '' : '²') + '</div></div>';
-          keyHtml += '<div><b>' + n + '.</b> ' + p.answer + ' ' + p.unit + (isInverse ? '' : '²') + '</div>';
+            '<div class="ans-line">' + letter + ' = <span class="blank"></span> ' + unitPart + '</div></div>';
+          keyHtml += '<div><b>' + n + '.</b> ' + p.answer + ' ' + p.unit + suffix + '</div>';
         }
         html += '</div>';
       }

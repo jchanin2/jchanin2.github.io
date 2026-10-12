@@ -111,9 +111,9 @@ const Problems = {
     s += labelPx(o, h / 2, 13, 4, 'h = ?', f, 'start', 'hl');
     s += labelPx((b + o) * 0.62, h * 0.4, 0, 4, 'A = ' + A + ' ' + unit + '²', f, 'middle', 'area');
     return {
-      svg: svgWrap(s), unit, kind: 'parallelogram (reverse)',
+      svg: svgWrap(s), unit, kind: 'parallelogram (reverse)', unitPow: 1,
       prompt: 'Area = ' + A + ' ' + unit + '². Find the height <b>h</b>.',
-      answer: h, answerUnit: unit,
+      answer: h,
       formulaHint: 'A = b × h, so h = A ÷ b'
     };
   },
@@ -175,7 +175,7 @@ const Problems = {
     s += labelPx(ax, h / 2, 13, 4, 'h = ?', f, 'start', 'hl');
     s += labelPx(b * 0.8, h * 0.25, 20, 0, 'A = ' + A + ' ' + unit + '²', f, 'start', 'area');
     return {
-      svg: svgWrap(s), unit, kind: 'triangle (reverse)',
+      svg: svgWrap(s), unit, kind: 'triangle (reverse)', unitPow: 1,
       prompt: 'Area = ' + A + ' ' + unit + '². Find the height <b>h</b>.',
       answer: h, formulaHint: 'A = ½ × b × h, so h = 2A ÷ b'
     };
@@ -243,6 +243,103 @@ const Problems = {
     };
   },
 
+  // Maritime-flag style: rectangle with a triangular notch cut from the right edge.
+  // (Modeled on IM 6.1 "Maritime Flag" — the shaded-area-minus-notch problem.)
+  flag(rng) {
+    const unit = pick(rng, UNITS);
+    const H = 2 * ri(rng, 3, 6);           // even height -> integer notch area
+    const W = ri(rng, 7, 14);
+    const d = ri(rng, 2, Math.min(5, W - 3));
+    const f = fitter(W, H);
+    let s = poly([[0, 0], [W, 0], [W - d, H / 2], [W, H], [0, H]], f);
+    s += dashed(W - d, H / 2, W, H / 2, f);
+    s += labelPx(W / 2, 0, 0, -8, fmt(W) + ' ' + unit, f);
+    s += labelPx(0, H / 2, -12, 4, fmt(H) + ' ' + unit, f, 'end');
+    s += labelPx(W - d / 2, H / 2, 0, -7, fmt(d) + ' ' + unit, f, 'middle', 'hl');
+    return {
+      svg: svgWrap(s), unit, kind: 'flag (shaded)', unitPow: 2,
+      prompt: 'Area of the shaded flag?',
+      answer: W * H - (d * H) / 2,
+      formulaHint: 'Whole rectangle (' + W + '×' + H + ') MINUS the notch — the two cut triangles total d × H ÷ 2'
+    };
+  },
+
+  // Picture frame: rectangle with a rectangular hole.
+  frame(rng) {
+    const unit = pick(rng, UNITS);
+    const W = ri(rng, 8, 14), H = ri(rng, 6, 10);
+    const w = ri(rng, 3, W - 4), h = ri(rng, 2, H - 4);
+    const x0 = (W - w) / 2, y0 = (H - h) / 2;
+    const f = fitter(W, H);
+    let s = poly([[0, 0], [W, 0], [W, H], [0, H]], f);
+    s += '<rect x="' + f.x(x0).toFixed(1) + '" y="' + f.y(y0).toFixed(1) + '" width="' + (w * f.s).toFixed(1) + '" height="' + (h * f.s).toFixed(1) + '" class="shape-hole"/>';
+    s += labelPx(W / 2, H, 0, 20, fmt(W) + ' ' + unit, f);
+    s += labelPx(0, H / 2, -12, 4, fmt(H) + ' ' + unit, f, 'end');
+    s += labelPx(W / 2, y0 + h / 2, 0, -2, fmt(w) + ' × ' + fmt(h) + ' hole', f, 'middle', 'hl');
+    return {
+      svg: svgWrap(s), unit, kind: 'frame (shaded)', unitPow: 2,
+      prompt: 'Area of the shaded frame <span class="subtle">(the hole is cut out)</span>?',
+      answer: W * H - w * h,
+      formulaHint: 'Outer rectangle (' + W + '×' + H + ') minus the hole (' + w + '×' + h + ')'
+    };
+  },
+
+  // Rectangular prism drawn in oblique 3D — asks SURFACE AREA or VOLUME (units matter!).
+  rectPrism(rng, forceAsk) {
+    const unit = pick(rng, UNITS);
+    const l = ri(rng, 3, 7), w = ri(rng, 2, 4), h = ri(rng, 2, 6);
+    const off = w * 0.55;
+    const f = fitter(l + off, h + off);
+    let s = poly([[0, off], [off, 0], [l + off, 0], [l, off]], f);               // top
+    s += poly([[l, off], [l + off, 0], [l + off, h], [l, off + h]], f);          // side
+    s += poly([[0, off], [l, off], [l, off + h], [0, off + h]], f);              // front
+    s += labelPx(l / 2, off + h, 0, 20, fmt(l) + ' ' + unit, f);
+    s += labelPx(0, off + h / 2, -12, 4, fmt(h) + ' ' + unit, f, 'end');
+    s += labelPx(l + off / 2, off / 2, 14, 2, fmt(w) + ' ' + unit, f, 'start', 'hl');
+    const ask = forceAsk || (rng() < 0.5 ? 'sa' : 'vol');
+    const sa = ask === 'sa';
+    return {
+      svg: svgWrap(s), unit, kind: sa ? 'prism (surface area)' : 'prism (volume)',
+      needsUnit: true, unitPow: sa ? 2 : 3, ansLetter: sa ? 'SA' : 'V',
+      prompt: sa ? '<b>SURFACE AREA</b> of the box?' : '<b>VOLUME</b> of the box?',
+      answer: sa ? 2 * (l * w + l * h + w * h) : l * w * h,
+      formulaHint: sa
+        ? 'Six faces in pairs: 2(l·w) + 2(l·h) + 2(w·h) = 2(' + l * w + ' + ' + l * h + ' + ' + w * h + ') — and surface area is SQUARE units'
+        : 'V = l × w × h — and volume is CUBIC units'
+    };
+  },
+
+  // Net of a triangular prism (like the unit test): three rectangles + two right triangles.
+  triPrismNet(rng) {
+    const unit = pick(rng, UNITS);
+    const [a, b, c] = [3, 4, 5];
+    const L = ri(rng, 4, 9);
+    // row of rects (widths b, c, a), right triangles above/below the a-wide rect
+    const x1 = b, x2 = b + c, x3 = b + c + a;
+    const top = b, bot = top + L;
+    const f = fitter(x3, bot + b);
+    let s = poly([[0, top], [x1, top], [x1, bot], [0, bot]], f);
+    s += poly([[x1, top], [x2, top], [x2, bot], [x1, bot]], f);
+    s += poly([[x2, top], [x3, top], [x3, bot], [x2, bot]], f);
+    s += poly([[x2, top], [x3, top], [x2, 0]], f);                    // top triangle (legs a, b)
+    s += poly([[x2, bot], [x3, bot], [x2, bot + b]], f);              // bottom triangle (mirror)
+    s += dashed(x1, top, x1, bot, f) + dashed(x2, top, x2, bot, f);   // fold lines
+    s += dashed(x2, top, x3, top, f) + dashed(x2, bot, x3, bot, f);
+    s += rangle(x2, top, 1, -1, f);
+    s += label(b / 2, top + L / 2 + 0.3, fmt(b), f);                  // rect widths, centered
+    s += label(x1 + c / 2, top + L / 2 + 0.3, fmt(c), f);
+    s += label(x2 + a / 2, top + L / 2 + 0.3, fmt(a), f);
+    s += labelPx(0, top + L / 2, -12, 4, fmt(L) + ' ' + unit, f, 'end', 'hl');
+    s += labelPx(x2, top / 2, -6, 4, fmt(b), f, 'end', 'hl');         // triangle vertical leg
+    return {
+      svg: svgWrap(s), unit, kind: 'net (surface area)',
+      needsUnit: true, unitPow: 2, ansLetter: 'SA',
+      prompt: 'This net folds into a triangular prism. <b>SURFACE AREA</b>?',
+      answer: a * b + (a + b + c) * L,
+      formulaHint: 'Two triangles (2 · ½ · ' + a + ' · ' + b + ') + three rectangles, each ' + L + ' tall: (' + b + ' + ' + c + ' + ' + a + ') × ' + L
+    };
+  },
+
   lshape(rng) { // big rectangle with a rectangular notch removed
     const unit = pick(rng, UNITS);
     const W = ri(rng, 8, 14), H = ri(rng, 6, 11);
@@ -301,6 +398,24 @@ const MODES = {
       if (r < 0.55) return Problems.house(rng);
       if (r < 0.8) return Problems.ramp(rng);
       return Problems.lshape(rng);
+    }
+  },
+  flags: {
+    name: 'Flag Factory',
+    gen(rng, i) {
+      if (i < 2) return Problems.flag(rng);
+      const r = rng();
+      if (r < 0.45) return Problems.flag(rng);
+      if (r < 0.75) return Problems.frame(rng);
+      return Problems.lshape(rng);
+    }
+  },
+  prisms: {
+    name: 'Prism Depot',
+    gen(rng, i) {
+      if (i === 0) return Problems.rectPrism(rng, 'sa');
+      if (i === 1) return Problems.rectPrism(rng, 'vol');
+      return rng() < 0.6 ? Problems.rectPrism(rng) : Problems.triPrismNet(rng);
     }
   }
 };

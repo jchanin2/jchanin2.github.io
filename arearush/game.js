@@ -73,13 +73,15 @@ function renderGarage() {
     const card = document.createElement('button');
     card.className = 'mode-card mode-' + key;
     card.innerHTML =
-      '<div class="mode-emoji">' + ({ para: '▱', tri: '△', mixed: '⛟', strange: '⬠' })[key] + '</div>' +
+      '<div class="mode-emoji">' + ({ para: '▱', tri: '△', mixed: '⛟', strange: '⬠', flags: '⚑', prisms: '🧊' })[key] + '</div>' +
       '<div class="mode-name">' + m.name + '</div>' +
       '<div class="mode-desc">' + ({
         para: 'b × h. Watch for decoy slants.',
         tri: '½ × b × h. The dashed line is your friend.',
         mixed: 'Everything at once, plus reverse problems.',
-        strange: 'Trapezoids, houses, ramps, L-shapes.'
+        strange: 'Trapezoids, houses, ramps, L-shapes.',
+        flags: 'Shaded flags, frames & L-shapes — subtract the missing piece.',
+        prisms: 'Surface area & volume of prisms — and you must pick the UNITS.'
       })[key] + '</div>' +
       bestLine;
     card.addEventListener('click', () => startRound(key));
@@ -160,14 +162,31 @@ function renderRoad() {
   van.classList.toggle('blazing', Game.run.streak >= 3);
 }
 
+const POW_SUP = { 1: '', 2: '²', 3: '³' };
+
 function nextProblem() {
   Game.problem = MODES[Game.mode].gen(Game.rng, Game.index);
   Game.index++;
   Game.missesThisProblem = 0;
+  Game.selectedPow = null;
   Game.startedAt = performance.now();
-  $('problem-prompt').innerHTML = Game.problem.prompt + ' <span class="unit-tag">answer in ' + Game.problem.unit + (Game.problem.kind.includes('reverse') ? '' : '²') + '</span>';
-  $('shape-box').innerHTML = Game.problem.svg;
+  const p = Game.problem;
+  const pow = p.unitPow || 2;
+  const tag = p.needsUnit
+    ? '<span class="unit-tag">pick the units!</span>'
+    : '<span class="unit-tag">answer in ' + p.unit + POW_SUP[pow] + '</span>';
+  $('problem-prompt').innerHTML = p.prompt + ' ' + tag;
+  $('shape-box').innerHTML = p.svg;
   $('answer-input').value = '';
+  // unit selector (surface area / volume problems)
+  const row = $('unit-row');
+  row.style.display = p.needsUnit ? 'flex' : 'none';
+  if (p.needsUnit) {
+    row.querySelectorAll('.unit-btn').forEach(b => {
+      b.classList.remove('selected');
+      b.innerHTML = p.unit + (POW_SUP[b.dataset.pow] ? '<sup>' + (b.dataset.pow === '2' ? '2' : '3') + '</sup>' : '');
+    });
+  }
   $('formula-hint').style.display = 'none';
   $('play-feedback').textContent = '';
   $('play-feedback').className = 'play-feedback';
@@ -188,6 +207,29 @@ function submit() {
 
   const elapsed = (performance.now() - Game.startedAt) / 1000;
 
+  // units check (surface area vs volume problems)
+  if (Game.problem.needsUnit) {
+    if (Game.selectedPow == null) {
+      fb.innerHTML = 'Pick the units too — tap <b>' + Game.problem.unit + '</b>, <b>' + Game.problem.unit + '²</b> or <b>' + Game.problem.unit + '³</b>.';
+      fb.className = 'play-feedback soft';
+      return;
+    }
+    if (Math.abs(v - Game.problem.answer) < 1e-9 && Game.selectedPow !== Game.problem.unitPow) {
+      Game.missesThisProblem++;
+      Game.run.misses++;
+      Game.run.streak = 0;
+      Game.timeLeft = Math.max(0, Game.timeLeft - WRONG_PENALTY);
+      SFX.play('wrong');
+      shake($('play-card'));
+      renderHud();
+      renderRoad();
+      fb.innerHTML = '✗ ' + v + ' is the right NUMBER — wrong <b>units</b>. Area is square units, volume is cubic. −' + WRONG_PENALTY + 's.';
+      fb.className = 'play-feedback wrong';
+      if (Game.timeLeft <= 0) endRound();
+      return;
+    }
+  }
+
   if (Math.abs(v - Game.problem.answer) < 1e-9) {
     // correct
     const mult = multiplier();
@@ -202,7 +244,8 @@ function submit() {
     renderHud();
     renderRoad();
     floatPoints(pts, speedBonus > 0);
-    fb.innerHTML = '✓ ' + Game.problem.answer + ' — <b>+' + pts + '</b>' + (speedBonus > 0 ? ' <span class="speedy">⚡ fast!</span>' : '');
+    const unitStr = Game.problem.unit + POW_SUP[Game.problem.unitPow || 2];
+    fb.innerHTML = '✓ ' + Game.problem.answer + ' ' + unitStr + ' — <b>+' + pts + '</b>' + (speedBonus > 0 ? ' <span class="speedy">⚡ fast!</span>' : '');
     fb.className = 'play-feedback correct';
     Game.problem = null; // lock input until next renders
     setTimeout(() => { if (!Game.over) nextProblem(); }, 420);
@@ -337,6 +380,17 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
   $('btn-go').addEventListener('click', submit);
+
+  // unit selector buttons
+  document.querySelectorAll('#unit-row .unit-btn').forEach(b => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('#unit-row .unit-btn').forEach(x => x.classList.remove('selected'));
+      b.classList.add('selected');
+      Game.selectedPow = parseInt(b.dataset.pow, 10);
+      SFX.play('select');
+      $('answer-input').focus();
+    });
+  });
 
   $('btn-quit').addEventListener('click', () => { stopClock(); Game.over = true; renderGarage(); showScreen('garage'); });
   $('btn-again').addEventListener('click', () => startRound(Game.mode));
