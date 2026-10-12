@@ -402,6 +402,8 @@ const MODES = {
   },
   flags: {
     name: 'Flag Factory',
+    seconds: 120,      // multi-step shapes get a longer run
+    speedUnder: 18,    // ...and a wider speed-bonus window
     gen(rng, i) {
       if (i < 2) return Problems.flag(rng);
       const r = rng();
@@ -412,6 +414,8 @@ const MODES = {
   },
   prisms: {
     name: 'Prism Depot',
+    seconds: 120,
+    speedUnder: 18,
     gen(rng, i) {
       if (i === 0) return Problems.rectPrism(rng, 'sa');
       if (i === 1) return Problems.rectPrism(rng, 'vol');

@@ -1,9 +1,12 @@
 // game.js — MUFFIN'S RUSH: 90-second area speed runs.
 // Muffin finally drives. Every correct area moves the van down the strip.
 
-const ROUND_SECONDS = 90;
+const ROUND_SECONDS = 90;       // default; a mode can override with MODES[mode].seconds
 const WRONG_PENALTY = 5;        // seconds lost per miss
-const SPEED_BONUS_UNDER = 12;   // answer faster than this earns bonus
+const SPEED_BONUS_UNDER = 12;   // answer faster than this earns bonus; modes can override
+
+function roundSeconds(mode) { return MODES[mode].seconds || ROUND_SECONDS; }
+function speedUnder(mode) { return MODES[mode].speedUnder || SPEED_BONUS_UNDER; }
 
 const Store = {
   KEY: 'arearush_v1',
@@ -83,6 +86,7 @@ function renderGarage() {
         flags: 'Shaded flags, frames & L-shapes — subtract the missing piece.',
         prisms: 'Surface area & volume of prisms — and you must pick the UNITS.'
       })[key] + '</div>' +
+      '<div class="mode-time">⏱ ' + roundSeconds(key) + 's run</div>' +
       bestLine;
     card.addEventListener('click', () => startRound(key));
     list.appendChild(card);
@@ -100,7 +104,7 @@ function startRound(mode) {
   Game.index = 0;
   Game.over = false;
   Game.run = { score: 0, solved: 0, firstTry: 0, misses: 0, streak: 0, bestStreak: 0, times: [] };
-  Game.timeLeft = ROUND_SECONDS;
+  Game.timeLeft = roundSeconds(mode);
   $('play-mode-name').textContent = MODES[mode].name;
   showScreen('play');
   renderHud();
@@ -233,7 +237,7 @@ function submit() {
   if (Math.abs(v - Game.problem.answer) < 1e-9) {
     // correct
     const mult = multiplier();
-    const speedBonus = Math.max(0, Math.round(SPEED_BONUS_UNDER - elapsed)) * 10;
+    const speedBonus = Math.max(0, Math.round(speedUnder(Game.mode) - elapsed)) * 10;
     const pts = 100 * mult + speedBonus;
     Game.run.score += pts;
     Game.run.solved++;

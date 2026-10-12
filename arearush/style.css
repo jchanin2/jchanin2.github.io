@@ -87,7 +87,8 @@ body {
 .mode-emoji { font-size: 1.9rem; color: var(--cyan); margin-bottom: 6px; }
 .mode-name { font-weight: 800; margin-bottom: 6px; letter-spacing: 0.03em; }
 .mode-desc { font-size: 0.82rem; color: var(--ink-dim); min-height: 2.6em; }
-.mode-best { margin-top: 10px; font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.08em; color: var(--gold); }
+.mode-time { margin-top: 8px; font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.1em; color: var(--ink-dim); }
+.mode-best { margin-top: 4px; font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.08em; color: var(--gold); }
 .mode-best.fresh { color: var(--ink-dim); }
 
 .garage-footer { display: flex; flex-direction: column; gap: 12px; align-items: center; }
