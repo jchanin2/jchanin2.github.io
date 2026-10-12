@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Area Practice Sheet — Muffin's Rush</title>
+  <style>
+    :root { --ink: #1a1a2e; --dim: #666; --accent: #0a6e8a; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Georgia, "Times New Roman", serif; color: var(--ink); background: #f4f4f8; }
+    .toolbar {
+      position: sticky; top: 0; z-index: 10; display: flex; gap: 10px; align-items: center; justify-content: center;
+      background: #1a1a2e; color: #fff; padding: 10px; font-family: "Avenir Next", system-ui, sans-serif;
+    }
+    .toolbar button {
+      font-family: inherit; font-weight: 700; font-size: 0.9rem; cursor: pointer;
+      border: none; border-radius: 7px; padding: 8px 18px;
+    }
+    .tb-print { background: #ffd23d; color: #2a1400; }
+    .tb-new { background: transparent; color: #3de0ff; border: 1px dashed #3de0ff !important; }
+    .tb-note { font-size: 0.78rem; color: #a0a0c0; }
+    .page {
+      background: #fff; max-width: 8.2in; margin: 18px auto; padding: 0.55in 0.6in;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+    }
+    h1 { font-size: 1.35rem; letter-spacing: 0.02em; }
+    .sheet-head { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 2.5px solid var(--ink); padding-bottom: 8px; margin-bottom: 4px; }
+    .sheet-meta { font-size: 0.8rem; color: var(--dim); font-family: "Avenir Next", system-ui, sans-serif; }
+    .name-line { font-size: 0.9rem; margin: 8px 0 2px; }
+    .instructions { font-size: 0.85rem; color: var(--dim); margin-bottom: 10px; font-style: italic; }
+    h2 {
+      font-size: 0.95rem; font-family: "Avenir Next", system-ui, sans-serif;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      border-bottom: 1px solid #ccc; margin: 18px 0 8px; padding-bottom: 3px; color: var(--accent);
+    }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 24px; }
+    .prob { break-inside: avoid; padding: 6px 0; }
+    .prob-head { font-weight: bold; font-size: 0.92rem; font-family: "Avenir Next", system-ui, sans-serif; }
+    .prob svg { width: 2.9in; height: auto; display: block; margin: 2px auto; }
+    .ans-line { font-size: 0.9rem; margin-top: 2px; }
+    .ans-line .blank { display: inline-block; border-bottom: 1.5px solid var(--ink); width: 1.5in; }
+    /* shape styles (print-friendly) */
+    .shape-fill { fill: #eef4f8; stroke: #1a1a2e; stroke-width: 2; stroke-linejoin: round; }
+    .shape-dash { stroke: #1a1a2e; stroke-width: 1.6; stroke-dasharray: 6 5; }
+    .shape-ra { fill: none; stroke: #1a1a2e; stroke-width: 1.2; }
+    .shape-label { fill: #1a1a2e; font-family: "Avenir Next", system-ui, sans-serif; font-size: 15px; font-weight: 600; }
+    .shape-label.hl { fill: #0a6e8a; }
+    .shape-label.trap { fill: #555; font-size: 13px; }
+    .shape-label.area { fill: #8a2626; font-size: 14px; }
+    .key-page { page-break-before: always; }
+    .key-grid { columns: 3; font-size: 0.92rem; line-height: 1.9; font-family: "Avenir Next", system-ui, sans-serif; }
+    .key-grid div { break-inside: avoid; }
+    .footer-note { margin-top: 16px; font-size: 0.75rem; color: var(--dim); font-style: italic; }
+    @media print {
+      .toolbar { display: none; }
+      body { background: #fff; }
+      .page { box-shadow: none; margin: 0 auto; padding: 0.25in 0.3in; max-width: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="toolbar">
+    <button class="tb-print" onclick="window.print()">🖨 Print (includes answer key)</button>
+    <button class="tb-new" onclick="newSheet()">↻ New sheet</button>
+    <span class="tb-note">Same sheet number = same problems, so the key always matches.</span>
+  </div>
+
+  <div class="page" id="sheet"></div>
+  <div class="page key-page" id="key"></div>
+
+  <script src="problems.js"></script>
+  <script>
+    // Sheet layout: fixed recipe, seeded problems.
+    const RECIPE = [
+      { title: 'A · Parallelograms — warm up the engine', probs: [
+        ['parallelogram', 1], ['parallelogram', 1], ['parallelogram', 2],
+        ['parallelogram', 2], ['parallelogram', 2], ['parallelogram', 3]] },
+      { title: 'B · Triangles — watch the decoy sides', probs: [
+        ['triangle', 1], ['triangle', 1], ['triangle', 2], ['triangle', 2],
+        ['triangle', 2], ['triangle', 2], ['triangle', 3], ['triangle', 3]] },
+      { title: 'C · Reverse gear — find the missing height', probs: [
+        ['parallelogramInverse'], ['triangleInverse'], ['parallelogramInverse'], ['triangleInverse']] },
+      { title: 'D · Strange shapes — the bonus round', probs: [
+        ['trapezoid'], ['trapezoid'], ['house'], ['ramp'], ['lshape'], ['trapezoid']] }
+    ];
+
+    function getSeed() {
+      const m = window.location.search.match(/seed=(\d+)/);
+      return m ? parseInt(m[1], 10) : Math.floor(Math.random() * 90000) + 10000;
+    }
+
+    function build(seed) {
+      const rng = makeRng(seed);
+      const sheet = document.getElementById('sheet');
+      const key = document.getElementById('key');
+      let n = 0;
+      let html =
+        '<div class="sheet-head"><h1>Area Speed Practice</h1><span class="sheet-meta">Sheet #' + seed + ' · 24 problems</span></div>' +
+        '<div class="name-line">Name: ____________________&nbsp;&nbsp;&nbsp;Date: ____________&nbsp;&nbsp;&nbsp;Time started: ________</div>' +
+        '<div class="instructions">Diagrams are not to scale. Dashed lines are heights. Write the area WITH units — and keep an eye on the clock: the goal is quick <i>and</i> right.</div>';
+      let keyHtml = '<div class="sheet-head"><h1>Answer Key</h1><span class="sheet-meta">Sheet #' + seed + '</span></div><div class="key-grid">';
+      for (const sec of RECIPE) {
+        html += '<h2>' + sec.title + '</h2><div class="grid">';
+        for (const spec of sec.probs) {
+          n++;
+          const p = spec.length === 2 ? Problems[spec[0]](rng, spec[1]) : Problems[spec[0]](rng);
+          const isInverse = p.kind.includes('reverse');
+          html += '<div class="prob"><div class="prob-head">' + n + '. ' +
+            (isInverse ? p.prompt.replace(/<[^>]+>/g, '') : p.prompt.replace(/<[^>]+>/g, '')) + '</div>' +
+            p.svg +
+            '<div class="ans-line">' + (isInverse ? 'h' : 'A') + ' = <span class="blank"></span> ' + p.unit + (isInverse ? '' : '²') + '</div></div>';
+          keyHtml += '<div><b>' + n + '.</b> ' + p.answer + ' ' + p.unit + (isInverse ? '' : '²') + '</div>';
+        }
+        html += '</div>';
+      }
+      html += '<div class="footer-note">Generated by Muffin\'s Rush · new sheets any time at the game\'s garage screen.</div>';
+      keyHtml += '</div><div class="footer-note">Tutor copy — problems regenerate with each new sheet number.</div>';
+      sheet.innerHTML = html;
+      key.innerHTML = keyHtml;
+      history.replaceState(null, '', '?seed=' + seed);
+      document.title = 'Area Practice Sheet #' + seed;
+    }
+
+    function newSheet() { build(Math.floor(Math.random() * 90000) + 10000); }
+    build(getSeed());
+  </script>
+</body>
+</html>

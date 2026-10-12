@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Muffin's Rush — Area Speed Runs</title>
+  <link rel="stylesheet" href="style.css?v=1">
+</head>
+<body>
+
+  <button id="btn-mute" class="sfx-toggle" title="Sound on/off">🔊</button>
+
+  <!-- ==================== GARAGE ==================== -->
+  <div id="screen-garage" class="screen active">
+    <div class="garage-content">
+      <div class="title-art">
+        <svg viewBox="0 0 320 120" xmlns="http://www.w3.org/2000/svg">
+          <!-- sunset sun -->
+          <circle cx="160" cy="78" r="46" fill="url(#sun)"/>
+          <defs>
+            <linearGradient id="sun" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#ffd23d"/>
+              <stop offset="100%" stop-color="#ff3d8a"/>
+            </linearGradient>
+          </defs>
+          <rect x="110" y="88" width="100" height="4" fill="#140a24"/>
+          <rect x="104" y="98" width="112" height="3" fill="#140a24"/>
+          <!-- road -->
+          <path d="M 40 120 L 150 70 L 170 70 L 280 120 Z" fill="#1c1430"/>
+          <line x1="160" y1="72" x2="160" y2="120" stroke="#ffd23d" stroke-width="2" stroke-dasharray="6 7"/>
+          <!-- van -->
+          <g transform="translate(138,76)">
+            <rect x="0" y="6" width="44" height="18" rx="4" fill="#3de0ff"/>
+            <rect x="4" y="0" width="28" height="12" rx="3" fill="#3de0ff"/>
+            <rect x="7" y="2" width="10" height="8" rx="2" fill="#140a24"/>
+            <circle cx="12" cy="6" r="3" fill="#a0794c"/>
+            <rect x="9.5" y="4.5" width="5" height="2" rx="1" fill="#000"/>
+            <circle cx="10" cy="26" r="4.5" fill="#140a24" stroke="#888" stroke-width="1.5"/>
+            <circle cx="34" cy="26" r="4.5" fill="#140a24" stroke="#888" stroke-width="1.5"/>
+          </g>
+        </svg>
+      </div>
+      <h1 class="game-title">MUFFIN'S <span class="emph">RUSH</span></h1>
+      <p class="subtitle">Area speed runs. 90 seconds. Muffin drives exactly as fast as you solve.</p>
+      <div id="mode-list" class="mode-list"></div>
+      <div class="garage-footer">
+        <span class="garage-total-line">Career shapes solved: <b id="garage-total">0</b></span>
+        <button id="btn-print" class="btn btn-ghostly">🖨 Printable practice sheet</button>
+        <a href="../#grade6" class="btn-link">← Back to Math Games</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== PLAY ==================== -->
+  <div id="screen-play" class="screen">
+    <div class="play-top">
+      <button id="btn-quit" class="btn-nav" title="Back to garage">←</button>
+      <span id="play-mode-name" class="play-mode-name"></span>
+      <div class="hud">
+        <div class="hud-cell"><span class="hud-label">SCORE</span><span id="hud-score" class="hud-score">0</span></div>
+        <span id="hud-mult" class="mult-chip m1">×1</span>
+        <div class="hud-cell"><span class="hud-label">SOLVED</span><span id="hud-solved" class="hud-solved">0</span></div>
+        <div class="hud-cell"><span class="hud-label">TIME</span><span id="hud-time" class="hud-time">90s</span></div>
+      </div>
+    </div>
+
+    <div class="road">
+      <div class="road-line"></div>
+      <div id="van" class="van">🚐</div>
+      <div class="road-flag">🏁</div>
+    </div>
+
+    <div id="play-card" class="play-card">
+      <div id="problem-prompt" class="problem-prompt"></div>
+      <div id="shape-box" class="shape-box"></div>
+      <div class="nts">diagram not to scale</div>
+      <div id="formula-hint" class="formula-hint" style="display:none;"></div>
+      <div class="answer-row">
+        <input id="answer-input" class="answer-input" type="text" inputmode="decimal" autocomplete="off" spellcheck="false" placeholder="?">
+        <button id="btn-go" class="btn btn-go">GO</button>
+      </div>
+      <div id="keypad" class="keypad">
+        <button class="key" data-k="7">7</button><button class="key" data-k="8">8</button><button class="key" data-k="9">9</button>
+        <button class="key" data-k="4">4</button><button class="key" data-k="5">5</button><button class="key" data-k="6">6</button>
+        <button class="key" data-k="1">1</button><button class="key" data-k="2">2</button><button class="key" data-k="3">3</button>
+        <button class="key key-fn" data-k=".">.</button><button class="key" data-k="0">0</button><button class="key key-fn" data-k="del">⌫</button>
+      </div>
+      <div id="play-feedback" class="play-feedback"></div>
+    </div>
+
+    <div id="countdown" class="countdown" style="display:none;">3</div>
+  </div>
+
+  <!-- ==================== RESULTS ==================== -->
+  <div id="screen-results" class="screen">
+    <div class="results-content">
+      <div class="results-stamp">RUN<br>COMPLETE</div>
+      <h2 id="results-mode" class="results-mode"></h2>
+      <div class="res-score-big" id="res-score">0</div>
+      <div id="res-badges" class="res-badges"></div>
+      <div class="res-grid">
+        <div class="res-cell"><span class="res-num" id="res-solved">0</span><span class="res-lab">shapes solved</span></div>
+        <div class="res-cell"><span class="res-num" id="res-acc">0%</span><span class="res-lab">first-try accuracy</span></div>
+        <div class="res-cell"><span class="res-num" id="res-avg">—</span><span class="res-lab">avg per shape</span></div>
+        <div class="res-cell"><span class="res-num" id="res-streak">0</span><span class="res-lab">best streak</span></div>
+      </div>
+      <p id="res-verdict" class="res-verdict"></p>
+      <div class="res-buttons">
+        <button id="btn-again" class="btn btn-go">Run it again</button>
+        <button id="btn-garage" class="btn btn-ghostly">Garage</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts — order matters -->
+  <script src="problems.js?v=1"></script>
+  <script src="sfx.js?v=1"></script>
+  <script src="game.js?v=1"></script>
+</body>
+</html>
