@@ -218,6 +218,10 @@ function loadTicket() {
   Game.t = { mistakes: 0, hints: 0, hintLevel: 0, total, left: total, served: false, grumpy: false, start: performance.now() };
 
   renderTicketCard(tk, cust);
+  // on stacked (narrow) layouts the ticket scrolls away — keep the problem pinned above the board
+  const tx = ticketText(tk);
+  $('recap').innerHTML = '<span class="recap-l">' + tx.boardLabel + '</span> ' + tx.board +
+    (type === 'order' ? '<div class="recap-ask">“' + tx.bubble + '”</div>' : '');
   const ws = $('workspace');
   ws.innerHTML = '';
   setFeedback('', '');
@@ -282,7 +286,7 @@ function startPatience() {
   paintPatience();
   Game.timerId = setInterval(() => {
     const t = Game.t;
-    if (!t || t.served) return;
+    if (!t || t.served || document.hidden) return;
     if (t.left > 0) {
       t.left--;
       if (t.left > 0 && t.left <= 10) SFX.play('tick');
@@ -537,8 +541,10 @@ function OrderCtrl(tk, ws, api) {
 
   const board = el('div', 'chalkboard');
   const title = el('div', 'cb-title', 'Ratio table <span class="cb-step">Step 1 · set the table</span>');
+  const instr = el('div', 'cb-instr', '① Copy the menu board\'s two numbers into the top row.<br>' +
+    '② Tap the column where the customer\'s <b>' + tokenTxt + '</b> goes.');
   const rt = el('div', 'rt');
-  board.append(title, rt);
+  board.append(title, instr, rt);
 
   function mkRow(cls) {
     const r = el('div', 'rt-row ' + (cls || ''));
@@ -625,6 +631,7 @@ function OrderCtrl(tk, ws, api) {
     unknown.appendChild(inT);
     tr.el.classList.add('live');
     title.innerHTML = 'Ratio table <span class="cb-step">Step 2 · find the “?”</span>';
+    instr.innerHTML = 'Type the answer in the “?” box — or tap <b>+ Add a row</b> for a stepping stone first. A row with a <b>1</b> is a great one.';
     setActions([btn('+ Add a row', 'btn btn-ghost', addRow), btn('Serve it ✓', 'btn btn-go', serve)]);
     api.step('Table set! Now find the “?” — add rows as stepping stones if you want.');
     setTimeout(() => inT.focus(), 40);
@@ -704,6 +711,7 @@ function OrderCtrl(tk, ws, api) {
         k === 2 ? 'Nice work. Could you do it with just one stepping stone next time?' :
         'Served — the long way around. Try going straight to the row with a 1.';
       title.innerHTML = 'Ratio table <span class="cb-step">✓ served</span>';
+      instr.remove();
       const ansMoney = tk.side === 'L' ? mR : mL;
       const ansTxt = ansMoney ? fmtMoney(v) : fmtNum(v) + ' ' + (tk.side === 'L' ? c.Rname : c.Lname);
       return api.serve({ efficient: k <= 1, note: '<b>' + ansTxt + '</b>. ' + note });
@@ -794,6 +802,9 @@ function PrepCtrl(tk, ws, api) {
 
   const board = el('div', 'chalkboard');
   board.appendChild(el('div', 'cb-title', 'Shrink it <span class="cb-step">divide BOTH numbers by a factor they share</span>'));
+  const instr = el('div', 'cb-instr', '① In the ÷ box, type a number that divides BOTH.<br>' +
+    '② Write both answers underneath. Repeat until nothing else divides both, then tap <b>simplest form</b>.');
+  board.appendChild(instr);
   const ld = el('div', 'ladder');
   ld.appendChild(el('div', 'ld-row ld-head', '<div class="ld-div"></div><div class="ld-n">' + f.L + '</div><div class="ld-n">' + f.R + '</div>'));
   board.appendChild(ld);
@@ -869,6 +880,7 @@ function PrepCtrl(tk, ws, api) {
     const g = gcd(st.A, st.B);
     if (g > 1) return api.miss('Not yet — ' + fmtNum(st.A) + ' and ' + fmtNum(st.B) + ' can both still be divided by ' + smallestPrimeFactor(g) + '.');
     st.phase = 'gcf';
+    instr.remove();
     edit.el.remove();
     cur.div.innerHTML = '';
     cur.el.classList.add('final');
@@ -997,9 +1009,9 @@ document.addEventListener('DOMContentLoaded', () => {
   Store.load();
   SFX.init();
   const muteBtn = $('btn-mute');
-  const paintMute = () => { muteBtn.textContent = SFX.muted ? '🔇' : '🔊'; };
+  const paintMute = () => { muteBtn.textContent = SFX.icon(); muteBtn.title = SFX.title(); };
   paintMute();
-  muteBtn.addEventListener('click', () => { SFX.toggleMute(); paintMute(); });
+  muteBtn.addEventListener('click', () => { SFX.cycle(); paintMute(); SFX.play('select'); });
 
   $('title-muffin').innerHTML = MUFFIN_SVG;
   renderMenu();

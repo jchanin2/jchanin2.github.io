@@ -1,13 +1,24 @@
-// sfx.js — NIGHTFALL sound engine. Pure WebAudio synthesis, no assets.
+// sfx.js — shared sound engine. Pure WebAudio synthesis, no assets.
 // SFX.play(name) is safe to call any time; silent until first user gesture.
+// Every sound runs through one master gain, so the speaker button sets overall volume.
 
 const SFX = {
   ctx: null,
-  muted: false,
-  MUTE_KEY: 'nightfall_muted',
+  master: null,
+  KEY: 'nightfall_volume',
+  OLD_MUTE_KEY: 'nightfall_muted',
+  LEVELS: { loud: 0.7, soft: 0.35, off: 0 },
+  CYCLE: ['soft', 'off', 'loud'],
+  ICONS: { loud: '🔊', soft: '🔉', off: '🔇' },
+  level: 'soft',
+  get muted() { return this.level === 'off'; },
 
   init() {
-    try { this.muted = localStorage.getItem(this.MUTE_KEY) === '1'; } catch (e) {}
+    try {
+      const v = localStorage.getItem(this.KEY);
+      if (v && this.LEVELS[v] != null) this.level = v;
+      else if (localStorage.getItem(this.OLD_MUTE_KEY) === '1') this.level = 'off';
+    } catch (e) {}
     // Create/resume the context on the first real gesture.
     const unlock = () => {
       this._ensureCtx();
@@ -21,16 +32,26 @@ const SFX = {
     if (this.ctx) return this.ctx;
     try {
       const AC = window.AudioContext || window.webkitAudioContext;
-      if (AC) this.ctx = new AC();
-    } catch (e) { this.ctx = null; }
+      if (AC) {
+        this.ctx = new AC();
+        this.master = this.ctx.createGain();
+        this.master.gain.value = this.LEVELS[this.level];
+        this.master.connect(this.ctx.destination);
+      }
+    } catch (e) { this.ctx = null; this.master = null; }
     return this.ctx;
   },
 
-  toggleMute() {
-    this.muted = !this.muted;
-    try { localStorage.setItem(this.MUTE_KEY, this.muted ? '1' : '0'); } catch (e) {}
-    return this.muted;
+  // soft → off → loud → soft
+  cycle() {
+    this.level = this.CYCLE[(this.CYCLE.indexOf(this.level) + 1) % this.CYCLE.length];
+    try { localStorage.setItem(this.KEY, this.level); } catch (e) {}
+    if (this.master) this.master.gain.value = this.LEVELS[this.level];
+    return this.level;
   },
+  toggleMute() { this.cycle(); return this.muted; },
+  icon() { return this.ICONS[this.level]; },
+  title() { return 'Sound: ' + this.level + ' (tap to change)'; },
 
   // --- low-level helpers -------------------------------------------------
   _tone({ freq = 440, type = 'sine', dur = 0.12, vol = 0.16, when = 0, glide = null, decay = true }) {
@@ -46,7 +67,7 @@ const SFX = {
     g.gain.linearRampToValueAtTime(vol, t0 + 0.008);
     if (decay) g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
     else g.gain.setValueAtTime(vol, t0 + dur - 0.01), g.gain.linearRampToValueAtTime(0, t0 + dur);
-    osc.connect(g); g.connect(ctx.destination);
+    osc.connect(g); g.connect(this.master);
     osc.start(t0); osc.stop(t0 + dur + 0.02);
   },
 
@@ -65,7 +86,7 @@ const SFX = {
     const g = ctx.createGain();
     g.gain.setValueAtTime(vol, t0);
     g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
-    src.connect(f); f.connect(g); g.connect(ctx.destination);
+    src.connect(f); f.connect(g); g.connect(this.master);
     src.start(t0); src.stop(t0 + dur);
   },
 
@@ -75,8 +96,8 @@ const SFX = {
     const fns = {
       // keypad digit press — short mechanical tick
       key: () => {
-        this._tone({ freq: 2200, type: 'square', dur: 0.03, vol: 0.05 });
-        this._noise({ dur: 0.02, vol: 0.03, filter: 3200 });
+        this._tone({ freq: 1700, type: 'triangle', dur: 0.03, vol: 0.05 });
+        this._noise({ dur: 0.015, vol: 0.02, filter: 2800 });
       },
       // selecting a wire/choice/doc line
       select: () => this._tone({ freq: 900, type: 'triangle', dur: 0.06, vol: 0.09 }),
@@ -99,8 +120,8 @@ const SFX = {
       },
       // wrong — low dissonant buzz
       wrong: () => {
-        this._tone({ freq: 160, type: 'sawtooth', dur: 0.22, vol: 0.10, glide: 110 });
-        this._tone({ freq: 168, type: 'square', dur: 0.22, vol: 0.06, glide: 118 });
+        this._tone({ freq: 196, type: 'triangle', dur: 0.24, vol: 0.13, glide: 130 });
+        this._tone({ freq: 185, type: 'sawtooth', dur: 0.2, vol: 0.025, glide: 124 });
       },
       // soft nudge — neutral double blip
       soft: () => {
@@ -126,9 +147,9 @@ const SFX = {
         }
       },
       // urgent timer tick
-      tick: () => this._tone({ freq: 1400, type: 'square', dur: 0.03, vol: 0.06 }),
+      tick: () => this._tone({ freq: 1250, type: 'triangle', dur: 0.04, vol: 0.05 }),
       // payout counter tick
-      count: () => this._tone({ freq: 1800, type: 'square', dur: 0.02, vol: 0.045 }),
+      count: () => this._tone({ freq: 1600, type: 'triangle', dur: 0.025, vol: 0.04 }),
       // vault door swings open — deep thunk + rush
       vault: () => {
         this._tone({ freq: 70, type: 'sine', dur: 0.4, vol: 0.22, glide: 45 });

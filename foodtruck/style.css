@@ -222,7 +222,12 @@ body {
   box-shadow: inset 0 0 0 2px var(--wood-d), 0 8px 18px rgba(50, 25, 10, 0.3);
   padding: 14px 16px 16px; font-family: var(--chalkfont);
 }
-.cb-title { font-size: 1.25rem; margin-bottom: 10px; }
+.cb-title { font-size: 1.25rem; margin-bottom: 6px; }
+.cb-instr { font-family: var(--ui); font-size: 0.88rem; color: var(--chalk-dim); margin-bottom: 12px; line-height: 1.4; }
+.cb-instr b { color: var(--chalk-y); }
+
+/* problem recap: only on stacked layouts, where the ticket scrolls out of view */
+.recap { display: none; }
 .cb-step { font-family: var(--ui); font-size: 0.82rem; color: var(--chalk-y); margin-left: 8px; font-weight: 600; }
 .cb-actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: center; margin-top: 14px; }
 .cb-actions .btn-ghost { color: var(--chalk); }
@@ -398,6 +403,14 @@ body {
 @media (max-width: 860px) {
   .play-main { grid-template-columns: 1fr; }
   .ticket { max-width: 560px; width: 100%; margin: 0 auto; }
+  .recap {
+    display: block; position: sticky; top: 6px; z-index: 20; margin-bottom: 10px;
+    background: var(--paper); border: 2px solid var(--ink); border-radius: 9px; padding: 7px 11px;
+    font-size: 0.9rem; box-shadow: 0 4px 10px rgba(43, 33, 24, 0.18);
+  }
+  .recap b { color: var(--tomato); }
+  .recap-l { font-family: var(--ticketfont); font-weight: 700; font-size: 0.68rem; letter-spacing: 0.15em; color: var(--ink-dim); margin-right: 4px; }
+  .recap-ask { font-style: italic; margin-top: 2px; }
 }
 @media (max-width: 560px) {
   .game-title { font-size: 2rem; }

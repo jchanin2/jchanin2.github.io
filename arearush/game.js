@@ -356,9 +356,9 @@ function confettiVans() {
 document.addEventListener('DOMContentLoaded', () => {
   SFX.init();
   const muteBtn = $('btn-mute');
-  const paintMute = () => { muteBtn.textContent = SFX.muted ? '🔇' : '🔊'; };
+  const paintMute = () => { muteBtn.textContent = SFX.icon(); muteBtn.title = SFX.title(); };
   paintMute();
-  muteBtn.addEventListener('click', () => { SFX.toggleMute(); paintMute(); });
+  muteBtn.addEventListener('click', () => { SFX.cycle(); paintMute(); SFX.play('select'); });
 
   renderGarage();
 

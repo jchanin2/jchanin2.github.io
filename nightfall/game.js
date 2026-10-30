@@ -721,9 +721,9 @@ document.addEventListener('DOMContentLoaded', () => {
   Slots.load();
   SFX.init();
   const muteBtn = document.getElementById('btn-mute');
-  const paintMute = () => { muteBtn.textContent = SFX.muted ? '🔇' : '🔊'; muteBtn.classList.toggle('muted', SFX.muted); };
+  const paintMute = () => { muteBtn.textContent = SFX.icon(); muteBtn.title = SFX.title(); muteBtn.classList.toggle('muted', SFX.muted); };
   paintMute();
-  muteBtn.addEventListener('click', () => { SFX.toggleMute(); paintMute(); if (!SFX.muted) SFX.play('select'); });
+  muteBtn.addEventListener('click', () => { SFX.cycle(); paintMute(); SFX.play('select'); });
   renderTitleEmblem();
   document.getElementById('btn-start').addEventListener('click', () => { renderSlotPicker(); showScreen('slots'); });
   document.getElementById('btn-slots-back').addEventListener('click', () => showScreen('title'));
