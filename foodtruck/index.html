@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Muffin's Food Truck — Ratio Tables</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌮</text></svg>">
-  <link rel="stylesheet" href="style.css?v=2">
+  <link rel="stylesheet" href="style.css?v=3">
 </head>
 <body>
 
@@ -104,9 +104,15 @@
       <section class="work">
         <div id="recap" class="recap"></div>
         <div id="workspace" class="workspace"></div>
-        <div id="fb" class="fb"></div>
-        <div id="next-row" class="next-row" style="display:none;">
-          <button id="btn-next" class="btn btn-go" type="button">Next ticket →</button>
+        <div class="dock">
+          <div id="fb" class="fb"></div>
+          <div id="next-row" class="next-row" style="display:none;">
+            <button id="btn-next" class="btn btn-go" type="button">Next ticket →</button>
+          </div>
+        </div>
+        <div id="kbd-row" class="kbd-row">
+          <span id="kbd-tip" class="kbd-tip"></span>
+          <button id="numpad-toggle" class="numpad-toggle" type="button"></button>
         </div>
         <div id="keypad" class="keypad">
           <button class="key" data-k="7" type="button">7</button><button class="key" data-k="8" type="button">8</button><button class="key" data-k="9" type="button">9</button>
@@ -141,6 +147,6 @@
 
   <script src="ratio.js?v=1"></script>
   <script src="sfx.js?v=2"></script>
-  <script src="game.js?v=2"></script>
+  <script src="game.js?v=3"></script>
 </body>
 </html>

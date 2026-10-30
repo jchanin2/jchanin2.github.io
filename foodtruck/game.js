@@ -87,6 +87,33 @@ const Game = {
 
 function newStats() { return { served: 0, clean: 0, mistakes: 0, hints: 0, efficient: 0, maxTips: 0, secs: 0 }; }
 
+// ---------- number pad: laptops type on the keyboard, touch screens tap ----------
+// One preference shared by all the games on this site.
+const NUMPAD_KEY = 'mathgames_numpad';
+const Pad = {
+  show: true,
+  init() {
+    let pref = null;
+    try { pref = localStorage.getItem(NUMPAD_KEY); } catch (e) {}
+    const fine = !!(window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches);
+    this.show = pref ? pref === 'show' : !fine;
+  },
+  toggle() {
+    this.show = !this.show;
+    try { localStorage.setItem(NUMPAD_KEY, this.show ? 'show' : 'hide'); } catch (e) {}
+    paintPad();
+  }
+};
+function paintPad() {
+  const tk = Game.ticket;
+  const needed = !!(tk && tk.type !== 'price' && Game.t && !Game.t.served);
+  $('kbd-row').style.display = needed ? '' : 'none';
+  $('keypad').style.display = needed && Pad.show ? '' : 'none';
+  $('numpad-toggle').textContent = Pad.show ? '⌨️ Hide number pad' : '🔢 Show number pad';
+  $('kbd-tip').innerHTML = '<b>Enter</b> checks · <b>Tab</b> jumps to the next box' +
+    (tk && tk.type === 'order' ? ' · <b>+</b> adds a row' : '');
+}
+
 // ============================================================
 // DOM HELPERS
 // ============================================================
@@ -226,7 +253,7 @@ function loadTicket() {
   ws.innerHTML = '';
   setFeedback('', '');
   $('next-row').style.display = 'none';
-  $('keypad').style.display = type === 'price' ? 'none' : '';
+  paintPad();
   Game.activeInput = null;
   Game.ctrl = CONTROLLERS[type](tk, ws, API);
   ws.classList.remove('enter'); void ws.offsetWidth; ws.classList.add('enter');
@@ -396,7 +423,7 @@ function serveTicket(info) {
   const last = Game.mode === 'shift' && Game.idx >= Game.queue.length - 1;
   $('btn-next').textContent = last ? 'Close up shop →' : 'Next ticket →';
   $('next-row').style.display = 'flex';
-  $('keypad').style.display = 'none';
+  paintPad();
   setTimeout(() => $('btn-next').focus(), 50);
 }
 
@@ -631,7 +658,7 @@ function OrderCtrl(tk, ws, api) {
     unknown.appendChild(inT);
     tr.el.classList.add('live');
     title.innerHTML = 'Ratio table <span class="cb-step">Step 2 · find the “?”</span>';
-    instr.innerHTML = 'Type the answer in the “?” box — or tap <b>+ Add a row</b> for a stepping stone first. A row with a <b>1</b> is a great one.';
+    instr.innerHTML = 'Answer in the “?” box — or add a stepping-stone row first (a row with a <b>1</b> works great).';
     setActions([btn('+ Add a row', 'btn btn-ghost', addRow), btn('Serve it ✓', 'btn btn-go', serve)]);
     api.step('Table set! Now find the “?” — add rows as stepping stones if you want.');
     setTimeout(() => inT.focus(), 40);
@@ -727,8 +754,17 @@ function OrderCtrl(tk, ws, api) {
   }
 
   return {
+    plus() { if (st.phase === 'build') addRow(); },
     enter(target) {
       if (st.phase === 'setup') {
+        // keyboard placement: Tab to a column, Enter puts the customer's number there
+        if (target === slotL || target === slotR) {
+          st.placed = target === slotL ? 'L' : 'R';
+          paintSlots();
+          SFX.play('select');
+          if (in0L.value && in0R.value) checkSetup();
+          return;
+        }
         if (target === in0L && !in0R.value) { in0R.focus(); return; }
         return checkSetup();
       }
@@ -1014,6 +1050,8 @@ document.addEventListener('DOMContentLoaded', () => {
   muteBtn.addEventListener('click', () => { SFX.cycle(); paintMute(); SFX.play('select'); });
 
   $('title-muffin').innerHTML = MUFFIN_SVG;
+  Pad.init();
+  $('numpad-toggle').addEventListener('click', () => Pad.toggle());
   renderMenu();
 
   document.addEventListener('focusin', e => {
@@ -1037,7 +1075,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
   document.addEventListener('keydown', e => {
-    if (e.key !== 'Enter' || Game.screen !== 'play') return;
+    if (Game.screen !== 'play') return;
+    if ((e.key === '+' || e.key === '=') && Game.ctrl && Game.ctrl.plus) {
+      e.preventDefault();
+      Game.ctrl.plus();
+      return;
+    }
+    if (e.key !== 'Enter') return;
     e.preventDefault();
     handleEnter(document.activeElement);
   });

@@ -190,7 +190,12 @@ body {
 .key:hover { border-color: var(--cyan); }
 .key:active { transform: scale(0.94); }
 .key-fn { color: var(--magenta); }
-.play-feedback { min-height: 26px; text-align: center; font-weight: 700; margin-top: 10px; }
+.play-feedback { min-height: 26px; text-align: center; font-weight: 700; margin: 4px 0 8px; }
+.kbd-row { display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; margin-bottom: 10px; font-size: 0.82rem; color: var(--ink-dim); }
+.kbd-tip b { color: var(--ink); border: 1px solid var(--line); border-radius: 5px; padding: 0 5px; background: var(--panel-2); }
+.numpad-toggle { cursor: pointer; font-family: inherit; font-weight: 700; font-size: 0.78rem; background: transparent; color: var(--ink-dim); border: 1px dashed var(--line); border-radius: 8px; padding: 3px 9px; }
+.numpad-toggle:hover { color: var(--ink); border-color: var(--cyan); }
+.no-numpad .keypad { display: none; }
 .play-feedback.correct { color: var(--green); }
 .play-feedback.wrong { color: var(--red); }
 .play-feedback.soft { color: var(--gold); }

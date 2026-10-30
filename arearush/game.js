@@ -360,6 +360,25 @@ document.addEventListener('DOMContentLoaded', () => {
   paintMute();
   muteBtn.addEventListener('click', () => { SFX.cycle(); paintMute(); SFX.play('select'); });
 
+  // Laptops type on the keyboard; touch screens get the number pad. One preference for the whole site.
+  const NUMPAD_KEY = 'mathgames_numpad';
+  let pref = null;
+  try { pref = localStorage.getItem(NUMPAD_KEY); } catch (e) {}
+  const fine = !!(window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches);
+  let showPad = pref ? pref === 'show' : !fine;
+  const padBtn = $('numpad-toggle');
+  const paintPad = () => {
+    document.body.classList.toggle('no-numpad', !showPad);
+    padBtn.textContent = showPad ? '⌨️ Hide number pad' : '🔢 Show number pad';
+  };
+  paintPad();
+  padBtn.addEventListener('click', () => {
+    showPad = !showPad;
+    try { localStorage.setItem(NUMPAD_KEY, showPad ? 'show' : 'hide'); } catch (e) {}
+    paintPad();
+    $('answer-input').focus();
+  });
+
   renderGarage();
 
   // answer input: digits + one dot
