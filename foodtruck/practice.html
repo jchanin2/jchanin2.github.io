@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ratio Practice Sheet — Muffin's Food Truck</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🖨</text></svg>">
+  <style>
+    :root { --ink: #1f1a14; --dim: #666; --accent: #b8401f; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Georgia, "Times New Roman", serif; color: var(--ink); background: #f3efe6; }
+    .toolbar {
+      position: sticky; top: 0; z-index: 10; display: flex; gap: 10px; align-items: center; justify-content: center; flex-wrap: wrap;
+      background: #2b2118; color: #fff; padding: 10px; font-family: "Avenir Next", system-ui, sans-serif;
+    }
+    .toolbar button { font-family: inherit; font-weight: 700; font-size: 0.9rem; cursor: pointer; border: none; border-radius: 7px; padding: 8px 18px; }
+    .tb-print { background: #f3a712; color: #2b2118; }
+    .tb-new { background: transparent; color: #ffe08a; border: 1px dashed #ffe08a !important; }
+    .tb-note { font-size: 0.78rem; color: #c9bba8; }
+    .page { background: #fff; max-width: 8.2in; margin: 18px auto; padding: 0.5in 0.6in; box-shadow: 0 4px 24px rgba(0,0,0,0.12); }
+    .sheet-head { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 2.5px solid var(--ink); padding-bottom: 6px; }
+    h1 { font-size: 1.35rem; }
+    .meta { font-size: 0.8rem; color: var(--dim); font-family: "Avenir Next", system-ui, sans-serif; }
+    .name-line { font-size: 0.9rem; margin: 8px 0 4px; }
+    .instructions { font-size: 0.85rem; color: var(--dim); font-style: italic; margin-bottom: 4px; }
+    h2 {
+      font-family: "Avenir Next", system-ui, sans-serif; font-size: 0.92rem; letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--accent); border-bottom: 1px solid #ccc; margin: 16px 0 8px; padding-bottom: 3px;
+    }
+    .h2-note { text-transform: none; letter-spacing: 0; font-weight: 500; color: var(--dim); font-size: 0.82rem; }
+    .grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 10px 24px; }
+    .prob { break-inside: avoid; padding: 4px 0 8px; font-size: 0.9rem; }
+    .prob-n { font-family: "Avenir Next", system-ui, sans-serif; font-weight: 700; }
+    .say { margin: 2px 0 6px; line-height: 1.35; }
+    table.rt { border-collapse: collapse; margin: 4px auto 6px; font-family: "Avenir Next", system-ui, sans-serif; font-size: 0.8rem; }
+    table.rt { width: 100%; max-width: 3.3in; table-layout: fixed; }
+    table.rt th { border-bottom: 2px solid var(--ink); padding: 3px 6px; font-weight: 600; }
+    table.rt td { border-bottom: 1px solid #999; height: 0.36in; }
+    table.rt td.mid, table.rt th.mid { border-left: 1.5px solid var(--ink); }
+    table.rt td.gut, table.rt th.gut { width: 0.42in; border: none; }
+    .ans { font-size: 0.88rem; }
+    .blank { display: inline-block; border-bottom: 1.5px solid var(--ink); width: 1.2in; }
+    .blank.sm { width: 0.55in; }
+    .ladder-space { height: 1.25in; border-left: 1.5px dashed #bbb; margin: 4px 0 4px 0.35in; }
+    .tags { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 22px; margin-top: 6px; font-size: 0.92rem; }
+    .tag { display: flex; align-items: center; gap: 8px; }
+    .box { display: inline-block; width: 0.2in; height: 0.2in; border: 1.5px solid var(--ink); border-radius: 3px; flex-shrink: 0; }
+    .fr { display: inline-flex; flex-direction: column; vertical-align: middle; text-align: center; line-height: 1; font-size: 0.85em; margin: 0 1px; }
+    .frn { border-bottom: 1px solid currentColor; padding: 0 2px; }
+    .frd { padding: 0 2px; }
+    .lines { margin-top: 4px; }
+    .lines div { border-bottom: 1px solid #bbb; height: 0.3in; }
+    .key-page { page-break-before: always; }
+    .key { columns: 2; font-size: 0.88rem; line-height: 1.6; font-family: "Avenir Next", system-ui, sans-serif; }
+    .key div { break-inside: avoid; margin-bottom: 4px; }
+    .footer { margin-top: 12px; font-size: 0.75rem; color: var(--dim); font-style: italic; }
+    @media print {
+      .toolbar { display: none; }
+      body { background: #fff; }
+      .page { box-shadow: none; margin: 0 auto; padding: 0.2in 0.3in; max-width: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="toolbar">
+    <button class="tb-print" onclick="window.print()">🖨 Print (answer key on the last page)</button>
+    <button class="tb-new" onclick="newSheet()">↻ New sheet</button>
+    <span class="tb-note">Same sheet number = same problems, so the key always matches.</span>
+  </div>
+  <div class="page" id="sheet"></div>
+  <div class="page key-page" id="key"></div>
+
+  <script src="ratio.js"></script>
+  <script>
+    function seedFromUrl() {
+      const m = window.location.search.match(/seed=(\d+)/);
+      return m ? parseInt(m[1], 10) : 10000 + Math.floor(Math.random() * 90000);
+    }
+
+    function blankTable(L, R, rows) {
+      let h = '<table class="rt"><tr><th class="gut"></th><th>' + L + '</th><th class="mid">' + R + '</th><th class="gut"></th></tr>';
+      for (let i = 0; i < rows; i++) h += '<tr><td class="gut"></td><td></td><td class="mid"></td><td class="gut"></td></tr>';
+      return h + '</table>';
+    }
+
+    function orderProb(n, tk) {
+      const c = CTX[tk.ctx], tx = ticketText(tk);
+      return '<div class="prob"><span class="prob-n">' + n + '.</span> ' +
+        '<div class="say"><i>Menu board:</i> ' + tx.board + '<br><i>Customer:</i> “' + tx.bubble + '”</div>' +
+        blankTable(c.L, c.R, 4) +
+        '<div class="ans">Answer: <span class="blank"></span></div></div>';
+    }
+    function orderKey(n, tk) {
+      const c = CTX[tk.ctx];
+      const moneyAns = (tk.side === 'L' ? c.money === 'R' : c.money === 'L');
+      const ans = moneyAns ? fmtMoney(tk.answer) : fmtNum(tk.answer) + ' ' + (tk.side === 'L' ? c.Rname : c.Lname);
+      const g = gcd(Math.round(tk.a), Math.round(tk.b));
+      const shrink = isInt(tk.a) && isInt(tk.b) && g > 1 && Math.max(tk.a, tk.b) >= 100 ? ' (shrink ÷' + g + ' → ' + tk.a / g + ' : ' + tk.b / g + ' first)' : '';
+      return '<div><b>' + n + '.</b> ' + ans + shrink + '</div>';
+    }
+
+    function build(seed) {
+      const rng = makeRng(seed);
+      let n = 0, html = '', key = '';
+      html += '<div class="sheet-head"><h1>Ratio Tables &amp; GCF Practice</h1><span class="meta">Sheet #' + seed + '</span></div>' +
+        '<div class="name-line">Name: ____________________ &nbsp; Date: ____________ &nbsp; Time started: ________</div>' +
+        '<div class="instructions">Fill in the ratio table: first the menu board\'s two numbers, then the customer\'s number in the right column. ' +
+        'Draw the arrows (×, ÷) between rows. Every row must be an equivalent ratio — do the SAME thing to both columns.</div>';
+      key += '<div class="sheet-head"><h1>Answer Key</h1><span class="meta">Sheet #' + seed + '</span></div><div class="key">';
+
+      // A
+      html += '<h2>A · Find the row with a 1 <span class="h2-note">— then jump to the customer\'s number</span></h2><div class="grid">';
+      for (let i = 0; i < 4; i++) { const tk = genTicket('order', rng, 2); n++; html += orderProb(n, tk); key += orderKey(n, tk); }
+      html += '</div>';
+
+      // B
+      html += '<h2>B · Recipes, reverse orders &amp; pennies</h2><div class="grid">';
+      for (let i = 0; i < 4; i++) { const tk = genTicket('order', rng, 3); n++; html += orderProb(n, tk); key += orderKey(n, tk); }
+      html += '</div>';
+
+      // C
+      html += '<h2>C · Shrink it — GCF of big numbers <span class="h2-note">— divide BOTH by a common factor until you can\'t</span></h2><div class="grid">';
+      [2, 3, 3, 4, 4, 4].forEach(lv => {
+        const tk = genTicket('prep', rng, lv); n++;
+        const f = PREP_FLAVOR[tk.flavor];
+        html += '<div class="prob"><span class="prob-n">' + n + '.</span> <div class="say">' + f.line(tk.A, tk.B) + '</div>' +
+          '<div class="ladder-space"></div>' +
+          '<div class="ans">' + fmtNum(tk.A) + ' : ' + fmtNum(tk.B) + ' = <span class="blank sm"></span> : <span class="blank sm"></span> &nbsp; GCF = <span class="blank sm"></span></div></div>';
+        key += '<div><b>' + n + '.</b> ' + fmtNum(tk.A) + ' : ' + fmtNum(tk.B) + ' = ' + tk.p + ' : ' + tk.q + ', GCF ' + tk.g + '</div>';
+      });
+      html += '</div>';
+
+      // D
+      html += '<h2>D · Big numbers: shrink first, then scale</h2><div class="grid">';
+      for (let i = 0; i < 2; i++) { const tk = orderBigGcf(rng); n++; html += orderProb(n, tk); key += orderKey(n, tk); }
+      html += '</div>';
+
+      // E
+      const pc = genTicket('price', rng, 2), pctx = PRICE_CTX[pc.ctx];
+      n++;
+      html += '<h2>E · Price check</h2><div class="prob"><span class="prob-n">' + n + '.</span> ' +
+        'A store sells <b>' + fmtNum(pc.q) + ' ' + pctx.many + ' of ' + pctx.noun + ' for ' + fmtMoney2(pc.p) + '</b> and lets customers buy any amount. ' +
+        'Check ✓ each ratio that correctly represents the price. Put ✗ on the ones that don\'t.<div class="tags">' +
+        pc.tags.map((t, i) => '<div class="tag"><span class="box"></span>' + String.fromCharCode(97 + i) + '. ' + tagHTML(t, pc.ctx) + '</div>').join('') +
+        '</div></div>';
+      key += '<div><b>' + n + '.</b> ' + pc.tags.map((t, i) => String.fromCharCode(97 + i) + ' ' + (t.ok ? '✓' : '✗')).join(', ') +
+        ' (' + fmtMoney2(pc.u) + ' per ' + pctx.one + ')</div>';
+
+      // F — Lesson 11, problem 2 style
+      const u = pick(rng, [1.5, 1.25, 2.5, 0.75]), a = pick(rng, [4, 6, 8]), b = clean(a * u);
+      let t = ri(rng, 13, 31); if (t % a === 0) t++;
+      n++;
+      html += '<h2>F · Explain it</h2><div class="prob"><span class="prob-n">' + n + '.</span> ' +
+        'A caterer needs to buy <b>' + t + ' pounds</b> of pasta. At a local store, <b>' + a + ' pounds of pasta cost ' + fmtMoney(b) + '</b>. How much will the caterer pay?' +
+        '<div class="say">a. Write a ratio for the given information about the cost of pasta.</div><div class="lines"><div></div></div>' +
+        '<div class="say">b. Would it be more helpful to write an equivalent ratio with <b>1 pound</b> of pasta as one of the numbers, or with <b>$1</b>? Explain, then write that ratio.</div><div class="lines"><div></div><div></div></div>' +
+        '<div class="say">c. Find the answer and show your reasoning.</div><div class="lines"><div></div><div></div></div></div>';
+      key += '<div><b>' + n + '.</b> a. ' + a + ' lbs : ' + fmtMoney(b) + ' &nbsp; b. 1 pound — we know pounds and want dollars: 1 lb : ' + fmtMoney(u) +
+        ' &nbsp; c. ' + t + ' × ' + fmtMoney(u) + ' = <b>' + fmtMoney(t * u) + '</b></div>';
+
+      html += '<div class="footer">From Muffin\'s Food Truck · new sheets any time from the truck\'s menu screen.</div>';
+      key += '</div><div class="footer">Tutor copy · Sheet #' + seed + '</div>';
+      document.getElementById('sheet').innerHTML = html;
+      document.getElementById('key').innerHTML = key;
+      history.replaceState(null, '', '?seed=' + seed);
+      document.title = 'Ratio Practice Sheet #' + seed;
+    }
+    function newSheet() { build(10000 + Math.floor(Math.random() * 90000)); window.scrollTo(0, 0); }
+    build(seedFromUrl());
+  </script>
+</body>
+</html>

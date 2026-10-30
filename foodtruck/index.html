@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Muffin's Food Truck — Ratio Tables</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌮</text></svg>">
+  <link rel="stylesheet" href="style.css?v=1">
+</head>
+<body>
+
+  <button id="btn-mute" class="sfx-toggle" title="Sound on/off">🔊</button>
+
+  <!-- ==================== MENU ==================== -->
+  <div id="screen-menu" class="screen active">
+    <div class="menu-content">
+      <div class="title-art">
+        <svg viewBox="0 0 340 190" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <ellipse cx="170" cy="176" rx="150" ry="8" fill="rgba(60,30,20,0.18)"/>
+          <!-- sign -->
+          <rect x="70" y="6" width="150" height="30" rx="8" fill="#fffaf0" stroke="#2b2118" stroke-width="2.5"/>
+          <text x="145" y="27" text-anchor="middle" font-family="Avenir Next, Arial, sans-serif" font-weight="800" font-size="15" fill="#e4572e">MUFFIN'S · EATS</text>
+          <line x1="100" y1="36" x2="100" y2="48" stroke="#2b2118" stroke-width="2.5"/>
+          <line x1="190" y1="36" x2="190" y2="48" stroke="#2b2118" stroke-width="2.5"/>
+          <!-- body -->
+          <rect x="34" y="48" width="222" height="110" rx="14" fill="#e4572e" stroke="#2b2118" stroke-width="3"/>
+          <!-- cab -->
+          <path d="M256 82 h38 q14 0 19 15 l9 30 v31 h-66 z" fill="#e4572e" stroke="#2b2118" stroke-width="3" stroke-linejoin="round"/>
+          <rect x="265" y="90" width="32" height="26" rx="4" fill="#bfe6f5" stroke="#2b2118" stroke-width="2.5"/>
+          <!-- awning -->
+          <g stroke="#2b2118" stroke-width="2.5">
+            <path d="M54 62 h182 l-8 18 h-166 z" fill="#fffaf0"/>
+          </g>
+          <g fill="#2bb39a">
+            <path d="M66 62 h18 l-4 18 h-18 z"/><path d="M102 62 h18 l-3 18 h-18 z"/>
+            <path d="M138 62 h18 l-2 18 h-18 z"/><path d="M174 62 h18 l-1 18 h-18 z"/>
+            <path d="M210 62 h18 l0 18 h-18 z"/>
+          </g>
+          <!-- window -->
+          <rect x="62" y="82" width="166" height="48" rx="4" fill="#3b2a20" stroke="#2b2118" stroke-width="2.5"/>
+          <!-- counter -->
+          <rect x="56" y="128" width="178" height="9" rx="2" fill="#f3a712" stroke="#2b2118" stroke-width="2.5"/>
+          <!-- menu chalkboard on window -->
+          <rect x="176" y="88" width="44" height="34" rx="2" fill="#233d30" stroke="#8a5a32" stroke-width="2"/>
+          <text x="198" y="102" text-anchor="middle" font-family="Chalkboard SE, Marker Felt, Comic Sans MS, cursive" font-size="9" fill="#f4f1e8">4 : 5</text>
+          <text x="198" y="116" text-anchor="middle" font-family="Chalkboard SE, Marker Felt, Comic Sans MS, cursive" font-size="9" fill="#ffe08a">1 : 1.25</text>
+          <!-- wheels -->
+          <circle cx="88" cy="158" r="17" fill="#2b2118"/><circle cx="88" cy="158" r="7" fill="#c9c2b4"/>
+          <circle cx="280" cy="158" r="17" fill="#2b2118"/><circle cx="280" cy="158" r="7" fill="#c9c2b4"/>
+          <!-- taco on counter -->
+          <path d="M80 128 a14 12 0 0 1 28 0 z" fill="#f3d27a" stroke="#2b2118" stroke-width="1.8"/>
+          <path d="M84 126 q10 -9 20 0" fill="none" stroke="#5fae4f" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+        <div id="title-muffin" class="title-muffin"></div>
+      </div>
+      <h1 class="game-title">Muffin's <span>Food Truck</span></h1>
+      <p class="subtitle">Ratio tables, unit prices &amp; big-number GCFs. Read the menu board, set the table, serve it right — and collect your tips.</p>
+
+      <h2 class="sec-title">Shifts</h2>
+      <div id="shift-list" class="shift-list"></div>
+
+      <h2 class="sec-title">Drills <span>endless · level up every 3 clean tickets</span></h2>
+      <div id="drill-list" class="drill-list"></div>
+
+      <div class="menu-footer">
+        <span class="tipjar">🫙 Tip jar: <b id="menu-tips">$0</b></span>
+        <button id="btn-print" class="btn btn-ghost">🖨 Printable practice sheet</button>
+        <a href="../#grade6" class="btn-link">← Back to Math Games</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== PLAY ==================== -->
+  <div id="screen-play" class="screen">
+    <div class="play-top">
+      <button id="btn-back" class="btn-nav" title="Back">←</button>
+      <span id="play-title" class="play-title"></span>
+      <div class="hud">
+        <div class="hud-cell"><span class="hud-label">TIPS</span><span id="hud-tips" class="hud-tips">$0</span></div>
+        <div class="hud-cell"><span id="hud-prog" class="hud-prog"></span></div>
+      </div>
+    </div>
+    <div id="rail" class="rail"></div>
+
+    <div class="play-main">
+      <aside id="ticket" class="ticket">
+        <div class="tk-head"><span id="tk-type" class="tk-type">ORDER</span><span id="tk-num" class="tk-num"></span></div>
+        <div class="tk-customer">
+          <span id="tk-face" class="tk-face"></span>
+          <div class="tk-who">
+            <div id="tk-name" class="tk-name"></div>
+            <div class="pat"><div id="pat-fill" class="pat-fill"></div></div>
+          </div>
+          <span id="tk-mood" class="tk-mood">😀</span>
+        </div>
+        <div class="tk-board"><span id="tk-board-label" class="tk-board-label">MENU BOARD</span><div id="tk-board"></div></div>
+        <div id="tk-bubble" class="tk-bubble"></div>
+        <button id="btn-hint" class="btn-hint" type="button">🐾 Ask Muffin <span>−$1 tip</span></button>
+        <div id="hint-box" class="hint-box" style="display:none;"></div>
+        <div id="tk-stamp" class="tk-stamp" style="display:none;"></div>
+        <div id="tk-tipline" class="tk-tipline"></div>
+      </aside>
+
+      <section class="work">
+        <div id="workspace" class="workspace"></div>
+        <div id="fb" class="fb"></div>
+        <div id="next-row" class="next-row" style="display:none;">
+          <button id="btn-next" class="btn btn-go" type="button">Next ticket →</button>
+        </div>
+        <div id="keypad" class="keypad">
+          <button class="key" data-k="7" type="button">7</button><button class="key" data-k="8" type="button">8</button><button class="key" data-k="9" type="button">9</button>
+          <button class="key" data-k="4" type="button">4</button><button class="key" data-k="5" type="button">5</button><button class="key" data-k="6" type="button">6</button>
+          <button class="key" data-k="1" type="button">1</button><button class="key" data-k="2" type="button">2</button><button class="key" data-k="3" type="button">3</button>
+          <button class="key key-fn" data-k="." type="button">.</button><button class="key" data-k="0" type="button">0</button><button class="key key-fn" data-k="del" type="button">⌫</button>
+          <button class="key key-enter" data-k="enter" type="button">Enter ↵</button>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- ==================== RESULTS ==================== -->
+  <div id="screen-results" class="screen">
+    <div class="results-card">
+      <div id="res-stamp" class="res-stamp"></div>
+      <h2 id="res-title" class="res-title"></h2>
+      <div id="res-stars" class="res-stars"></div>
+      <div class="res-tips"><span>TIPS EARNED</span><b id="res-tips">$0</b></div>
+      <div id="res-badges" class="res-badges"></div>
+      <div id="res-grid" class="res-grid"></div>
+      <p id="res-verdict" class="res-verdict"></p>
+      <div class="res-buttons">
+        <button id="btn-again" class="btn btn-go" type="button">Run it again</button>
+        <button id="btn-nextshift" class="btn btn-chalk" type="button">Next shift →</button>
+        <button id="btn-menu" class="btn btn-ghost" type="button">Back to the truck</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="levelup" class="levelup" style="display:none;"></div>
+
+  <script src="ratio.js?v=1"></script>
+  <script src="sfx.js?v=1"></script>
+  <script src="game.js?v=1"></script>
+</body>
+</html>
